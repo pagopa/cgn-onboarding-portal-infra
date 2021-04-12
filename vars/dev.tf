@@ -7,7 +7,6 @@ resource "tfe_variable" "dev_env_short" {
   description  = "Single char for the current environment"
 }
 
-
 resource "tfe_variable" "dev_tags" {
   key          = "tags"
   value        = <<-EOT
@@ -21,7 +20,6 @@ resource "tfe_variable" "dev_tags" {
   workspace_id = data.tfe_workspace.dev.id
   description  = "tags for the cloud resources"
 }
-
 
 # Network
 resource "tfe_variable" "dev_cidr_vnet" {
@@ -69,3 +67,27 @@ resource "tfe_variable" "dev_cidr_subnet_public" {
 }
 
 
+# Database
+resource "tfe_variable" "dev_db_sku_name" {
+  key          = "db_sku_name"
+  value        = "GP_Gen5_2"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Specifies the SKU Name for this PostgreSQL Server."
+}
+
+resource "tfe_variable" "dev_db_version" {
+  key          = "db_version"
+  value        = "11"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Specifies the version of PostgreSQL to use."
+}
+
+resource "tfe_variable" "dev_database_name" {
+  key          = "database_name"
+  value        = "cgnonboardingportal"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Name of the database."
+}
