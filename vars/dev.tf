@@ -19,5 +19,5 @@ resource "tfe_variable" "dev_tags" {
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Single char for the current environment"
+  description  = "tags for the cloud resources"
 }
