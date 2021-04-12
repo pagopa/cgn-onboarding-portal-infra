@@ -12,7 +12,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "bitrock-pagopa"
     workspaces {
-      prefix = "cgn-onboarding-portal-"
+      name = "cgn-onboarding-portal-dev"
     }
   }
 }
