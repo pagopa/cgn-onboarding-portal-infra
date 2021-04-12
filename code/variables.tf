@@ -36,10 +36,6 @@ variable "cidr_subnet_public" {
   type = list(string)
 }
 
-variable "cidr_subnet_bastionhost" {
-  type = list(string)
-}
-
 
 # postgresql
 variable "db_administrator_login" {
@@ -87,7 +83,7 @@ variable "db_create_mode" {
 variable "db_public_network_access_enabled" {
   type        = bool
   description = "Whether or not public network access is allowed for this server."
-  default     = true
+  default     = false
 }
 
 variable "db_ssl_enforcement_enabled" {
