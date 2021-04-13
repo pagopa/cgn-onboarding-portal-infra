@@ -20,7 +20,7 @@ module "storage_account" {
   location                 = var.location
   lock                     = var.storage_account_lock != null
   lock_scope               = var.storage_account_lock != null ? var.storage_account_lock.scope : null
-  lock_level               = var.storage_account_lock != null ? var.storage_account_lock.lock_level : null
+  lock_level               = var.storage_account_lock != null ? var.storage_account_lock.lock_level : "CanNotDelete"
   lock_notes               = var.storage_account_lock != null ? var.storage_account_lock.notes : null
 
   tags = var.tags
@@ -50,7 +50,7 @@ module "storage_account_website" {
   location                 = var.location
   lock                     = var.storage_account_website_lock != null
   lock_scope               = var.storage_account_website_lock != null ? var.storage_account_website_lock.scope : null
-  lock_level               = var.storage_account_website_lock != null ? var.storage_account_website_lock.lock_level : null
+  lock_level               = var.storage_account_website_lock != null ? var.storage_account_website_lock.lock_level : "CanNotDelete"
   lock_notes               = var.storage_account_website_lock != null ? var.storage_account_website_lock.notes : null
   tags                     = var.tags
 }
