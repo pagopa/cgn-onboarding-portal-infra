@@ -20,8 +20,11 @@ resource "azurerm_storage_account" "storage_account" {
   }
 
   blob_properties {
-    delete_retention_policy {
-      days = var.soft_delete_retention
+    dynamic "delete_retention_policy" {
+      for_each = var.soft_delete_retention != null ? [{}] : []
+      content {
+        days = var.soft_delete_retention
+      }
     }
     dynamic "cors_rule" {
       for_each = var.cors_rule
