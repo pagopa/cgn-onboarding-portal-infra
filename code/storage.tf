@@ -19,9 +19,9 @@ module "storage_account" {
   resource_group_name      = azurerm_resource_group.rg_storage.name
   location                 = var.location
   lock                     = var.storage_account_lock != null
-  lock_scope               = var.storage_account_lock.scope
-  lock_level               = var.storage_account_lock.lock_level
-  lock_notes               = var.storage_account_lock.notes
+  lock_scope               = var.storage_account_lock != null ? var.storage_account_lock.scope : null
+  lock_level               = var.storage_account_lock != null ? var.storage_account_lock.lock_level : null
+  lock_notes               = var.storage_account_lock != null ? var.storage_account_lock.notes : null
 
   tags = var.tags
 }
@@ -37,9 +37,9 @@ resource "azurerm_storage_container" "user_documents" {
 module "storage_account_website" {
   source = "../modules/storage_account"
 
-  name            = replace(format("%s-sa-website", local.project), "-", "")
-  versioning_name = format("%s-sa-website-versioning", local.project)
-  lock_name       = format("%s-sa-website-lock", local.project)
+  name            = replace(format("%s-sa-ws", local.project), "-", "")
+  versioning_name = format("%s-sa-ws-versioning", local.project)
+  lock_name       = format("%s-sa-ws-lock", local.project)
 
   enable_static_website    = true
   account_kind             = "StorageV2"
@@ -49,8 +49,8 @@ module "storage_account_website" {
   resource_group_name      = azurerm_resource_group.rg_storage.name
   location                 = var.location
   lock                     = var.storage_account_website_lock != null
-  lock_scope               = var.storage_account_website_lock.scope
-  lock_level               = var.storage_account_website_lock.lock_level
-  lock_notes               = var.storage_account_website_lock.notes
+  lock_scope               = var.storage_account_website_lock != null ? var.storage_account_website_lock.scope : null
+  lock_level               = var.storage_account_website_lock != null ? var.storage_account_website_lock.lock_level : null
+  lock_notes               = var.storage_account_website_lock != null ? var.storage_account_website_lock.notes : null
   tags                     = var.tags
 }
