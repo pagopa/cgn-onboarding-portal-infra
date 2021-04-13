@@ -3,15 +3,23 @@ variable "location" {
 }
 
 variable "name" {
-  type = string
+  type        = string
+  description = "The name of the storage account resource"
+
+  validation {
+    condition     = length(var.name) >= 3 && length(var.name) <= 24 && can(regex("[a-z0-9]", var.name))
+    error_message = "The name can only consist of lowercase letters and numbers, and must be between 3 and 24 characters long."
+  }
 }
 
 variable "versioning_name" {
-  type = string
+  type        = string
+  description = "The name of the storage account versioning resource"
 }
 
 variable "lock_name" {
-  type = string
+  type        = string
+  description = "The name of the storage account lock resource"
 }
 
 variable "resource_group_name" {

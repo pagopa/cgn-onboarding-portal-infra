@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_storage" {
 module "storage_account" {
   source = "../modules/storage_account"
 
-  name            = format("%s-sa", local.project)
+  name            = replace(format("%s-sa", local.project), "-", "")
   versioning_name = format("%s-sa-versioning", local.project)
   lock_name       = format("%s-sa-lock", local.project)
 
@@ -28,7 +28,7 @@ module "storage_account" {
 
 # Containers
 resource "azurerm_storage_container" "user_documents" {
-  name                  = format("%s-sc-user-documents", local.project)
+  name                  = "userdocuments"
   storage_account_name  = module.storage_account.name
   container_access_type = "blob"
 }
@@ -37,7 +37,7 @@ resource "azurerm_storage_container" "user_documents" {
 module "storage_account_website" {
   source = "../modules/storage_account"
 
-  name            = format("%s-sa-website", local.project)
+  name            = replace(format("%s-sa-website", local.project), "-", "")
   versioning_name = format("%s-sa-website-versioning", local.project)
   lock_name       = format("%s-sa-website-lock", local.project)
 

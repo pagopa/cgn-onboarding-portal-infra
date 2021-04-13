@@ -31,11 +31,11 @@ No modules.
 | <a name="input_account_replication_type"></a> [account\_replication\_type](#input\_account\_replication\_type) | n/a | `string` | n/a | yes |
 | <a name="input_account_tier"></a> [account\_tier](#input\_account\_tier) | n/a | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
-| <a name="input_lock_name"></a> [lock\_name](#input\_lock\_name) | n/a | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | n/a | `string` | n/a | yes |
+| <a name="input_lock_name"></a> [lock\_name](#input\_lock\_name) | The name of the storage account lock resource | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of the storage account resource | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | n/a | yes |
-| <a name="input_versioning_name"></a> [versioning\_name](#input\_versioning\_name) | n/a | `string` | n/a | yes |
+| <a name="input_versioning_name"></a> [versioning\_name](#input\_versioning\_name) | The name of the storage account versioning resource | `string` | n/a | yes |
 | <a name="input_account_kind"></a> [account\_kind](#input\_account\_kind) | n/a | `string` | `"StorageV2"` | no |
 | <a name="input_cors_rule"></a> [cors\_rule](#input\_cors\_rule) | CORS rules for storage account. | <pre>list(object({<br>    allowed_origins    = list(string)<br>    allowed_methods    = list(string)<br>    allowed_headers    = list(string)<br>    exposed_headers    = list(string)<br>    max_age_in_seconds = number<br>  }))</pre> | `[]` | no |
 | <a name="input_custom_404_path"></a> [custom\_404\_path](#input\_custom\_404\_path) | path from your repo root to your custom 404 page | `string` | `"404.html"` | no |
