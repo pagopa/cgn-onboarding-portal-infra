@@ -40,15 +40,13 @@ variable "cidr_subnet_public" {
 # postgresql
 variable "db_administrator_login" {
   type        = string
-  description = " The Administrator Login for the PostgreSQL Server."
-  default     = null
+  description = "The Administrator Login for the PostgreSQL Server."
   sensitive   = true
 }
 
 variable "db_administrator_login_password" {
   type        = string
   description = "The Password associated with the administrator_login."
-  default     = null
   sensitive   = true
 }
 
@@ -121,3 +119,27 @@ variable "db_collation" {
   default     = "Italian_Italy.1252"
 }
 
+# storage
+variable "storage_account_versioning" {
+  type        = bool
+  description = "Enable versioning in the blob storage account."
+  default     = true
+}
+
+variable "storage_account_lock" {
+  type = object({
+    lock_level = string
+    notes      = string
+    scope      = string
+  })
+  default = null
+}
+
+variable "storage_account_website_lock" {
+  type = object({
+    lock_level = string
+    notes      = string
+    scope      = string
+  })
+  default = null
+}

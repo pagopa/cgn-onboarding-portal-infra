@@ -19,8 +19,9 @@ resource "azurerm_postgresql_server" "postgresql_server" {
 
   auto_grow_enabled = var.db_auto_grow_enabled
 
-  public_network_access_enabled = var.db_public_network_access_enabled
-  ssl_enforcement_enabled       = var.db_ssl_enforcement_enabled
+  public_network_access_enabled    = var.db_public_network_access_enabled
+  ssl_enforcement_enabled          = var.db_ssl_enforcement_enabled
+  ssl_minimal_tls_version_enforced = var.db_ssl_minimal_tls_version_enforced
 
   tags = var.tags
 
