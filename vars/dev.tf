@@ -4,7 +4,7 @@ resource "tfe_variable" "dev_env_short" {
   value        = "d"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Single char for the current environment"
+  description  = "Single char for the current environment. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_tags" {
@@ -12,15 +12,15 @@ resource "tfe_variable" "dev_tags" {
   value        = <<-EOT
   {
     CreatedBy    = "Terraform"
-    Environment = "Dev"
-    owner       = "cgn-onboarding-portal"
-    repo        = "github.com/pagopa/cgn-onboarding-portal-infra"
+    Environment  = "Dev"
+    owner        = "cgn-onboarding-portal"
+    repo         = "github.com/pagopa/cgn-onboarding-portal-infra"
   }
   EOT
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "tags for the cloud resources"
+  description  = "tags for the cloud resources. CreatedBy Terraform"
 }
 
 # Network
@@ -32,7 +32,7 @@ resource "tfe_variable" "dev_cidr_vnet" {
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "cidr virtual network"
+  description  = "cidr virtual network. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_cidr_subnet_db" {
@@ -43,7 +43,7 @@ resource "tfe_variable" "dev_cidr_subnet_db" {
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "cidr subnet db"
+  description  = "cidr subnet db. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_cidr_subnet_api" {
@@ -54,7 +54,7 @@ resource "tfe_variable" "dev_cidr_subnet_api" {
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "cidr virtual api"
+  description  = "cidr virtual api. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_cidr_subnet_public" {
@@ -65,7 +65,7 @@ resource "tfe_variable" "dev_cidr_subnet_public" {
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "cidr subnet public"
+  description  = "cidr subnet public. CreatedBy Terraform"
 }
 
 
@@ -75,7 +75,7 @@ resource "tfe_variable" "dev_db_sku_name" {
   value        = "GP_Gen5_2"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Specifies the SKU Name for this PostgreSQL Server."
+  description  = "Specifies the SKU Name for this PostgreSQL Server. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_db_version" {
@@ -83,7 +83,7 @@ resource "tfe_variable" "dev_db_version" {
   value        = "11"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Specifies the version of PostgreSQL to use."
+  description  = "Specifies the version of PostgreSQL to use. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "dev_database_name" {
@@ -91,5 +91,5 @@ resource "tfe_variable" "dev_database_name" {
   value        = "cgnonboardingportal"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Name of the database."
+  description  = "Name of the database. CreatedBy Terraform"
 }

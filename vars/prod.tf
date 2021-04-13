@@ -4,7 +4,7 @@ resource "tfe_variable" "prod_env_short" {
   value        = "d"
   category     = "terraform"
   workspace_id = data.tfe_workspace.prod.id
-  description  = "Single char for the current environment"
+  description  = "Single char for the current environment. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "prod_tags" {
@@ -13,11 +13,13 @@ resource "tfe_variable" "prod_tags" {
   {
     CreatedBy    = "Terraform"
     Environment  = "Prod"
+    owner        = "cgn-onboarding-portal"
+    repo         = "github.com/pagopa/cgn-onboarding-portal-infra"
   }
   EOT
   hcl          = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.prod.id
-  description  = "tags for the cloud resources"
+  description  = "tags for the cloud resources. CreatedBy Terraform"
 }
 
