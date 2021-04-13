@@ -34,6 +34,13 @@ resource "azurerm_storage_container" "user_documents" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "profile_logos" {
+  depends_on            = [module.storage_account]
+  name                  = "profilelogos"
+  storage_account_name  = module.storage_account.name
+  container_access_type = "private"
+}
+
 
 module "storage_account_website" {
   source = "../modules/storage_account"

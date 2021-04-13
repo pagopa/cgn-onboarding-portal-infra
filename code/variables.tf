@@ -36,6 +36,24 @@ variable "cidr_subnet_public" {
   type = list(string)
 }
 
+## Azure container registry
+variable "sku_container_registry" {
+  type    = string
+  default = "Basic"
+}
+
+variable "retention_policy_acr" {
+  type = object({
+    days    = number
+    enabled = bool
+  })
+  default = {
+    days    = 7
+    enabled = true
+  }
+  description = "Container registry retention policy."
+}
+
 
 # postgresql
 variable "db_administrator_login" {

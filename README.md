@@ -59,12 +59,24 @@ In the vars workspace add the TFE_TOKEN environment variable needed to configure
 
 Due to an issue with the azurerm provider features map is always required.
 
-Create in each modules folder an provider.tf file
+Create in each module folder a provider.tf file
 
 ```hcl
 provider "azurerm" {
   features {}
 }
+```
+
+with something like
+
+```bash
+for d in modules/*/; do
+  cat <<EOT > "$d/provider.tf"
+provider "azurerm" {
+  features {}
+}
+EOT
+done
 ```
 
 this file is in git ignore because is bad practice creating a provider inside terraform modules.
