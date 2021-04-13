@@ -13,8 +13,8 @@ resource "tfe_variable" "dev_tags" {
   {
     CreatedBy    = "Terraform"
     Environment  = "Dev"
-    owner        = "cgn-onboarding-portal"
-    repo         = "github.com/pagopa/cgn-onboarding-portal-infra"
+    Owner        = "cgn-onboarding-portal"
+    Repo         = "github.com/pagopa/cgn-onboarding-portal-infra"
   }
   EOT
   hcl          = true
