@@ -11,8 +11,10 @@ resource "tfe_variable" "dev_tags" {
   key          = "tags"
   value        = <<-EOT
   {
-    CreateBy    = "Terraform"
+    CreatedBy    = "Terraform"
     Environment = "Dev"
+    owner       = "cgn-onboarding-portal"
+    repo        = "github.com/pagopa/cgn-onboarding-portal-infra"
   }
   EOT
   hcl          = true

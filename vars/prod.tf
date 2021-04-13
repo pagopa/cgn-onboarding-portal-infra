@@ -11,8 +11,8 @@ resource "tfe_variable" "prod_tags" {
   key          = "tags"
   value        = <<-EOT
   {
-    CreateBy    = "Terraform"
-    Environment = "Dev"
+    CreatedBy    = "Terraform"
+    Environment  = "Prod"
   }
   EOT
   hcl          = true
