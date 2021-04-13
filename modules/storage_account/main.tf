@@ -65,6 +65,7 @@ resource "azurerm_advanced_threat_protection" "advanced_threat_protection" {
 # https://github.com/terraform-providers/terraform-provider-azurerm/issues/8268
 
 resource "azurerm_template_deployment" "versioning" {
+  depends_on          = [azurerm_storage_account.storage_account]
   name                = var.versioning_name
   resource_group_name = var.resource_group_name
   deployment_mode     = "Incremental"
