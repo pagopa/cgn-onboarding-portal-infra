@@ -64,6 +64,12 @@ resource "azurerm_app_service" "app_service" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      "site_config[0].linux_fx_version", # deployments are made outside of Terraform
+    ]
+  }
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "app_service_virtual_network_swift_connection" {
