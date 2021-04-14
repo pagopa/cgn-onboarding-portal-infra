@@ -23,20 +23,6 @@ resource "azurerm_container_registry" "container_registry" {
   tags = var.tags
 }
 
-resource "azurerm_app_service_plan" "main" {
-  name                = format("%s-asp", local.project)
-  location            = var.location
-  resource_group_name = azurerm_resource_group.rg_api.name
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
-}
-
-
 module "portal_backend_1" {
   source = "../modules/app_service"
 
@@ -70,6 +56,7 @@ module "portal_backend_1" {
 
   subnet_id = module.subnet_api.id
 
+  tags = var.tags
 }
 
 # TODO search api
