@@ -54,7 +54,8 @@ module "portal_backend_1" {
   allowed_subnets = [module.subnet_public.id]
   allowed_ips     = []
 
-  subnet_id = module.subnet_api.id
+  subnet_name = module.subnet_api.name
+  subnet_id   = module.subnet_api.id
 
   tags = var.tags
 }

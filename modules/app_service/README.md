@@ -39,6 +39,7 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
 | <a name="input_sku"></a> [sku](#input\_sku) | n/a | <pre>object({<br>    tier     = string<br>    size     = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "size": "S1",<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet id wether you want to integrate the app service to a subnet. | `string` | `null` | no |
+| <a name="input_subnet_name"></a> [subnet\_name](#input\_subnet\_name) | Subnet name wether you want to integrate the app service to a subnet. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs

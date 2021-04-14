@@ -73,7 +73,7 @@ resource "azurerm_app_service" "app_service" {
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "app_service_virtual_network_swift_connection" {
-  count = var.subnet_id == null ? 0 : 1
+  count = var.subnet_name != null ? 1 : 0
 
   app_service_id = azurerm_app_service.app_service.id
   subnet_id      = var.subnet_id
