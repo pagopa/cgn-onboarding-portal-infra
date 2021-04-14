@@ -62,8 +62,8 @@ module "portal_backend_1" {
     "SPRING_DATASOURCE_PASSWORD" = ""
   }
 
-  linux_fx_version = "DOCKER|/${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
-  always_on        = "true"
+  #linux_fx_version = "DOCKER|/${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
+  always_on = "true"
 
   allowed_subnets = [module.subnet_public.id]
   allowed_ips     = []
