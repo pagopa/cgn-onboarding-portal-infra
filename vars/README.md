@@ -38,7 +38,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_tfe_organization_name"></a> [tfe\_organization\_name](#input\_tfe\_organization\_name) | The name of the Terraform Cloud Organization | `string` | `"bitrock-pagopa"` | no |
+| <a name="input_tfe_organization_name"></a> [tfe\_organization\_name](#input\_tfe\_organization\_name) | The name of the Terraform Cloud Organization | `string` | `"PagoPa"` | no |
 
 ## Outputs
 
