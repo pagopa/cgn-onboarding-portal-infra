@@ -67,7 +67,7 @@ resource "azurerm_app_service" "app_service" {
 
   lifecycle {
     ignore_changes = [
-      "site_config[0].linux_fx_version", # deployments are made outside of Terraform
+      site_config.0.linux_fx_version, # deployments are made outside of Terraform
     ]
   }
 }
