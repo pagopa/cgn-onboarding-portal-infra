@@ -10,8 +10,7 @@ resource "azurerm_container_registry" "container_registry" {
   resource_group_name = azurerm_resource_group.rg_api.name
   location            = azurerm_resource_group.rg_api.location
   sku                 = var.sku_container_registry
-  # TODO?
-  #admin_enabled       = true
+  admin_enabled       = true
 
 
   dynamic "retention_policy" {
