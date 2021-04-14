@@ -74,11 +74,17 @@ variable "allowed_ips" {
   default     = []
 }
 
+variable "subnet_name" {
+  type        = string
+  description = "Subnet name wether you want to integrate the app service to a subnet."
+  default     = null
+}
+
+
 variable "subnet_id" {
   type        = string
   description = "Subnet id wether you want to integrate the app service to a subnet."
   default     = null
-
 }
 
 variable "tags" {
