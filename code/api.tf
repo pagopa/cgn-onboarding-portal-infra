@@ -10,6 +10,7 @@ resource "azurerm_container_registry" "container_registry" {
   resource_group_name = azurerm_resource_group.rg_api.name
   location            = azurerm_resource_group.rg_api.location
   sku                 = var.sku_container_registry
+  admin_enabled       = true
 
 
   dynamic "retention_policy" {
@@ -23,6 +24,15 @@ resource "azurerm_container_registry" "container_registry" {
   tags = var.tags
 }
 
+// Require roleAssignments/write auth could be used instead of acr admin user
+//resource "azurerm_role_assignment" "app_service_container_registry" {
+//  scope                            = azurerm_container_registry.container_registry.id
+//  role_definition_name             = "AcrPull"
+//  principal_id                     = module.portal_backend_1.principal_id
+//  skip_service_principal_aad_check = true
+//}
+
+
 module "portal_backend_1" {
   source = "../modules/app_service"
 
@@ -30,9 +40,11 @@ module "portal_backend_1" {
   plan_name           = format("%s-plan-portal-backend1", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
+  health_check_path = "/cgn-portal/api/actuator/health"
+
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    WEBSITES_PORT                       = 443
+    WEBSITES_PORT                       = 8080
 
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.container_registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.container_registry.admin_username
@@ -43,13 +55,14 @@ module "portal_backend_1" {
     WEBSITE_VNET_ROUTE_ALL = 1
 
     # These are app specific environment variables
-    "SPRING_DATASOURCE_URL"      = ""
-    "SPRING_DATASOURCE_USERNAME" = ""
-    "SPRING_DATASOURCE_PASSWORD" = ""
+    SPRING_PROFILES_ACTIVE     = "prod"
+    SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name)
+    SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
+    SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
   }
 
-  #linux_fx_version = "DOCKER|/${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
-  always_on = "true"
+  linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
+  always_on        = "true"
 
   allowed_subnets = [module.subnet_public.id]
   allowed_ips     = []

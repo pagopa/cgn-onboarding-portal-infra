@@ -53,6 +53,11 @@ resource "azurerm_private_endpoint" "postgresql_private_endpoint" {
   resource_group_name = azurerm_resource_group.rg_db.name
   subnet_id           = module.subnet_db.id
 
+  private_dns_zone_group {
+    name                 = format("%s-db-private-dns-zone-group", local.project)
+    private_dns_zone_ids = [azurerm_private_dns_zone.private_dns_zone_postgres.id]
+  }
+
   private_service_connection {
     name                           = format("%s-db-private-service-connection", local.project)
     private_connection_resource_id = azurerm_postgresql_server.postgresql_server.id
