@@ -41,7 +41,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 module "subnet_db" {
-  source                                         = "../modules/subnet"
+  source                                         = "./modules/subnet"
   name                                           = format("%s-db-subnet", local.project)
   address_prefixes                               = var.cidr_subnet_db
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -51,7 +51,7 @@ module "subnet_db" {
 }
 
 module "subnet_api" {
-  source               = "../modules/subnet"
+  source               = "./modules/subnet"
   name                 = format("%s-api-subnet", local.project)
   address_prefixes     = var.cidr_subnet_api
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -73,7 +73,7 @@ module "subnet_api" {
 }
 
 module "subnet_public" {
-  source               = "../modules/subnet"
+  source               = "./modules/subnet"
   name                 = format("%s-fe-public", local.project)
   address_prefixes     = var.cidr_subnet_public
   resource_group_name  = azurerm_resource_group.rg_vnet.name
