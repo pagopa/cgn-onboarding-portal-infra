@@ -56,9 +56,13 @@ module "portal_backend_1" {
 
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE     = "prod"
-    SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name)
+    SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
     SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
+
+    # application insights
+    APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
+
   }
 
   linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"

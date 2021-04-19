@@ -54,6 +54,24 @@ variable "retention_policy_acr" {
   description = "Container registry retention policy."
 }
 
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
+}
 
 # postgresql
 variable "db_administrator_login" {
@@ -160,4 +178,11 @@ variable "storage_account_website_lock" {
     scope      = string
   })
   default = null
+}
+
+
+# Sonarqube
+variable "enable_sonarqube" {
+  default     = false
+  description = "Enable sonarqube resources"
 }
