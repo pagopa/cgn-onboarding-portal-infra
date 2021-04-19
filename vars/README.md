@@ -27,6 +27,7 @@ No modules.
 | [tfe_variable.dev_database_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_db_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_db_version](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_enable_sonarqube](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
