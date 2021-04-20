@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_storage" {
 }
 
 module "storage_account" {
-  source = "../modules/storage_account"
+  source = "./modules/storage_account"
 
   name            = replace(format("%s-sa", local.project), "-", "")
   versioning_name = format("%s-sa-versioning", local.project)
@@ -43,7 +43,7 @@ resource "azurerm_storage_container" "profile_logos" {
 
 
 module "storage_account_website" {
-  source = "../modules/storage_account"
+  source = "./modules/storage_account"
 
   name            = replace(format("%s-sa-ws", local.project), "-", "")
   versioning_name = format("%s-sa-ws-versioning", local.project)

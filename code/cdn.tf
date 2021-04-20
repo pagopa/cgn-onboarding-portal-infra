@@ -15,7 +15,7 @@ resource "azurerm_cdn_profile" "cdn_profile_common" {
 }
 
 module "cdn_portal_frontend" {
-  source = "../modules/cdn_endpoint"
+  source = "./modules/cdn_endpoint"
 
   name = format("%s-cdnendpoint-frontend", local.project)
   # TODO

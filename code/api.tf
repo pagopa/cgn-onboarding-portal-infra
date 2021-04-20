@@ -34,7 +34,7 @@ resource "azurerm_container_registry" "container_registry" {
 
 
 module "portal_backend_1" {
-  source = "../modules/app_service"
+  source = "./modules/app_service"
 
   name                = format("%s-portal-backend1", local.project)
   plan_name           = format("%s-plan-portal-backend1", local.project)

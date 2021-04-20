@@ -16,13 +16,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cdn_portal_frontend"></a> [cdn\_portal\_frontend](#module\_cdn\_portal\_frontend) | ../modules/cdn_endpoint |  |
-| <a name="module_portal_backend_1"></a> [portal\_backend\_1](#module\_portal\_backend\_1) | ../modules/app_service |  |
-| <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | ../modules/storage_account |  |
-| <a name="module_storage_account_website"></a> [storage\_account\_website](#module\_storage\_account\_website) | ../modules/storage_account |  |
-| <a name="module_subnet_api"></a> [subnet\_api](#module\_subnet\_api) | ../modules/subnet |  |
-| <a name="module_subnet_db"></a> [subnet\_db](#module\_subnet\_db) | ../modules/subnet |  |
-| <a name="module_subnet_public"></a> [subnet\_public](#module\_subnet\_public) | ../modules/subnet |  |
+| <a name="module_cdn_portal_frontend"></a> [cdn\_portal\_frontend](#module\_cdn\_portal\_frontend) | ./modules/cdn_endpoint |  |
+| <a name="module_portal_backend_1"></a> [portal\_backend\_1](#module\_portal\_backend\_1) | ./modules/app_service |  |
+| <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | ./modules/storage_account |  |
+| <a name="module_storage_account_website"></a> [storage\_account\_website](#module\_storage\_account\_website) | ./modules/storage_account |  |
+| <a name="module_subnet_api"></a> [subnet\_api](#module\_subnet\_api) | ./modules/subnet |  |
+| <a name="module_subnet_db"></a> [subnet\_db](#module\_subnet\_db) | ./modules/subnet |  |
+| <a name="module_subnet_public"></a> [subnet\_public](#module\_subnet\_public) | ./modules/subnet |  |
 
 ## Resources
 

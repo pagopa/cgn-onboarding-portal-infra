@@ -10,7 +10,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "PagoPa"
     workspaces {
-      name = "cgn-onboarding-portal-vars"
+      prefix = "cgn-onboarding-portal-"
     }
   }
 }
