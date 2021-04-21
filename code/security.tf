@@ -44,7 +44,7 @@ resource "azurerm_key_vault" "key_vault" {
     },
     {
       tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = "3a65e356-ac25-45ab-9905-529b82b2c848"
+      object_id      = module.apim.principal_id
       application_id = ""
 
       key_permissions         = []
