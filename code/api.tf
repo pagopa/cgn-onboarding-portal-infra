@@ -166,20 +166,20 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
 # APIs
 
-resource "azurerm_api_management_api" "backend_api" {
-  name                  = format("%s-backend-api", local.project)
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  api_management_name   = module.apim.name
-  revision              = "1"
-  display_name          = "BACKEND"
-  subscription_required = false
-  path                  = "backend"
-  protocols             = ["http", "https"]
-  service_url           = "https://${module.portal_backend_1.default_site_hostname}"
-
-  import {
-    content_format = "swagger-link-json"
-    content_value  = "https://${module.portal_backend_1.default_site_hostname}/v2/api-docs"
-  }
-}
+//resource "azurerm_api_management_api" "backend_api" {
+//  name                  = format("%s-backend-api", local.project)
+//  resource_group_name   = azurerm_resource_group.rg_api.name
+//  api_management_name   = module.apim.name
+//  revision              = "1"
+//  display_name          = "BACKEND"
+//  subscription_required = false
+//  path                  = "backend"
+//  protocols             = ["http", "https"]
+//  service_url           = "https://${module.portal_backend_1.default_site_hostname}"
+//
+//  import {
+//    content_format = "swagger-link-json"
+//    content_value  = "https://${module.portal_backend_1.default_site_hostname}/v2/api-docs"
+//  }
+//}
 

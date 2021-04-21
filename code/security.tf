@@ -24,7 +24,7 @@ resource "azurerm_key_vault" "key_vault" {
   access_policy = [
     {
       tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = "c2a9b632-4318-4bb2-a890-fc08690ffc54"
+      object_id      = data.azurerm_client_config.current.object_id
       application_id = ""
 
       key_permissions = ["Get", "List", "Update", "Create", "Import", "Delete",
@@ -60,7 +60,8 @@ resource "azurerm_key_vault" "key_vault" {
       key_permissions     = []
       secret_permissions  = []
       storage_permissions = []
-      certificate_permissions = ["Get", "List", "Update", "Create", "Import",
+      certificate_permissions = [
+        "Get", "List", "Update", "Create", "Import",
         "Delete", "Restore", "Purge", "Recover"
       ]
     },
