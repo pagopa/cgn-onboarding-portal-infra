@@ -92,3 +92,46 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_virtu
   private_dns_zone_name = azurerm_private_dns_zone.private_dns_zone_postgres.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
 }
+
+resource "azurerm_public_ip" "apigateway_public_ip" {
+  name                = format("%s-apigateway-pip", local.project)
+  resource_group_name = azurerm_virtual_network.vnet.resource_group_name
+  location            = azurerm_virtual_network.vnet.location
+  sku                 = "Standard"
+  allocation_method   = "Static"
+
+  tags = var.tags
+}
+
+# APIM subnet
+
+resource "azurerm_subnet" "subnet_apim" {
+  name                 = format("%s-apim-subnet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.cidr_subnet_apim
+
+  service_endpoints = ["Microsoft.Web"]
+
+  enforce_private_link_endpoint_network_policies = true
+}
+
+resource "azurerm_private_dns_zone" "api_private_dns_zone" {
+  name                = "api.hubpa.pagopa.it"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "api_private_dns_zone_virtual_network_link" {
+  name                  = format("%s-api-private-dns-zone-link", local.project)
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.api_private_dns_zone.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_api" {
+  name                = local.apim_name
+  zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = 300
+  records             = module.apim.*.private_ip_addresses[0]
+}

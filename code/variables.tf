@@ -19,6 +19,32 @@ variable "tags" {
   }
 }
 
+# Apim
+
+variable "apim_private_domain" {
+  type = string
+}
+
+variable "apim_name" {
+  type    = string
+  default = null
+}
+
+variable "apim_sku" {
+  type    = string
+  default = "Developer_1"
+}
+
+variable "apim_publisher_name" {
+  type = string
+}
+variable "apim_publisher_email" {
+  type = string
+}
+variable "apim_notification_sender_email" {
+  type = string
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)
@@ -35,6 +61,11 @@ variable "cidr_subnet_api" {
 variable "cidr_subnet_public" {
   type = list(string)
 }
+
+variable "cidr_subnet_apim" {
+  type = list(string)
+}
+
 
 ## Azure container registry
 variable "sku_container_registry" {

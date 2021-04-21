@@ -32,3 +32,13 @@ output "db_administrator_login" {
 output "db_fqdn" {
   value = azurerm_postgresql_server.postgresql_server.fqdn
 }
+
+
+# external
+output "api_gateway_public_id" {
+  value = azurerm_public_ip.apigateway_public_ip.ip_address
+}
+
+output "apim_gateway_url" {
+  value = module.apim.gateway_url
+}

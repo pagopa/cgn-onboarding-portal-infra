@@ -141,5 +141,5 @@ variable "index_path" {
 
 variable "custom_404_path" {
   description = "path from your repo root to your custom 404 page"
-  default     = "404.html"
+  default     = "index.html"
 }

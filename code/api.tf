@@ -68,7 +68,7 @@ module "portal_backend_1" {
   linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
   always_on        = "true"
 
-  allowed_subnets = [module.subnet_public.id]
+  allowed_subnets = [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_api.name
@@ -77,4 +77,109 @@ module "portal_backend_1" {
   tags = var.tags
 }
 
-# TODO search api
+# APIM
+
+locals {
+  apim_name                     = format("%s-apim", local.project)
+  apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
+}
+
+
+module "apim" {
+  source                    = "./modules/apim"
+  subnet_id                 = azurerm_subnet.subnet_apim.id
+  location                  = var.location
+  resource_name             = local.apim_name
+  resource_group_name       = azurerm_resource_group.rg_api.name
+  publisher_name            = var.apim_publisher_name
+  publisher_email           = var.apim_publisher_email
+  notification_sender_email = var.apim_notification_sender_email
+  sku_name                  = var.apim_sku
+  tags                      = var.tags
+}
+
+resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
+  name         = local.apim_cert_name_proxy_endpoint
+  key_vault_id = azurerm_key_vault.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = true
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyCertSign",
+        "keyEncipherment",
+      ]
+
+      subject            = "CN=${trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")}"
+      validity_in_months = 12
+
+      subject_alternative_names {
+        dns_names = [
+          trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, "."),
+        ]
+      }
+    }
+  }
+}
+
+resource "azurerm_api_management_custom_domain" "api_custom_domain" {
+  api_management_id = module.apim.id
+
+  proxy {
+    host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
+    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.secret_id
+  }
+
+  # developer_portal {
+  #   host_name    = "portal.example.com"
+  #   key_vault_id = azurerm_key_vault_certificate.test.secret_id
+  # }
+}
+
+# APIs
+
+resource "azurerm_api_management_api" "backend_api" {
+  name                  = format("%s-backend-api", local.project)
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = module.apim.name
+  revision              = "1"
+  display_name          = "BACKEND"
+  subscription_required = false
+  path                  = "backend"
+  protocols             = ["http", "https"]
+  service_url           = "https://${module.portal_backend_1.default_site_hostname}"
+
+  import {
+    content_format = "swagger-link-json"
+    content_value  = "https://${module.portal_backend_1.default_site_hostname}/v2/api-docs"
+  }
+}
+
