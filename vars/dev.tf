@@ -68,6 +68,17 @@ resource "tfe_variable" "dev_cidr_subnet_public" {
   description  = "cidr subnet public. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "dev_cidr_subnet_apim" {
+  key          = "cidr_subnet_apim"
+  value        = <<-EOT
+  ["10.0.4.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "cidr virtual apim. CreatedBy Terraform"
+}
+
 
 # Database
 resource "tfe_variable" "dev_db_sku_name" {
@@ -100,4 +111,28 @@ resource "tfe_variable" "dev_enable_sonarqube" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
   description  = "Enable sonarqube resources. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_apim_notification_sender_email" {
+  key          = "apim_notification_sender_email"
+  value        = "cgn-apim@pagopa.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Email address from which the notification will be sent. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_apim_publisher_name" {
+  key          = "apim_publisher_name"
+  value        = "CGN Onboarding Portal"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "The name of publisher/company. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_apim_publisher_email" {
+  key          = "apim_publisher_email"
+  value        = "cgn-apim@pagopa.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "The email of publisher/company. CreatedBy Terraform"
 }

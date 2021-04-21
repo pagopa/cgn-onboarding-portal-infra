@@ -20,7 +20,11 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [tfe_variable.dev_apim_notification_sender_email](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_apim_publisher_email](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_apim_publisher_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_subnet_api](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_cidr_subnet_apim](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_subnet_db](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_subnet_public](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_vnet](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
@@ -32,7 +36,11 @@ No modules.
 | [tfe_variable.dev_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_apim_notification_sender_email](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_apim_publisher_email](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_apim_publisher_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_cidr_subnet_api](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_cidr_subnet_apim](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_cidr_subnet_db](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_cidr_subnet_public](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_cidr_vnet](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
