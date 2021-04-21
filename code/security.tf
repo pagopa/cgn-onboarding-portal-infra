@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_sec" {
 
 # Create Key Vault
 resource "azurerm_key_vault" "key_vault" {
-  name                        = format("%s-key-vault", local.project)
+  name                        = format("%s-kv", local.project)
   location                    = azurerm_resource_group.rg_sec.location
   resource_group_name         = azurerm_resource_group.rg_sec.name
   enabled_for_disk_encryption = false
