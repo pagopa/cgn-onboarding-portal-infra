@@ -22,7 +22,8 @@ variable "tags" {
 # Apim
 
 variable "apim_private_domain" {
-  type = string
+  type    = string
+  default = "api.cgnonboardingportal.pagopa.it"
 }
 
 variable "apim_name" {

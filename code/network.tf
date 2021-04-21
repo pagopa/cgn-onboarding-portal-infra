@@ -117,7 +117,7 @@ resource "azurerm_subnet" "subnet_apim" {
 }
 
 resource "azurerm_private_dns_zone" "api_private_dns_zone" {
-  name                = "api.hubpa.pagopa.it"
+  name                = var.apim_private_domain
   resource_group_name = azurerm_resource_group.rg_vnet.name
 }
 
