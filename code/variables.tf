@@ -82,6 +82,10 @@ variable "external_domain" {
   type = string
 }
 
+variable "dns_zone_prefix" {
+  type = string
+}
+
 variable "parent_resource_group_name" {
   type = string
 }

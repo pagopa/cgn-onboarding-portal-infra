@@ -36,9 +36,10 @@ resource "null_resource" "cdn_custom_domain" {
 
   provisioner "local-exec" {
     command = <<EOT
+      read -sp "Azure password: " ARM_CLIENT_SECRET && echo && az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || true
       az cdn custom-domain create \
         --resource-group ${azurerm_resource_group.rg_cdn.name} \
-         ${module.cdn_portal_frontend.name} \
+        --endpoint-name ${module.cdn_portal_frontend.name} \
         --profile-name ${azurerm_cdn_profile.cdn_profile_common.name} \
         --name ${replace(trim(azurerm_dns_cname_record.frontend.fqdn, "."), ".", "-")} \
         --hostname ${trim(azurerm_dns_cname_record.frontend.fqdn, ".")}

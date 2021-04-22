@@ -11,14 +11,14 @@ data "azurerm_dns_zone" "parent" {
 }
 
 resource "azurerm_dns_zone" "this" {
-  name                = "${var.prefix}.${var.external_domain}"
+  name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_dns.name
 
   tags = var.tags
 }
 
 resource "azurerm_dns_ns_record" "this" {
-  name                = var.prefix
+  name                = var.dns_zone_prefix
   records             = azurerm_dns_zone.this.name_servers
   resource_group_name = var.parent_resource_group_name
   ttl                 = 300
@@ -38,11 +38,11 @@ resource "azurerm_dns_a_record" "api" {
 }
 
 resource "azurerm_dns_cname_record" "frontend" {
-  name                = var.prefix
+  name                = "portal"
   record              = module.cdn_portal_frontend.hostname
-  resource_group_name = data.azurerm_dns_zone.parent.resource_group_name
+  resource_group_name = azurerm_resource_group.rg_dns.name
   ttl                 = 300
-  zone_name           = data.azurerm_dns_zone.parent.name
+  zone_name           = azurerm_dns_zone.this.name
 
   tags = var.tags
 }

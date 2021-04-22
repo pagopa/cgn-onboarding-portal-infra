@@ -89,6 +89,15 @@ resource "tfe_variable" "dev_external_domain" {
   description  = "DNS External domain. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "dev_dns_zone_prefix" {
+  key          = "dns_zone_prefix"
+  value        = "cgn-dev"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "DNS zone prefix. CreatedBy Terraform"
+}
+
 resource "tfe_variable" "dev_parent_resource_group_name" {
   key          = "parent_resource_group_name"
   value        = "caravan-admin"
