@@ -107,7 +107,7 @@ resource "tfe_variable" "dev_database_name" {
 
 resource "tfe_variable" "dev_enable_sonarqube" {
   key          = "enable_sonarqube"
-  value        = "true"
+  value        = "false"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
   description  = "Enable sonarqube resources. CreatedBy Terraform"
