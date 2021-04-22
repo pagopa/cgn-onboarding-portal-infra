@@ -1,904 +1,1244 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "CGN Onboarding Portal",
-    "description": "Carta Giovani Nazionale Onboarding Portal",
-    "version": "0.0.1"
-  },
-  "host": "${host}",
-  "schemes": [
-    "https"
-  ],
-  "tags": [
-    {
-      "name": "agreement",
-      "description": "Agreement"
-    },
-    {
-      "name": "profile",
-      "description": "Profile"
-    },
-    {
-      "name": "discount",
-      "description": "Discount"
-    }
-  ],
-  "paths": {
-    "/agreements": {
-      "post": {
-        "tags": [
-          "agreement"
-        ],
-        "summary": "Create a agreement",
-        "operationId": "createAgreement",
-        "responses": {
-          "200": {
-            "description": "Agreement",
-            "schema": {
-              "$ref": "#/definitions/Agreement"
-            }
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          }
-        }
-      }
-    },
-    "/agreements/{agreementId}/approval": {
-      "post": {
-        "tags": [
-          "agreement"
-        ],
-        "summary": "Request approval",
-        "operationId": "requestApproval",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Agreement approval requested"
-          },
-          "400": {
-            "$ref": "#/responses/InvalidRequest"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/agreements/{agreementId}/profile": {
-      "post": {
-        "tags": [
-          "profile"
-        ],
-        "summary": "Create a profile",
-        "operationId": "createProfile",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          },
-          {
-            "in": "body",
-            "description": "Profile to create",
-            "name": "profile",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CreateProfile"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Profile created",
-            "schema": {
-              "$ref": "#/definitions/Profile"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/InvalidRequest"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
+   "swagger": "2.0",
+   "info": {
+      "title": "CGN Onboarding Portal",
+      "description": "Carta Giovani Nazionale Onboarding Portal",
+      "version": "0.0.1"
+   },
+   "host": "${host}",
+   "schemes": [
+      "https"
+   ],
+   "tags": [
+      {
+         "name": "agreement",
+         "description": "Agreement"
       },
-      "get": {
-        "tags": [
-          "profile"
-        ],
-        "summary": "Get a profile",
-        "operationId": "getProfile",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Profile",
-            "schema": {
-              "$ref": "#/definitions/Profile"
-            }
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
+      {
+         "name": "profile",
+         "description": "Profile"
       },
-      "put": {
-        "tags": [
-          "profile"
-        ],
-        "summary": "Update a profile",
-        "operationId": "updateProfile",
-        "parameters": [
-          {
-            "in": "body",
-            "description": "Profile to update",
-            "name": "profile",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdateProfile"
-            }
-          },
-          {
-            "$ref": "#/parameters/AgreementId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Profile updated",
-            "schema": {
-              "$ref": "#/definitions/Profile"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/InvalidRequest"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/agreements/{agreementId}/discounts": {
-      "get": {
-        "tags": [
-          "discount"
-        ],
-        "summary": "Get list of discounts",
-        "operationId": "getDiscounts",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of discounts",
-            "schema": {
-              "$ref": "#/definitions/Discounts"
-            }
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
+      {
+         "name": "discount",
+         "description": "Discount"
       },
-      "post": {
-        "tags": [
-          "discount"
-        ],
-        "summary": "Create a discount",
-        "operationId": "createDiscount",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          },
-          {
-            "in": "body",
-            "description": "Discount to create",
-            "name": "discount",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CreateDiscount"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Discount created",
-            "schema": {
-              "$ref": "#/definitions/Discount"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/InvalidRequest"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/agreements/{agreementId}/discounts/{discountId}": {
-      "put": {
-        "tags": [
-          "discount"
-        ],
-        "summary": "Update a discount",
-        "operationId": "updateDiscount",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          },
-          {
-            "$ref": "#/parameters/DiscountId"
-          },
-          {
-            "in": "body",
-            "description": "Discount to update",
-            "name": "discount",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdateDiscount"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Discount updated",
-            "schema": {
-              "$ref": "#/definitions/Discount"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/InvalidRequest"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
+      {
+         "name": "document-template",
+         "description": "Document template"
       },
-      "delete": {
-        "tags": [
-          "discount"
-        ],
-        "summary": "Delete a discount",
-        "operationId": "deleteDiscount",
-        "parameters": [
-          {
-            "$ref": "#/parameters/AgreementId"
-          },
-          {
-            "$ref": "#/parameters/DiscountId"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Discount deleted"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          }
-        }
+      {
+         "name": "document",
+         "description": "Document"
       }
-    }
-  },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "parameters": {
-    "AgreementId": {
-      "name": "agreementId",
-      "in": "path",
-      "description": "Agreement id",
-      "required": true,
-      "type": "string"
-    },
-    "DiscountId": {
-      "name": "discountId",
-      "in": "path",
-      "description": "Discount id",
-      "required": true,
-      "type": "string"
-    }
-  },
-  "definitions": {
-    "Agreement": {
-      "type": "object",
-      "discriminator": "state",
-      "required": [
-        "id",
-        "state"
-      ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "state": {
-          "$ref": "#/definitions/AgreementState"
-        },
-        "profileLastModifiedDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "discountsLastModifiedDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "documentsLastModifiedDate": {
-          "type": "string",
-          "format": "date"
-        }
+   ],
+   "paths": {
+      "/agreements": {
+         "post": {
+            "tags": [
+               "agreement"
+            ],
+            "summary": "Create an agreement",
+            "operationId": "createAgreement",
+            "responses": {
+               "200": {
+                  "description": "Agreement",
+                  "schema": {
+                     "$ref": "#/definitions/Agreement"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/images": {
+         "post": {
+            "tags": [
+               "agreement"
+            ],
+            "summary": "Upload an image",
+            "operationId": "uploadImage",
+            "consumes": [
+               "multipart/form-data"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "in": "formData",
+                  "name": "image",
+                  "type": "file",
+                  "required": true
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Image uploaded",
+                  "schema": {
+                     "$ref": "#/definitions/UploadedImage"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/approval": {
+         "post": {
+            "tags": [
+               "agreement"
+            ],
+            "summary": "Request agreement approval",
+            "operationId": "requestApproval",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               }
+            ],
+            "responses": {
+               "204": {
+                  "description": "Agreement approval requested"
+               },
+               "400": {
+                  "$ref": "#/responses/InvalidRequest"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/profile": {
+         "post": {
+            "tags": [
+               "profile"
+            ],
+            "summary": "Create a profile",
+            "operationId": "createProfile",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "in": "body",
+                  "description": "Profile to create",
+                  "name": "profile",
+                  "required": true,
+                  "schema": {
+                     "$ref": "#/definitions/CreateProfile"
+                  }
+               }
+            ],
+            "responses": {
+               "201": {
+                  "description": "Profile created",
+                  "schema": {
+                     "$ref": "#/definitions/Profile"
+                  }
+               },
+               "400": {
+                  "$ref": "#/responses/InvalidRequest"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         },
+         "get": {
+            "tags": [
+               "profile"
+            ],
+            "summary": "Get a profile",
+            "operationId": "getProfile",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Profile",
+                  "schema": {
+                     "$ref": "#/definitions/Profile"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         },
+         "put": {
+            "tags": [
+               "profile"
+            ],
+            "summary": "Update a profile",
+            "operationId": "updateProfile",
+            "parameters": [
+               {
+                  "in": "body",
+                  "description": "Profile to update",
+                  "name": "profile",
+                  "required": true,
+                  "schema": {
+                     "$ref": "#/definitions/UpdateProfile"
+                  }
+               },
+               {
+                  "$ref": "#/parameters/AgreementId"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Profile updated",
+                  "schema": {
+                     "$ref": "#/definitions/Profile"
+                  }
+               },
+               "400": {
+                  "$ref": "#/responses/InvalidRequest"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/discounts": {
+         "get": {
+            "tags": [
+               "discount"
+            ],
+            "summary": "Get list of discounts",
+            "operationId": "getDiscounts",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "List of discounts",
+                  "schema": {
+                     "$ref": "#/definitions/Discounts"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         },
+         "post": {
+            "tags": [
+               "discount"
+            ],
+            "summary": "Create a discount",
+            "operationId": "createDiscount",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "in": "body",
+                  "description": "Discount to create",
+                  "name": "discount",
+                  "required": true,
+                  "schema": {
+                     "$ref": "#/definitions/CreateDiscount"
+                  }
+               }
+            ],
+            "responses": {
+               "201": {
+                  "description": "Discount created",
+                  "schema": {
+                     "$ref": "#/definitions/Discount"
+                  }
+               },
+               "400": {
+                  "$ref": "#/responses/InvalidRequest"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/discounts/{discountId}": {
+         "put": {
+            "tags": [
+               "discount"
+            ],
+            "summary": "Update a discount",
+            "operationId": "updateDiscount",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DiscountId"
+               },
+               {
+                  "in": "body",
+                  "description": "Discount to update",
+                  "name": "discount",
+                  "required": true,
+                  "schema": {
+                     "$ref": "#/definitions/UpdateDiscount"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Discount updated",
+                  "schema": {
+                     "$ref": "#/definitions/Discount"
+                  }
+               },
+               "400": {
+                  "$ref": "#/responses/InvalidRequest"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         },
+         "delete": {
+            "tags": [
+               "discount"
+            ],
+            "summary": "Delete a discount",
+            "operationId": "deleteDiscount",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DiscountId"
+               }
+            ],
+            "responses": {
+               "204": {
+                  "description": "Discount deleted"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/discounts/{discountId}/publishing": {
+         "post": {
+            "tags": [
+               "discount"
+            ],
+            "summary": "Publish a discount",
+            "operationId": "publishDiscount",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DiscountId"
+               }
+            ],
+            "responses": {
+               "204": {
+                  "description": "Discount published"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/document-templates/{documentType}": {
+         "get": {
+            "tags": [
+               "document-template"
+            ],
+            "summary": "Download a document template",
+            "operationId": "downloadDocumentTemplate",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DocumentType"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Document template",
+                  "schema": {
+                     "type": "file"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/documents": {
+         "get": {
+            "tags": [
+               "document"
+            ],
+            "summary": "Get documents",
+            "operationId": "getDocuments",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "List of documents",
+                  "schema": {
+                     "$ref": "#/definitions/Documents"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
+      },
+      "/agreements/{agreementId}/documents/{documentType}": {
+         "post": {
+            "tags": [
+               "document"
+            ],
+            "summary": "Upload a document",
+            "operationId": "uploadDocument",
+            "consumes": [
+               "multipart/form-data"
+            ],
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DocumentType"
+               },
+               {
+                  "in": "formData",
+                  "name": "document",
+                  "type": "file",
+                  "required": true
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Document uploaded",
+                  "schema": {
+                     "$ref": "#/definitions/Document"
+                  }
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         },
+         "delete": {
+            "tags": [
+               "document"
+            ],
+            "summary": "Delete a document",
+            "operationId": "deleteDocument",
+            "parameters": [
+               {
+                  "$ref": "#/parameters/AgreementId"
+               },
+               {
+                  "$ref": "#/parameters/DocumentType"
+               }
+            ],
+            "responses": {
+               "204": {
+                  "description": "Document deleted"
+               },
+               "403": {
+                  "$ref": "#/responses/Forbidden"
+               },
+               "404": {
+                  "$ref": "#/responses/NotFound"
+               }
+            }
+         }
       }
-    },
-    "DraftAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
-        },
-        {
-          "type": "object"
-        }
-      ]
-    },
-    "PendingAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
-        },
-        {
-          "type": "object"
-        }
-      ]
-    },
-    "ApprovedAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
-        },
-        {
-          "type": "object",
-          "required": [
+   },
+   "consumes": [
+      "application/json"
+   ],
+   "produces": [
+      "application/json"
+   ],
+   "parameters": {
+      "AgreementId": {
+         "name": "agreementId",
+         "in": "path",
+         "description": "Agreement id",
+         "required": true,
+         "type": "string"
+      },
+      "DiscountId": {
+         "name": "discountId",
+         "in": "path",
+         "description": "Discount id",
+         "required": true,
+         "type": "string"
+      },
+      "DocumentType": {
+         "name": "documentType",
+         "in": "path",
+         "description": "Document type",
+         "required": true,
+         "type": "string"
+      }
+   },
+   "definitions": {
+      "Agreement": {
+         "type": "object",
+         "discriminator": "state",
+         "required": [
+            "id",
+            "state"
+         ],
+         "properties": {
+            "id": {
+               "type": "string"
+            },
+            "state": {
+               "$ref": "#/definitions/AgreementState"
+            },
+            "imageUrl": {
+               "type": "string"
+            }
+         }
+      },
+      "DraftAgreement": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/Agreement"
+            },
+            {
+               "type": "object"
+            }
+         ]
+      },
+      "PendingAgreement": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/Agreement"
+            },
+            {
+               "type": "object"
+            }
+         ]
+      },
+      "ApprovedAgreement": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/Agreement"
+            },
+            {
+               "type": "object",
+               "required": [
+                  "startDate",
+                  "endDate"
+               ],
+               "properties": {
+                  "startDate": {
+                     "type": "string",
+                     "format": "date"
+                  },
+                  "endDate": {
+                     "type": "string",
+                     "format": "date"
+                  },
+                  "firstDiscountPublishingDate": {
+                     "type": "string",
+                     "format": "date"
+                  }
+               }
+            }
+         ]
+      },
+      "RejectedAgreement": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/Agreement"
+            },
+            {
+               "type": "object",
+               "required": [
+                  "reasonMessage"
+               ],
+               "properties": {
+                  "reasonMessage": {
+                     "type": "string"
+                  }
+               }
+            }
+         ]
+      },
+      "AgreementState": {
+         "type": "string",
+         "enum": [
+            "DraftAgreement",
+            "PendingAgreement",
+            "ApprovedAgreement",
+            "RejectedAgreement"
+         ]
+      },
+      "UploadedImage": {
+         "type": "object",
+         "required": [
+            "imageUrl"
+         ],
+         "properties": {
+            "imageUrl": {
+               "type": "string"
+            }
+         }
+      },
+      "CreateProfile": {
+         "type": "object",
+         "required": [
+            "fullName",
+            "name",
+            "pecAddress",
+            "legalOffice",
+            "telephoneNumber",
+            "legalRepresentativeFullName",
+            "legalRepresentativeTaxCode",
+            "referent",
+            "description",
+            "salesChannel"
+         ],
+         "properties": {
+            "fullName": {
+               "type": "string"
+            },
+            "name": {
+               "type": "string"
+            },
+            "pecAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "legalOffice": {
+               "type": "string"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            },
+            "legalRepresentativeFullName": {
+               "type": "string"
+            },
+            "legalRepresentativeTaxCode": {
+               "type": "string"
+            },
+            "referent": {
+               "$ref": "#/definitions/CreateReferent"
+            },
+            "description": {
+               "type": "string"
+            },
+            "salesChannel": {
+               "$ref": "#/definitions/SalesChannel"
+            }
+         }
+      },
+      "UpdateProfile": {
+         "type": "object",
+         "required": [
+            "name",
+            "pecAddress",
+            "legalOffice",
+            "telephoneNumber",
+            "legalRepresentativeFullName",
+            "legalRepresentativeTaxCode",
+            "referent",
+            "description",
+            "salesChannel"
+         ],
+         "properties": {
+            "name": {
+               "type": "string"
+            },
+            "pecAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "legalOffice": {
+               "type": "string"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            },
+            "legalRepresentativeFullName": {
+               "type": "string"
+            },
+            "legalRepresentativeTaxCode": {
+               "type": "string"
+            },
+            "referent": {
+               "$ref": "#/definitions/UpdateReferent"
+            },
+            "description": {
+               "type": "string"
+            },
+            "salesChannel": {
+               "$ref": "#/definitions/SalesChannel"
+            }
+         }
+      },
+      "Profile": {
+         "type": "object",
+         "required": [
+            "id",
+            "agreementId",
+            "fullName",
+            "name",
+            "taxCodeOrVat",
+            "pecAddress",
+            "legalOffice",
+            "telephoneNumber",
+            "legalRepresentativeFullName",
+            "legalRepresentativeTaxCode",
+            "referent",
+            "description",
+            "salesChannel"
+         ],
+         "properties": {
+            "id": {
+               "type": "string"
+            },
+            "agreementId": {
+               "type": "string"
+            },
+            "fullName": {
+               "type": "string"
+            },
+            "name": {
+               "type": "string"
+            },
+            "taxCodeOrVat": {
+               "type": "string"
+            },
+            "pecAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "legalOffice": {
+               "type": "string"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            },
+            "legalRepresentativeFullName": {
+               "type": "string"
+            },
+            "legalRepresentativeTaxCode": {
+               "type": "string"
+            },
+            "referent": {
+               "$ref": "#/definitions/Referent"
+            },
+            "description": {
+               "type": "string"
+            },
+            "salesChannel": {
+               "$ref": "#/definitions/SalesChannel"
+            }
+         }
+      },
+      "Referent": {
+         "type": "object",
+         "required": [
+            "firstName",
+            "lastName",
+            "role",
+            "emailAddress",
+            "telephoneNumber"
+         ],
+         "properties": {
+            "firstName": {
+               "type": "string"
+            },
+            "lastName": {
+               "type": "string"
+            },
+            "role": {
+               "type": "string"
+            },
+            "emailAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            }
+         }
+      },
+      "SalesChannel": {
+         "type": "object",
+         "discriminator": "channelType",
+         "required": [
+            "channelType"
+         ],
+         "properties": {
+            "channelType": {
+               "$ref": "#/definitions/SalesChannelType"
+            }
+         }
+      },
+      "OnlineChannel": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/SalesChannel"
+            },
+            {
+               "type": "object",
+               "required": [
+                  "websiteUrl",
+                  "discountCodeType"
+               ],
+               "properties": {
+                  "websiteUrl": {
+                     "type": "string"
+                  },
+                  "discountCodeType": {
+                     "$ref": "#/definitions/DiscountCodeType"
+                  }
+               }
+            }
+         ]
+      },
+      "OfflineChannel": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/SalesChannel"
+            },
+            {
+               "type": "object",
+               "required": [
+                  "addresses"
+               ],
+               "properties": {
+                  "websiteUrl": {
+                     "type": "string"
+                  },
+                  "addresses": {
+                     "type": "array",
+                     "minItems": 1,
+                     "items": {
+                        "$ref": "#/definitions/Address"
+                     }
+                  }
+               }
+            }
+         ]
+      },
+      "BothChannels": {
+         "allOf": [
+            {
+               "$ref": "#/definitions/SalesChannel"
+            },
+            {
+               "type": "object",
+               "required": [
+                  "websiteUrl",
+                  "addresses"
+               ],
+               "properties": {
+                  "websiteUrl": {
+                     "type": "string"
+                  },
+                  "addresses": {
+                     "type": "array",
+                     "minItems": 1,
+                     "items": {
+                        "$ref": "#/definitions/Address"
+                     }
+                  },
+                  "discountCodeType": {
+                     "$ref": "#/definitions/DiscountCodeType"
+                  }
+               }
+            }
+         ]
+      },
+      "SalesChannelType": {
+         "type": "string",
+         "enum": [
+            "OnlineChannel",
+            "OfflineChannel",
+            "BothChannels"
+         ]
+      },
+      "DiscountCodeType": {
+         "type": "string",
+         "enum": [
+            "Static",
+            "API"
+         ]
+      },
+      "CreateReferent": {
+         "type": "object",
+         "required": [
+            "firstName",
+            "lastName",
+            "role",
+            "emailAddress",
+            "telephoneNumber"
+         ],
+         "properties": {
+            "firstName": {
+               "type": "string"
+            },
+            "lastName": {
+               "type": "string"
+            },
+            "role": {
+               "type": "string"
+            },
+            "emailAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            }
+         }
+      },
+      "UpdateReferent": {
+         "type": "object",
+         "required": [
+            "firstName",
+            "lastName",
+            "role",
+            "emailAddress",
+            "telephoneNumber"
+         ],
+         "properties": {
+            "firstName": {
+               "type": "string"
+            },
+            "lastName": {
+               "type": "string"
+            },
+            "role": {
+               "type": "string"
+            },
+            "emailAddress": {
+               "type": "string",
+               "format": "email"
+            },
+            "telephoneNumber": {
+               "type": "string",
+               "maxLength": 15
+            }
+         }
+      },
+      "CreateDiscount": {
+         "type": "object",
+         "required": [
+            "name",
             "startDate",
-            "endDate"
-          ],
-          "properties": {
+            "endDate",
+            "discount",
+            "productCategories"
+         ],
+         "properties": {
+            "name": {
+               "type": "string",
+               "maxLength": 100
+            },
+            "description": {
+               "type": "string",
+               "maxLength": 250
+            },
             "startDate": {
-              "type": "string",
-              "format": "date"
+               "type": "string",
+               "format": "date"
             },
             "endDate": {
-              "type": "string",
-              "format": "date"
-            }
-          }
-        }
-      ]
-    },
-    "RejectedAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
-        },
-        {
-          "type": "object"
-        }
-      ]
-    },
-    "AgreementState": {
-      "type": "string",
-      "enum": [
-        "DraftAgreement",
-        "PendingAgreement",
-        "ApprovedAgreement",
-        "RejectedAgreement"
-      ]
-    },
-    "CreateProfile": {
-      "type": "object",
-      "required": [
-        "fullName",
-        "name",
-        "pecAddress",
-        "referent",
-        "description",
-        "salesChannel"
-      ],
-      "properties": {
-        "fullName": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "pecAddress": {
-          "type": "string",
-          "format": "email"
-        },
-        "referent": {
-          "$ref": "#/definitions/CreateReferent"
-        },
-        "description": {
-          "type": "string"
-        },
-        "salesChannel": {
-          "$ref": "#/definitions/SalesChannel"
-        }
-      }
-    },
-    "UpdateProfile": {
-      "type": "object",
-      "required": [
-        "name",
-        "pecAddress",
-        "referent",
-        "description",
-        "salesChannel"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "pecAddress": {
-          "type": "string",
-          "format": "email"
-        },
-        "referent": {
-          "$ref": "#/definitions/UpdateReferent"
-        },
-        "description": {
-          "type": "string"
-        },
-        "salesChannel": {
-          "$ref": "#/definitions/SalesChannel"
-        }
-      }
-    },
-    "Profile": {
-      "type": "object",
-      "required": [
-        "id",
-        "agreementId",
-        "fullName",
-        "name",
-        "taxCodeOrVat",
-        "pecAddress",
-        "referent",
-        "description",
-        "salesChannel"
-      ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "agreementId": {
-          "type": "string"
-        },
-        "fullName": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "taxCodeOrVat": {
-          "type": "string"
-        },
-        "pecAddress": {
-          "type": "string",
-          "format": "email"
-        },
-        "referent": {
-          "$ref": "#/definitions/Referent"
-        },
-        "description": {
-          "type": "string"
-        },
-        "salesChannel": {
-          "$ref": "#/definitions/SalesChannel"
-        }
-      }
-    },
-    "Referent": {
-      "type": "object",
-      "required": [
-        "firstName",
-        "lastName",
-        "emailAddress",
-        "telephoneNumber"
-      ],
-      "properties": {
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "emailAddress": {
-          "type": "string"
-        },
-        "telephoneNumber": {
-          "type": "string",
-          "maxLength": 15
-        }
-      }
-    },
-    "SalesChannel": {
-      "type": "object",
-      "discriminator": "channelType",
-      "required": [
-        "channelType"
-      ],
-      "properties": {
-        "channelType": {
-          "$ref": "#/definitions/SalesChannelType"
-        }
-      }
-    },
-    "OnlineChannel": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/SalesChannel"
-        },
-        {
-          "type": "object",
-          "required": [
-            "websiteUrl"
-          ],
-          "properties": {
-            "websiteUrl": {
-              "type": "string"
-            }
-          }
-        }
-      ]
-    },
-    "OfflineChannel": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/SalesChannel"
-        },
-        {
-          "type": "object",
-          "required": [
-            "addresses"
-          ],
-          "properties": {
-            "websiteUrl": {
-              "type": "string"
+               "type": "string",
+               "format": "date"
             },
-            "addresses": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/definitions/Address"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "BothChannels": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/SalesChannel"
-        },
-        {
-          "type": "object",
-          "required": [
-            "websiteUrl",
-            "addresses"
-          ],
-          "properties": {
-            "websiteUrl": {
-              "type": "string"
+            "discount": {
+               "type": "number",
+               "format": "double",
+               "minimum": 0,
+               "maximum": 100
             },
-            "addresses": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/definitions/Address"
-              }
+            "productCategories": {
+               "type": "array",
+               "items": {
+                  "type": "string",
+                  "minItems": 1
+               }
+            },
+            "condition": {
+               "type": "string",
+               "maxLength": 200
+            },
+            "staticCode": {
+               "type": "string"
             }
-          }
-        }
-      ]
-    },
-    "SalesChannelType": {
-      "type": "string",
-      "enum": [
-        "OnlineChannel",
-        "OfflineChannel",
-        "BothChannels"
-      ]
-    },
-    "CreateReferent": {
-      "type": "object",
-      "required": [
-        "firstName",
-        "lastName",
-        "emailAddress",
-        "telephoneNumber"
-      ],
-      "properties": {
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "emailAddress": {
-          "type": "string",
-          "format": "email"
-        },
-        "telephoneNumber": {
-          "type": "string",
-          "maxLength": 15
-        }
+         }
+      },
+      "UpdateDiscount": {
+         "type": "object",
+         "required": [
+            "name",
+            "description",
+            "startDate",
+            "endDate",
+            "discount",
+            "productCategories",
+            "condition"
+         ],
+         "properties": {
+            "name": {
+               "type": "string",
+               "maxLength": 100
+            },
+            "description": {
+               "type": "string",
+               "maxLength": 250
+            },
+            "startDate": {
+               "type": "string",
+               "format": "date"
+            },
+            "endDate": {
+               "type": "string",
+               "format": "date"
+            },
+            "discount": {
+               "type": "number",
+               "format": "double",
+               "minimum": 0,
+               "maximum": 100
+            },
+            "productCategories": {
+               "type": "array",
+               "items": {
+                  "type": "string",
+                  "minItems": 1
+               }
+            },
+            "condition": {
+               "type": "string",
+               "maxLength": 200
+            },
+            "staticCode": {
+               "type": "string"
+            }
+         }
+      },
+      "Discounts": {
+         "type": "object",
+         "required": [
+            "items"
+         ],
+         "properties": {
+            "items": {
+               "type": "array",
+               "items": {
+                  "$ref": "#/definitions/Discount"
+               }
+            }
+         }
+      },
+      "Discount": {
+         "type": "object",
+         "required": [
+            "id",
+            "agreementId",
+            "state",
+            "name",
+            "description",
+            "startDate",
+            "endDate",
+            "discount",
+            "productCategories",
+            "condition"
+         ],
+         "properties": {
+            "id": {
+               "type": "string"
+            },
+            "agreementId": {
+               "type": "string"
+            },
+            "state": {
+               "$ref": "#/definitions/DiscountState"
+            },
+            "name": {
+               "type": "string"
+            },
+            "description": {
+               "type": "string"
+            },
+            "startDate": {
+               "type": "string",
+               "format": "date"
+            },
+            "endDate": {
+               "type": "string",
+               "format": "date"
+            },
+            "discount": {
+               "type": "number",
+               "format": "double",
+               "minimum": 0,
+               "maximum": 100
+            },
+            "productCategories": {
+               "type": "array",
+               "items": {
+                  "type": "string"
+               },
+               "minItems": 1
+            },
+            "condition": {
+               "type": "string"
+            },
+            "staticCode": {
+               "type": "string"
+            },
+            "creationDate": {
+               "type": "string",
+               "format": "date"
+            }
+         }
+      },
+      "DiscountState": {
+         "type": "string",
+         "enum": [
+            "draft",
+            "published",
+            "rejected"
+         ]
+      },
+      "Address": {
+         "type": "object",
+         "required": [
+            "street",
+            "zipCode",
+            "city",
+            "district"
+         ],
+         "properties": {
+            "street": {
+               "type": "string"
+            },
+            "zipCode": {
+               "type": "string",
+               "minLength": 5,
+               "maxLength": 5
+            },
+            "city": {
+               "type": "string"
+            },
+            "district": {
+               "type": "string",
+               "minLength": 2,
+               "maxLength": 2
+            }
+         }
+      },
+      "Documents": {
+         "type": "object",
+         "required": [
+            "items"
+         ],
+         "properties": {
+            "items": {
+               "type": "array",
+               "items": {
+                  "$ref": "#/definitions/Document"
+               }
+            }
+         }
+      },
+      "Document": {
+         "type": "object",
+         "required": [
+            "documentType",
+            "documentUrl"
+         ],
+         "properties": {
+            "documentType": {
+               "type": "string"
+            },
+            "documentUrl": {
+               "type": "string"
+            }
+         }
       }
-    },
-    "UpdateReferent": {
-      "type": "object",
-      "required": [
-        "firstName",
-        "lastName",
-        "emailAddress",
-        "telephoneNumber"
-      ],
-      "properties": {
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "emailAddress": {
-          "type": "string",
-          "format": "email"
-        },
-        "telephoneNumber": {
-          "type": "string",
-          "maxLength": 15
-        }
+   },
+   "responses": {
+      "InvalidRequest": {
+         "description": "Bad request"
+      },
+      "Forbidden": {
+         "description": "Forbidden"
+      },
+      "NotFound": {
+         "description": "Not found"
       }
-    },
-    "CreateDiscount": {
-      "type": "object",
-      "required": [
-        "name",
-        "startDate",
-        "endDate",
-        "discount",
-        "productCategories"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "startDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "discount": {
-          "type": "number",
-          "format": "double",
-          "minimum": 0,
-          "maximum": 100
-        },
-        "productCategories": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
-        "condition": {
-          "type": "string"
-        },
-        "staticCode": {
-          "type": "string"
-        }
-      }
-    },
-    "UpdateDiscount": {
-      "type": "object",
-      "required": [
-        "name",
-        "description",
-        "startDate",
-        "endDate",
-        "discount",
-        "productCategories",
-        "condition"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "startDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "discount": {
-          "type": "number",
-          "format": "double",
-          "minimum": 0,
-          "maximum": 100
-        },
-        "productCategories": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minItems": 1
-          }
-        },
-        "condition": {
-          "type": "string"
-        },
-        "staticCode": {
-          "type": "string"
-        }
-      }
-    },
-    "Discounts": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Discount"
-          }
-        }
-      }
-    },
-    "Discount": {
-      "type": "object",
-      "required": [
-        "id",
-        "agreementId",
-        "state",
-        "name",
-        "description",
-        "startDate",
-        "endDate",
-        "discount",
-        "productCategories",
-        "condition"
-      ],
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "agreementId": {
-          "type": "string"
-        },
-        "state": {
-          "$ref": "#/definitions/DiscountState"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "startDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "discount": {
-          "type": "number",
-          "format": "double",
-          "minimum": 0,
-          "maximum": 100
-        },
-        "productCategories": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1
-        },
-        "condition": {
-          "type": "string"
-        },
-        "staticCode": {
-          "type": "string"
-        }
-      }
-    },
-    "DiscountState": {
-      "type": "string",
-      "enum": [
-        "draft",
-        "published",
-        "rejected"
-      ]
-    },
-    "Address": {
-      "type": "object",
-      "required": [
-        "street",
-        "zipCode",
-        "city",
-        "district"
-      ],
-      "properties": {
-        "street": {
-          "type": "string"
-        },
-        "zipCode": {
-          "type": "string"
-        },
-        "city": {
-          "type": "string"
-        },
-        "district": {
-          "type": "string"
-        }
-      }
-    }
-  },
-  "responses": {
-    "InvalidRequest": {
-      "description": "Bad request"
-    },
-    "Forbidden": {
-      "description": "Forbidden"
-    },
-    "NotFound": {
-      "description": "Not found"
-    }
-  }
+   }
 }

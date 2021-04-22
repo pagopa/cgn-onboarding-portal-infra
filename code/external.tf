@@ -76,7 +76,7 @@ resource "azurerm_application_gateway" "api_gateway" {
     unhealthy_threshold                       = 3
 
     match {
-      status_code = []
+      status_code = ["200-399"]
     }
   }
 
