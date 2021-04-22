@@ -55,11 +55,10 @@ module "portal_backend_1" {
     WEBSITE_VNET_ROUTE_ALL = 1
 
     # These are app specific environment variables
-    SPRING_PROFILES_ACTIVE      = "prod"
-    SERVER_SERVLET_CONTEXT_PATH = "/"
-    SPRING_DATASOURCE_URL       = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
-    SPRING_DATASOURCE_USERNAME  = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
-    SPRING_DATASOURCE_PASSWORD  = var.db_administrator_login_password
+    SPRING_PROFILES_ACTIVE     = "prod"
+    SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
+    SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
+    SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
 
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
@@ -168,7 +167,7 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 # APIs
 
 module "apim_portal_apis" {
-  source = "./modules/apim_portal_apis"
+  source = "./modules/apim_apis"
 
   api_management_name     = module.apim.name
   backend_api_host        = "cgn.pagopa.it"

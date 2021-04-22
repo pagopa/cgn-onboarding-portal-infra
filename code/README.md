@@ -11,13 +11,14 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 2.52.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim"></a> [apim](#module\_apim) | ./modules/apim |  |
-| <a name="module_apim_portal_apis"></a> [apim\_portal\_apis](#module\_apim\_portal\_apis) | ./modules/apim_portal_apis |  |
+| <a name="module_apim_portal_apis"></a> [apim\_portal\_apis](#module\_apim\_portal\_apis) | ./modules/apim_apis |  |
 | <a name="module_cdn_portal_frontend"></a> [cdn\_portal\_frontend](#module\_cdn\_portal\_frontend) | ./modules/cdn_endpoint |  |
 | <a name="module_portal_backend_1"></a> [portal\_backend\_1](#module\_portal\_backend\_1) | ./modules/app_service |  |
 | <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | ./modules/storage_account |  |
@@ -36,6 +37,10 @@
 | [azurerm_cdn_profile.cdn_profile_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_profile) | resource |
 | [azurerm_container_group.sonarqube](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_group) | resource |
 | [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_registry) | resource |
+| [azurerm_dns_a_record.api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_cname_record.frontend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_cname_record) | resource |
+| [azurerm_dns_ns_record.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
+| [azurerm_dns_zone.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_zone) | resource |
 | [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
 | [azurerm_key_vault_certificate.apim_proxy_endpoint_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
@@ -54,6 +59,7 @@
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_cdn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.rg_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_external](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_sec](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_sonarqube](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -66,7 +72,9 @@
 | [azurerm_storage_share.sonarqube_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share) | resource |
 | [azurerm_subnet.subnet_apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
+| [null_resource.cdn_custom_domain](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_dns_zone.parent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) | data source |
 
 ## Inputs
 
@@ -86,6 +94,8 @@
 | <a name="input_db_sku_name"></a> [db\_sku\_name](#input\_db\_sku\_name) | Specifies the SKU Name for this PostgreSQL Server. | `string` | n/a | yes |
 | <a name="input_db_version"></a> [db\_version](#input\_db\_version) | Specifies the version of PostgreSQL to use. | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | # DNS | `string` | n/a | yes |
+| <a name="input_parent_resource_group_name"></a> [parent\_resource\_group\_name](#input\_parent\_resource\_group\_name) | n/a | `string` | n/a | yes |
 | <a name="input_apim_name"></a> [apim\_name](#input\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_apim_private_domain"></a> [apim\_private\_domain](#input\_apim\_private\_domain) | n/a | `string` | `"api.cgnonboardingportal.pagopa.it"` | no |
 | <a name="input_apim_sku"></a> [apim\_sku](#input\_apim\_sku) | n/a | `string` | `"Developer_1"` | no |

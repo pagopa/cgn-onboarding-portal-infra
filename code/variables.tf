@@ -77,6 +77,14 @@ variable "cidr_subnet_apim" {
   type = list(string)
 }
 
+## DNS
+variable "external_domain" {
+  type = string
+}
+
+variable "parent_resource_group_name" {
+  type = string
+}
 
 ## Azure container registry
 variable "sku_container_registry" {

@@ -79,6 +79,24 @@ resource "tfe_variable" "dev_cidr_subnet_apim" {
   description  = "cidr virtual apim. CreatedBy Terraform"
 }
 
+# DNS
+resource "tfe_variable" "dev_external_domain" {
+  key          = "external_domain"
+  value        = "caravan-azure.bitrock.it"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "DNS External domain. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_parent_resource_group_name" {
+  key          = "parent_resource_group_name"
+  value        = "caravan-admin"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "DNS Parent resource group name. CreatedBy Terraform"
+}
 
 # Database
 resource "tfe_variable" "dev_db_sku_name" {
