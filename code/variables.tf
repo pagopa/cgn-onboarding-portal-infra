@@ -53,7 +53,7 @@ variable "app_gateway_min_capacity" {
 }
 variable "app_gateway_max_capacity" {
   type    = number
-  default = 1
+  default = 2
 }
 
 # Network
