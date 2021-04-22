@@ -46,6 +46,16 @@ variable "apim_notification_sender_email" {
   type = string
 }
 
+# App Gateway
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 1
+}
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 1
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)

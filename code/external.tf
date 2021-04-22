@@ -21,9 +21,15 @@ resource "azurerm_application_gateway" "api_gateway" {
   location            = azurerm_resource_group.rg_external.location
 
   sku {
-    name     = "WAF_v2"
-    tier     = "WAF_v2"
-    capacity = 1
+    name = "WAF_v2"
+    tier = "WAF_v2"
+  }
+
+  enable_http2 = true
+
+  ssl_policy {
+    policy_type = "Predefined"
+    policy_name = "AppGwSslPolicy20170401S"
   }
 
   gateway_ip_configuration {
@@ -87,5 +93,20 @@ resource "azurerm_application_gateway" "api_gateway" {
     http_listener_name         = local.listener_name
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
+  }
+
+  waf_configuration {
+    enabled                  = true
+    firewall_mode            = "Detection"
+    rule_set_type            = "OWASP"
+    rule_set_version         = "3.1"
+    request_body_check       = true
+    file_upload_limit_mb     = 100
+    max_request_body_size_kb = 128
+  }
+
+  autoscale_configuration {
+    min_capacity = var.app_gateway_min_capacity
+    max_capacity = var.app_gateway_max_capacity
   }
 }
