@@ -50,8 +50,11 @@ No modules.
 | [tfe_variable.uat_database_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_db_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_db_version](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_dns_zone_prefix](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_enable_sonarqube](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_external_domain](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_parent_resource_group_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_workspace.dev](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/data-sources/workspace) | data source |
 | [tfe_workspace.prod](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/data-sources/workspace) | data source |
@@ -61,7 +64,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_tfe_organization_name"></a> [tfe\_organization\_name](#input\_tfe\_organization\_name) | The name of the Terraform Cloud Organization | `string` | `"bitrock-pagopa"` | no |
+| <a name="input_tfe_organization_name"></a> [tfe\_organization\_name](#input\_tfe\_organization\_name) | The name of the Terraform Cloud Organization | `string` | `"PagoPa"` | no |
 
 ## Outputs
 

@@ -8,7 +8,7 @@ terraform {
   # terraform cloud.
   backend "remote" {
     hostname     = "app.terraform.io"
-    organization = "bitrock-pagopa"
+    organization = "PagoPa"
     workspaces {
       prefix = "cgn-onboarding-portal-"
     }

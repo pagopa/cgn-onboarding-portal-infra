@@ -10,10 +10,6 @@ variable "api_management_name" {
   type = string
 }
 
-variable "backend_api_host" {
-  type = string
-}
-
 variable "backend_api_service_url" {
   type = string
 }

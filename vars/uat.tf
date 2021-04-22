@@ -79,6 +79,33 @@ resource "tfe_variable" "uat_cidr_subnet_apim" {
   description  = "cidr virtual apim. CreatedBy Terraform"
 }
 
+# DNS
+resource "tfe_variable" "uat_external_domain" {
+  key          = "external_domain"
+  value        = "XXXXXX"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "DNS External domain. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_dns_zone_prefix" {
+  key          = "dns_zone_prefix"
+  value        = "cgn-uat"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "DNS zone prefix. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_parent_resource_group_name" {
+  key          = "parent_resource_group_name"
+  value        = "XXXXX"
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "DNS Parent resource group name. CreatedBy Terraform"
+}
 
 # Database
 resource "tfe_variable" "uat_db_sku_name" {
