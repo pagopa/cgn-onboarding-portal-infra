@@ -93,3 +93,11 @@ resource "tfe_variable" "uat_database_name" {
   workspace_id = data.tfe_workspace.uat.id
   description  = "Name of the database. CreatedBy Terraform"
 }
+
+resource "tfe_variable" "uat_enable_sonarqube" {
+  key          = "enable_sonarqube"
+  value        = "false"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "Enable sonarqube resources. CreatedBy Terraform"
+}
