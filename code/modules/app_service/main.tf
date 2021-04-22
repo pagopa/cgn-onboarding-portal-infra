@@ -36,9 +36,7 @@ resource "azurerm_app_service" "app_service" {
     app_command_line = var.app_command_line
     min_tls_version  = "1.2"
     ftps_state       = "Disabled"
-    cors {
-      allowed_origins = ["*"]
-    }
+
     health_check_path = var.health_check_path != null ? var.health_check_path : null
 
     dynamic "ip_restriction" {
