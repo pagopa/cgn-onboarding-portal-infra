@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "rg_external" {
-  name     = format("%s-external-rg", local.project)
+resource "azurerm_resource_group" "rg_public" {
+  name     = format("%s-public-rg", local.project)
   location = var.location
   tags     = var.tags
 
@@ -17,8 +17,8 @@ locals {
 
 resource "azurerm_application_gateway" "api_gateway" {
   name                = format("%s-api-gateway", local.project)
-  resource_group_name = azurerm_resource_group.rg_external.name
-  location            = azurerm_resource_group.rg_external.location
+  resource_group_name = azurerm_resource_group.rg_public.name
+  location            = azurerm_resource_group.rg_public.location
 
   sku {
     name = "WAF_v2"

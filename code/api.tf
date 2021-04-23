@@ -138,7 +138,7 @@ resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
         "keyEncipherment",
       ]
 
-      subject            = "CN=${trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")}"
+      subject            = format("CN=%s", trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, "."))
       validity_in_months = 12
 
       subject_alternative_names {
@@ -170,8 +170,11 @@ module "apim_portal_apis" {
   source = "./modules/apim_apis"
 
   api_management_name     = module.apim.name
-  backend_api_service_url = "https://${module.portal_backend_1.default_site_hostname}"
+  backend_api_service_url = format("https://%s", module.portal_backend_1.default_site_hostname)
   project                 = local.project
   resource_group_name     = azurerm_resource_group.rg_api.name
-}
 
+  content_value = file("./backend_api/swagger.json")
+
+  xml_content = file("./backend_api/policy.xml")
+}
