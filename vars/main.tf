@@ -13,7 +13,6 @@ data "tfe_workspace" "prod" {
   name         = "cgn-onboarding-portal-prod"
   organization = var.tfe_organization_name
 }
-
 */
 data "tfe_workspace" "uat" {
   name         = "cgn-onboarding-portal-uat"

@@ -39,7 +39,7 @@ override.tf.json
 terraform.rc
 
 # Ignore lock file only in modules
-modules/*/.terraform.lock.hcl
+**/modules/*/.terraform.lock.hcl
 
 # Ignore provider.tf in modules
-modules/*/provider.tf
+**/modules/*/provider.tf

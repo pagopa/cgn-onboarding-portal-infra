@@ -19,6 +19,43 @@ variable "tags" {
   }
 }
 
+# Apim
+
+variable "apim_private_domain" {
+  type    = string
+  default = "api.cgnonboardingportal.pagopa.it"
+}
+
+variable "apim_name" {
+  type    = string
+  default = null
+}
+
+variable "apim_sku" {
+  type    = string
+  default = "Developer_1"
+}
+
+variable "apim_publisher_name" {
+  type = string
+}
+variable "apim_publisher_email" {
+  type = string
+}
+variable "apim_notification_sender_email" {
+  type = string
+}
+
+# App Gateway
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 1
+}
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)
@@ -34,6 +71,21 @@ variable "cidr_subnet_api" {
 
 variable "cidr_subnet_public" {
   type = list(string)
+}
+
+variable "cidr_subnet_apim" {
+  type = list(string)
+}
+
+## DNS
+variable "external_domain" {
+  type    = string
+  default = null
+}
+
+variable "dns_zone_prefix" {
+  type    = string
+  default = null
 }
 
 ## Azure container registry
@@ -180,9 +232,14 @@ variable "storage_account_website_lock" {
   default = null
 }
 
-
 # Sonarqube
 variable "enable_sonarqube" {
   default     = false
   description = "Enable sonarqube resources"
+}
+
+variable "ad_key_vault_group_object_id" {
+  type        = string
+  description = "Active directory object id group that can access key vault."
+
 }
