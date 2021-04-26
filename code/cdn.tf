@@ -1,14 +1,16 @@
+/*
 resource "azurerm_resource_group" "rg_cdn" {
   name     = format("%s-cdn-rg", local.project)
   location = var.location
 
   tags = var.tags
 }
+*/
 
 resource "azurerm_cdn_profile" "cdn_profile_common" {
   name                = format("%s-cdn-common", local.project)
-  resource_group_name = azurerm_resource_group.rg_cdn.name
-  location            = var.location
+  resource_group_name = azurerm_resource_group.rg_public.name
+  location            = azurerm_resource_group.rg_public.location
   sku                 = "Standard_Microsoft"
 
   tags = var.tags
@@ -20,8 +22,8 @@ module "cdn_portal_frontend" {
   name                = format("%s-cdnendpoint-frontend", local.project)
   origin_host_name    = module.storage_account_website.primary_web_host
   profile_name        = azurerm_cdn_profile.cdn_profile_common.name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.rg_cdn.name
+  location            = azurerm_resource_group.rg_public.location
+  resource_group_name = azurerm_resource_group.rg_public.name
 
   # allow HTTP, HSTS will make future connections over HTTPS
   is_http_allowed = true
@@ -69,8 +71,8 @@ module "cdn_portal_frontend" {
 }
 
 
-
 resource "null_resource" "cdn_custom_domain" {
+  count = terraform.workspace == "prod" ? 1 : 0
   # needs az cli > 2.0.81
   # see https://github.com/Azure/azure-cli/issues/12152
   depends_on = [module.cdn_portal_frontend, azurerm_cdn_profile.cdn_profile_common]
@@ -78,16 +80,16 @@ resource "null_resource" "cdn_custom_domain" {
   provisioner "local-exec" {
     command = <<EOT
       az cdn custom-domain create \
-        --resource-group ${azurerm_resource_group.rg_cdn.name} \
+        --resource-group ${azurerm_resource_group.rg_public.name} \
         --endpoint-name ${module.cdn_portal_frontend.name} \
         --profile-name ${azurerm_cdn_profile.cdn_profile_common.name} \
-        --name ${replace(trim(azurerm_dns_cname_record.frontend.fqdn, "."), ".", "-")} \
-        --hostname ${trim(azurerm_dns_cname_record.frontend.fqdn, ".")}
+        --name ${replace(trim(azurerm_dns_cname_record.frontend[0].fqdn, "."), ".", "-")} \
+        --hostname ${trim(azurerm_dns_cname_record.frontend[0].fqdn, ".")}
       az cdn custom-domain enable-https \
-        --resource-group ${azurerm_resource_group.rg_cdn.name} \
+        --resource-group ${azurerm_resource_group.rg_public.name} \
         --endpoint-name ${module.cdn_portal_frontend.name} \
         --profile-name ${azurerm_cdn_profile.cdn_profile_common.name} \
-        --name ${replace(trim(azurerm_dns_cname_record.frontend.fqdn, "."), ".", "-")}
+        --name ${replace(trim(azurerm_dns_cname_record.frontend[0].fqdn, "."), ".", "-")}
     EOT
   }
 }

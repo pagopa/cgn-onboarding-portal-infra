@@ -5,6 +5,11 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 2.52.0"
     }
+
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 1.4.0"
+    }
   }
 
   # terraform cloud.

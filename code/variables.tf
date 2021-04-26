@@ -79,15 +79,13 @@ variable "cidr_subnet_apim" {
 
 ## DNS
 variable "external_domain" {
-  type = string
+  type    = string
+  default = null
 }
 
 variable "dns_zone_prefix" {
-  type = string
-}
-
-variable "parent_resource_group_name" {
-  type = string
+  type    = string
+  default = null
 }
 
 ## Azure container registry
@@ -234,9 +232,14 @@ variable "storage_account_website_lock" {
   default = null
 }
 
-
 # Sonarqube
 variable "enable_sonarqube" {
   default     = false
   description = "Enable sonarqube resources"
+}
+
+variable "ad_key_vault_group_object_id" {
+  type        = string
+  description = "Active directory object id group that can access key vault."
+
 }

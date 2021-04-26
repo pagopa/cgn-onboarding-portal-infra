@@ -57,7 +57,7 @@ resource "azurerm_key_vault" "key_vault" {
     {
       application_id = ""
       tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = "743bb651-0842-48ce-9908-11491e6bf054"
+      object_id      = var.ad_key_vault_group_object_id
 
       key_permissions     = []
       secret_permissions  = []
