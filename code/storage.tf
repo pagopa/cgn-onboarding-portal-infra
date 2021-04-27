@@ -16,6 +16,7 @@ module "storage_account" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
   access_tier              = "Hot"
+  allow_blob_public_access = true
   resource_group_name      = azurerm_resource_group.rg_storage.name
   location                 = var.location
   lock                     = var.storage_account_lock != null
