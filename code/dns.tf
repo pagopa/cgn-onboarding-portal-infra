@@ -3,7 +3,7 @@
 resource "azurerm_dns_zone" "public" {
   count               = (var.dns_zone_prefix == null || var.external_domain == null) ? 0 : 1
   name                = join(".", [var.dns_zone_prefix, var.external_domain])
-  resource_group_name = azurerm_resource_group.rg_public
+  resource_group_name = azurerm_resource_group.rg_public.name
 
   tags = var.tags
 }

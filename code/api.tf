@@ -60,6 +60,14 @@ module "portal_backend_1" {
     SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
 
+    # Blob Storage Account
+    CGN_PE_STORAGE_AZURE_DEFAULT_ENDPOINTS_PROTOCOL = "https"
+    CGN_PE_STORAGE_AZURE_ACCOUNT_NAME               = module.storage_account.name
+    CGN_PE_STORAGE_AZURE_ACCOUNT_KEY                = module.storage_account.primary_access_key
+    CGN_PE_STORAGE_AZURE_BLOB_ENDPOINT              = module.storage_account.primary_blob_endpoint
+    CGN_PE_STORAGE_AZURE_DOCUMENTS_CONTAINER_NAME   = azurerm_storage_container.user_documents.name
+    CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
 

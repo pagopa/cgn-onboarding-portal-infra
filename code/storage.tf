@@ -16,6 +16,7 @@ module "storage_account" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
   access_tier              = "Hot"
+  allow_blob_public_access = true
   resource_group_name      = azurerm_resource_group.rg_storage.name
   location                 = var.location
   lock                     = var.storage_account_lock != null
@@ -31,14 +32,14 @@ resource "azurerm_storage_container" "user_documents" {
   depends_on            = [module.storage_account]
   name                  = "userdocuments"
   storage_account_name  = module.storage_account.name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
 
 resource "azurerm_storage_container" "profile_images" {
   depends_on            = [module.storage_account]
   name                  = "profileimages"
   storage_account_name  = module.storage_account.name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
 
 

@@ -10,6 +10,7 @@ resource "azurerm_storage_account" "storage_account" {
   access_tier               = var.access_tier
   enable_https_traffic_only = true
   min_tls_version           = "TLS1_2"
+  allow_blob_public_access  = var.allow_blob_public_access
 
   dynamic "static_website" {
     for_each = var.enable_static_website ? [{}] : []

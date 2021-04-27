@@ -67,7 +67,8 @@ module "subnet_api" {
   }
 
   service_endpoints = [
-    "Microsoft.Web"
+    "Microsoft.Web",
+    "Microsoft.Storage"
   ]
 
 }
