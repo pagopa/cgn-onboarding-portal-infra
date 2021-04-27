@@ -74,7 +74,7 @@ module "cdn_portal_storage" {
   source = "./modules/cdn_endpoint"
 
   name                = format("%s-cdnendpoint-storage", local.project)
-  origin_host_name    = module.storage_account.primary_web_host
+  origin_host_name    = module.storage_account.primary_blob_host
   profile_name        = azurerm_cdn_profile.cdn_profile_common.name
   location            = azurerm_resource_group.rg_public.location
   resource_group_name = azurerm_resource_group.rg_public.name

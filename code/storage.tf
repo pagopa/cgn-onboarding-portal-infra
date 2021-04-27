@@ -32,14 +32,14 @@ resource "azurerm_storage_container" "user_documents" {
   depends_on            = [module.storage_account]
   name                  = "userdocuments"
   storage_account_name  = module.storage_account.name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
 
 resource "azurerm_storage_container" "profile_images" {
   depends_on            = [module.storage_account]
   name                  = "profileimages"
   storage_account_name  = module.storage_account.name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
 
 
