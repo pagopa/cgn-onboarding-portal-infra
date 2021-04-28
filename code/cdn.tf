@@ -97,13 +97,13 @@ module "cdn_portal_storage" {
       action = "Overwrite"
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
-    },
+      },
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
         value  = "default-src 'self'; frame-ancestors 'self'; script-src 'self'; style-src 'self'"
-      }]
+    }]
 
   }
 
