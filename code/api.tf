@@ -233,10 +233,10 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 # APIs
 
 module "apim_backend_api" {
-  source = "./modules/apim_api"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
 
+  name                = format("%s-backend-api", local.project)
   api_management_name = module.apim.name
-  project             = local.project
   resource_group_name = azurerm_resource_group.rg_api.name
 
   description  = "CGN Onboarding Portal Backend"
@@ -252,10 +252,10 @@ module "apim_backend_api" {
 
 
 module "apim_backoffice_api" {
-  source = "./modules/apim_api"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
 
+  name                = format("%s-backoffice-api", local.project)
   api_management_name = module.apim.name
-  project             = local.project
   resource_group_name = azurerm_resource_group.rg_api.name
 
   description  = "CGN Onboarding Portal Backoffice"
