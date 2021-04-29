@@ -104,6 +104,28 @@ resource "azurerm_public_ip" "apigateway_public_ip" {
   tags = var.tags
 }
 
+module "subnet_spid_login" {
+  source               = "./modules/subnet"
+  name                 = format("%s-spidlogin-subnet", local.project)
+  address_prefixes     = var.cidr_subnet_spid_login
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+
+  delegation = {
+    name = "default"
+
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.Storage",
+  ]
+}
+
 # APIM subnet
 
 resource "azurerm_subnet" "subnet_apim" {

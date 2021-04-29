@@ -77,6 +77,10 @@ variable "cidr_subnet_apim" {
   type = list(string)
 }
 
+variable "cidr_subnet_spid_login" {
+  type = list(string)
+}
+
 ## DNS
 variable "external_domain" {
   type    = string
