@@ -247,11 +247,11 @@ variable "ad_key_vault_group_object_id" {
 # Redis Cache
 
 variable "redis_cache_family" {
-  type = string
+  type        = string
   description = "The SKU family/pricing group to use."
 }
 
 variable "redis_cache_sku_name" {
-  type = string
+  type        = string
   description = "The SKU of Redis to use."
 }

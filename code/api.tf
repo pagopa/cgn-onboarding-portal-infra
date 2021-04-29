@@ -174,15 +174,39 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
 # APIs
 
-module "apim_portal_apis" {
-  source = "./modules/apim_apis"
+module "apim_backend_api" {
+  source = "./modules/apim_api"
 
-  api_management_name     = module.apim.name
-  backend_api_service_url = format("https://%s", module.portal_backend_1.default_site_hostname)
-  project                 = local.project
-  resource_group_name     = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  project             = local.project
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "CGN Onboarding Portal Backend"
+  display_name = "BACKEND"
+  path         = "api/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.portal_backend_1.default_site_hostname)
 
   content_value = file("./backend_api/swagger.json")
 
   xml_content = file("./backend_api/policy.xml")
+}
+
+
+module "apim_backoffice_api" {
+  source = "./modules/apim_api"
+
+  api_management_name = module.apim.name
+  project             = local.project
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "CGN Onboarding Portal Backoffice"
+  display_name = "BACKOFFICE"
+  path         = "backoffice/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.portal_backend_1.default_site_hostname)
+
+  content_value = file("./backoffice_api/swagger.json")
+
+  xml_content = file("./backoffice_api/policy.xml")
 }

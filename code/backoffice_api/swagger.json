@@ -1,0 +1,677 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CGN Onboarding Portal Backoffice",
+    "description": "Carta Giovani Nazionale Onboarding Portal Backoffice",
+    "version": "0.0.1"
+  },
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "agreement",
+      "description": "Agreement"
+    },
+    {
+      "name": "document",
+      "description": "Document"
+    },
+    {
+      "name": "discount",
+      "description": "Discount"
+    }
+  ],
+  "paths": {
+    "/agreement-requests": {
+      "get": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Get list of agreements",
+        "operationId": "getAgreements",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "states",
+            "description": "Values from `AgreementState`",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "assignee",
+            "description": "Assigned agreement assignee",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Me",
+              "Others"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "profileFullName",
+            "description": "String to search in profile full name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "requestDateFrom",
+            "description": "Agreement request date lower bound",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "requestDateTo",
+            "description": "Agreement request date upper bound",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "$ref": "#/parameters/PageSize"
+          },
+          {
+            "$ref": "#/parameters/PageNumber"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of agreements",
+            "schema": {
+              "$ref": "#/definitions/Agreements"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/assignee": {
+      "put": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Assign an agreement to the user",
+        "operationId": "assignAgreement",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agreement assigned to the user"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Unassign an agreement to the user",
+        "operationId": "unassignAgreement",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agreement unassigned to the user"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/approval": {
+      "post": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Approve an agreement",
+        "operationId": "approveAgreement",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agreement approved"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/refusal": {
+      "post": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Reject an agreement",
+        "operationId": "rejectAgreement",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "in": "body",
+            "description": "Agreement refusal",
+            "name": "refusal",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefuseAgreement"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Agreement rejected"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/documents": {
+      "get": {
+        "tags": [
+          "document"
+        ],
+        "summary": "Get documents",
+        "operationId": "getDocuments",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of documents",
+            "schema": {
+              "$ref": "#/definitions/Documents"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/documents/{documentType}": {
+      "post": {
+        "tags": [
+          "document"
+        ],
+        "summary": "Upload a document",
+        "operationId": "uploadDocument",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DocumentType"
+          },
+          {
+            "in": "formData",
+            "name": "document",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document uploaded",
+            "schema": {
+              "$ref": "#/definitions/Document"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "document"
+        ],
+        "summary": "Delete a document",
+        "operationId": "deleteDocument",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DocumentType"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Document deleted"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/discounts/{discountId}/suspension": {
+      "post": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Suspend a discount",
+        "operationId": "suspendDiscount",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          },
+          {
+            "in": "body",
+            "description": "Discount suspension",
+            "name": "suspension",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SuspendDiscount"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Discount suspended"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "parameters": {
+    "AgreementId": {
+      "name": "agreementId",
+      "in": "path",
+      "description": "Agreement id",
+      "required": true,
+      "type": "string"
+    },
+    "PageSize": {
+      "name": "pageSize",
+      "in": "query",
+      "description": "Page size",
+      "required": false,
+      "type": "integer",
+      "default": 20
+    },
+    "PageNumber": {
+      "name": "page",
+      "in": "query",
+      "description": "Page number",
+      "required": false,
+      "type": "integer",
+      "default": 0
+    },
+    "DiscountId": {
+      "name": "discountId",
+      "in": "path",
+      "description": "Discount id",
+      "required": true,
+      "type": "string"
+    },
+    "DocumentType": {
+      "name": "documentType",
+      "in": "path",
+      "description": "Document type",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "Agreement",
+        "ManifestationOfInterest"
+      ]
+    }
+  },
+  "definitions": {
+    "Agreements": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Agreement"
+          }
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "Agreement": {
+      "type": "object",
+      "discriminator": "state",
+      "required": [
+        "id",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/definitions/AgreementState"
+        },
+        "profile": {
+          "$ref": "#/definitions/Profile"
+        },
+        "discounts": {
+          "$ref": "#/definitions/Discounts"
+        },
+        "documents": {
+          "$ref": "#/definitions/Documents"
+        }
+      }
+    },
+    "PendingAgreement": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Agreement"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "AssignedAgreement": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Agreement"
+        },
+        {
+          "type": "object",
+          "required": [
+            "assignee"
+          ],
+          "properties": {
+            "assignee": {
+              "$ref": "#/definitions/Assignee"
+            }
+          }
+        }
+      ]
+    },
+    "ApprovedAgreement": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Agreement"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "RejectedAgreement": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Agreement"
+        },
+        {
+          "type": "object",
+          "required": [
+            "reasonMessage"
+          ],
+          "properties": {
+            "reasonMessage": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "AgreementState": {
+      "type": "string",
+      "enum": [
+        "PendingAgreement",
+        "AssignedAgreement",
+        "ApprovedAgreement",
+        "RejectedAgreement"
+      ]
+    },
+    "RefuseAgreement": {
+      "type": "object",
+      "required": [
+        "reasonMessage"
+      ],
+      "properties": {
+        "reasonMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "Assignee": {
+      "type": "object",
+      "required": [
+        "fullName"
+      ],
+      "properties": {
+        "fullName": {
+          "type": "string"
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "required": [
+        "id",
+        "agreementId",
+        "fullName",
+        "pecAddress",
+        "referent",
+        "description",
+        "salesChannel"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "agreementId": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "referent": {
+          "$ref": "#/definitions/Referent"
+        }
+      }
+    },
+    "Referent": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "emailAddress",
+        "telephoneNumber"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "telephoneNumber": {
+          "type": "string",
+          "maxLength": 15
+        }
+      }
+    },
+    "Discounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Discount"
+      }
+    },
+    "Discount": {
+      "type": "object",
+      "required": [
+        "id",
+        "agreementId",
+        "state",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "agreementId": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/definitions/DiscountState"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "DiscountState": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "rejected"
+      ]
+    },
+    "Documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Document"
+      }
+    },
+    "Document": {
+      "type": "object",
+      "required": [
+        "documentType",
+        "documentUrl",
+        "creationDate"
+      ],
+      "properties": {
+        "documentType": {
+          "$ref": "#/definitions/DocumentType"
+        },
+        "documentUrl": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "DocumentType": {
+      "type": "string",
+      "enum": [
+        "Agreement",
+        "ManifestationOfInterest"
+      ]
+    },
+    "SuspendDiscount": {
+      "type": "object",
+      "required": [
+        "reasonMessage"
+      ],
+      "properties": {
+        "reasonMessage": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "responses": {
+    "InvalidRequest": {
+      "description": "Bad request"
+    },
+    "Forbidden": {
+      "description": "Forbidden"
+    },
+    "NotFound": {
+      "description": "Not found"
+    },
+    "Conflict": {
+      "description": "Conflict"
+    }
+  }
+}
