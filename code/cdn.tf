@@ -127,16 +127,8 @@ module "cdn_portal_storage" {
 
   delivery_rule_url_path_condition_cache_expiration_action = [
     {
-      name         = "userdocumentscache"
-      order        = 2
-      operator     = "BeginsWith"
-      match_values = ["/userdocuments"]
-      behavior     = "Override"
-      duration     = "00:00:05"
-    },
-    {
       name         = "profileimagescache"
-      order        = 3
+      order        = 2
       operator     = "BeginsWith"
       match_values = ["/profileimages"]
       behavior     = "Override"
