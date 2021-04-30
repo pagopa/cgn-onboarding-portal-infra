@@ -95,8 +95,6 @@ module "spid_login" {
   plan_name           = format("%s-plan-spid-login", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  health_check_path = "/actuator/health"
-
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080

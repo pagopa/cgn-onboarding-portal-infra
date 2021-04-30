@@ -259,3 +259,9 @@ variable "redis_cache_sku_name" {
   type        = string
   description = "The SKU of Redis to use."
 }
+
+# SPID TESTENV
+variable "enable_spid_testenv" {
+  default     = false
+  description = "Enable SPID TEST ENV resources"
+}
