@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_spid_testenv" {
 
 
 resource "azurerm_storage_account" "spid_testenv_storage_account" {
-  count    = terraform.workspace == "prod" ? 0 : 1
+  count                     = terraform.workspace == "prod" ? 0 : 1
   name                      = replace(format("%s-sa-st", local.project), "-", "")
   resource_group_name       = azurerm_resource_group.rg_spid_testenv[0].name
   location                  = var.location
@@ -20,7 +20,7 @@ resource "azurerm_storage_account" "spid_testenv_storage_account" {
 }
 
 resource "azurerm_storage_share" "spid_testenv_storage_share" {
-  count    = terraform.workspace == "prod" ? 0 : 1
+  count = terraform.workspace == "prod" ? 0 : 1
   name  = format("%s-spid-testenv-share", local.project)
 
   storage_account_name = azurerm_storage_account.spid_testenv_storage_account[0].name
@@ -29,7 +29,7 @@ resource "azurerm_storage_share" "spid_testenv_storage_share" {
 }
 
 resource "azurerm_storage_share" "spid_testenv_caddy_storage_share" {
-  count    = terraform.workspace == "prod" ? 0 : 1
+  count = terraform.workspace == "prod" ? 0 : 1
   name  = format("%s-spid-testenv-caddy-share", local.project)
 
   storage_account_name = azurerm_storage_account.spid_testenv_storage_account[0].name
@@ -38,7 +38,7 @@ resource "azurerm_storage_share" "spid_testenv_caddy_storage_share" {
 }
 
 resource "azurerm_container_group" "spid_testenv" {
-  count    = terraform.workspace == "prod" ? 0 : 1
+  count               = terraform.workspace == "prod" ? 0 : 1
   name                = format("%s-spid-testenv", local.project)
   location            = azurerm_resource_group.rg_spid_testenv[0].location
   resource_group_name = azurerm_resource_group.rg_spid_testenv[0].name
@@ -149,6 +149,7 @@ resource "null_resource" "upload_config_spid_testenv" {
                 --source "./spid_testenv_conf/config.yaml" \
                 --path "config.yaml" && \
               az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && \
+              az account set -s ${data.azurerm_subscription.current.display_name} && \
               az container restart \
                 --name ${azurerm_container_group.spid_testenv[0].name} \
                 --resource-group  ${azurerm_resource_group.rg_spid_testenv[0].name}
