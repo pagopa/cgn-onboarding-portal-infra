@@ -266,3 +266,21 @@ module "apim_backoffice_api" {
 
   xml_content = file("./backoffice_api/policy.xml")
 }
+
+module "apim_spid_login_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
+
+  name                = format("%s-spid-login-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "Login SPID Service Provider"
+  display_name = "SPID"
+  path         = "spid/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.spid_login.default_site_hostname)
+
+  content_value = file("./spidlogin_api/swagger.json")
+
+  xml_content = file("./spidlogin_api/policy.xml")
+}
