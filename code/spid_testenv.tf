@@ -130,7 +130,7 @@ resource "local_file" "spid_testenv_config" {
     "./spid_testenv_conf/config.yaml.tpl",
     {
       base_url                      = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
-      service_provider_metadata_url = format("https://%s/metadata", module.spid_login.default_site_hostname)
+      service_provider_metadata_url = format("http://%s/spid/v1/metadata", azurerm_public_ip.apigateway_public_ip.ip_address)
       # TODO change to APIM endpoint
   })
 }
@@ -147,9 +147,10 @@ resource "null_resource" "upload_config_spid_testenv" {
                 --account-key ${azurerm_storage_account.spid_testenv_storage_account[0].primary_access_key} \
                 --share-name ${azurerm_storage_share.spid_testenv_storage_share[0].name} \
                 --source "./spid_testenv_conf/config.yaml" \
-                --path "config.yaml"
+                --path "config.yaml" && \
+              az container restart \
+                --name ${azurerm_container_group.spid_testenv[0].name} \
+                --resource-group  ${azurerm_resource_group.rg_spid_testenv[0].name}
           EOT
   }
-
-  # TODO azurerm_container_group needs a restart after config changes
 }
