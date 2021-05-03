@@ -122,8 +122,8 @@ module "spid_login" {
     REDIS_PORT     = module.redis_cache.ssl_port
     REDIS_PASSWORD = module.redis_cache.primary_access_key
 
-    # application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
+    # application insights key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
   }
 
