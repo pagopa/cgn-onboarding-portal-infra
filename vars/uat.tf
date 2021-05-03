@@ -154,3 +154,19 @@ resource "tfe_variable" "uat_apim_publisher_email" {
   workspace_id = data.tfe_workspace.uat.id
   description  = "The email of publisher/company. CreatedBy Terraform"
 }
+
+resource "tfe_variable" "uat_redis_cache_family" {
+  key          = "redis_cache_family"
+  value        = "C"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "The SKU family/pricing group to use. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_redis_cache_sku_name" {
+  key          = "redis_cache_sku_name"
+  value        = "Standard"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "The SKU of Redis to use. CreatedBy Terraform"
+}

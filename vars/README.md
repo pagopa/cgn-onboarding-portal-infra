@@ -27,6 +27,7 @@ No modules.
 | [tfe_variable.dev_cidr_subnet_apim](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_subnet_db](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_subnet_public](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_cidr_subnet_spid_login](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_cidr_vnet](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_database_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_db_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
@@ -35,7 +36,8 @@ No modules.
 | [tfe_variable.dev_enable_sonarqube](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_external_domain](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
-| [tfe_variable.dev_parent_resource_group_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_redis_cache_family](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.dev_redis_cache_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.dev_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
@@ -54,7 +56,8 @@ No modules.
 | [tfe_variable.uat_enable_sonarqube](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_external_domain](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
-| [tfe_variable.uat_parent_resource_group_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_redis_cache_family](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_redis_cache_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_workspace.dev](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/data-sources/workspace) | data source |
 | [tfe_workspace.prod](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/data-sources/workspace) | data source |

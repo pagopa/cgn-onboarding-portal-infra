@@ -79,6 +79,17 @@ resource "tfe_variable" "dev_cidr_subnet_apim" {
   description  = "cidr virtual apim. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "dev_cidr_subnet_spid_login" {
+  key          = "cidr_subnet_spid_login"
+  value        = <<-EOT
+  ["10.0.5.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "cidr virtual spid login. CreatedBy Terraform"
+}
+
 # DNS
 resource "tfe_variable" "dev_external_domain" {
   key          = "external_domain"
@@ -153,4 +164,21 @@ resource "tfe_variable" "dev_apim_publisher_email" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
   description  = "The email of publisher/company. CreatedBy Terraform"
+}
+
+
+resource "tfe_variable" "dev_redis_cache_family" {
+  key          = "redis_cache_family"
+  value        = "C"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "The SKU family/pricing group to use. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_redis_cache_sku_name" {
+  key          = "redis_cache_sku_name"
+  value        = "Standard"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "The SKU of Redis to use. CreatedBy Terraform"
 }
