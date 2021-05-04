@@ -57,8 +57,9 @@ module "portal_backend_1" {
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE     = "prod"
     SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
-    SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
+    SPRING_DATASOURCE_USERNAME = format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
+    JAVA_OPTS                  = "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication"
 
     # Blob Storage Account
     CGN_PE_STORAGE_AZURE_DEFAULT_ENDPOINTS_PROTOCOL = "https"
@@ -69,12 +70,14 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
     # application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
+    APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
+    azurerm_application_insights.application_insights.instrumentation_key)
 
   }
 
-  linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
-  always_on        = "true"
+  linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
+  azurerm_container_registry.container_registry.login_server, "latest")
+  always_on = "true"
 
   allowed_subnets = [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
@@ -121,6 +124,35 @@ module "spid_login" {
     REDIS_URL      = module.redis_cache.hostname
     REDIS_PORT     = module.redis_cache.ssl_port
     REDIS_PASSWORD = module.redis_cache.primary_access_key
+
+    # SPID
+    ORG_ISSUER       = "https://spid.agid.gov.it/cd"
+    ORG_URL          = format("http://%s/spid/v1", azurerm_public_ip.apigateway_public_ip.ip_address)
+    ORG_DISPLAY_NAME = "Organization display name"
+    ORG_NAME         = "Organization name"
+
+    AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
+
+    ENDPOINT_ACS      = "/acs"
+    ENDPOINT_ERROR    = "/error"
+    ENDPOINT_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
+    ENDPOINT_LOGIN    = "/login"
+    ENDPOINT_METADATA = "/metadata"
+    ENDPOINT_LOGOUT   = "/logout"
+
+    SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
+    SPID_TESTENV_URL   = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
+    SPID_VALIDATOR_URL = "http://localhost"
+
+    METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
+    METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
+
+    ENABLE_JWT                         = "true"
+    INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
+
+    JWT_TOKEN_EXPIRATION  = "3600"
+    JWT_TOKEN_ISSUER      = "SPID"
+    JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
@@ -228,10 +260,17 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   # }
 }
 
+resource "azurerm_api_management_certificate" "jwt_certificate" {
+  name                = "jwt-spid-crt"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  data                = pkcs12_from_pem.jwt_pkcs12.result
+}
+
 # APIs
 
 module "apim_backend_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
 
   name                = format("%s-backend-api", local.project)
   api_management_name = module.apim.name
@@ -250,7 +289,7 @@ module "apim_backend_api" {
 
 
 module "apim_backoffice_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
 
   name                = format("%s-backoffice-api", local.project)
   api_management_name = module.apim.name
@@ -268,7 +307,7 @@ module "apim_backoffice_api" {
 }
 
 module "apim_spid_login_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
 
   name                = format("%s-spid-login-api", local.project)
   api_management_name = module.apim.name

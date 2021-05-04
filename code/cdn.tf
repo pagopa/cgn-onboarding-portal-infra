@@ -141,7 +141,7 @@ module "cdn_portal_storage" {
 
 
 resource "null_resource" "cdn_custom_domain" {
-  count = terraform.workspace == "prod" ? 1 : 0
+  count = var.enable_custom_dns ? 1 : 0
   # needs az cli > 2.0.81
   # see https://github.com/Azure/azure-cli/issues/12152
   depends_on = [module.cdn_portal_frontend, azurerm_cdn_profile.cdn_profile_common]

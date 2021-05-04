@@ -42,8 +42,3 @@ output "api_gateway_public_id" {
 output "apim_gateway_url" {
   value = module.apim.gateway_url
 }
-
-# terraform workspace
-output "workspace" {
-  value = terraform.workspace
-}

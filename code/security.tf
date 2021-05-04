@@ -39,7 +39,7 @@ resource "azurerm_key_vault" "key_vault" {
 
       certificate_permissions = ["Get", "List", "Update", "Create", "Import",
         "Delete", "Recover", "Backup", "Restore", "ManageContacts", "ManageIssuers",
-        "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers"
+        "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers", "Purge"
       ]
 
       storage_permissions = []
@@ -68,4 +68,54 @@ resource "azurerm_key_vault" "key_vault" {
       ]
     },
   ]
+}
+
+resource "tls_private_key" "jwt" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "tls_self_signed_cert" "jwt_self" {
+  allowed_uses = [
+    "cRLSign",
+    "dataEncipherment",
+    "digitalSignature",
+    "keyAgreement",
+    "keyCertSign",
+    "keyEncipherment"
+  ]
+  key_algorithm         = "RSA"
+  private_key_pem       = tls_private_key.jwt.private_key_pem
+  validity_period_hours = 8640
+  subject {
+    common_name = "apim"
+  }
+}
+
+resource "pkcs12_from_pem" "jwt_pkcs12" {
+  password        = ""
+  cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
+  private_key_pem = tls_private_key.jwt.private_key_pem
+}
+
+resource "tls_private_key" "spid" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "tls_self_signed_cert" "spid_self" {
+  allowed_uses = [
+    "cRLSign",
+    "dataEncipherment",
+    "digitalSignature",
+    "keyAgreement",
+    "keyCertSign",
+    "keyEncipherment"
+  ]
+  key_algorithm         = "RSA"
+  private_key_pem       = tls_private_key.jwt.private_key_pem
+  validity_period_hours = 8640
+  subject {
+    common_name = "hub-spid-login-ms"
+  }
 }

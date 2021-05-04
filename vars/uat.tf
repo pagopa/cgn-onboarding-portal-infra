@@ -171,10 +171,10 @@ resource "tfe_variable" "uat_redis_cache_sku_name" {
   description  = "The SKU of Redis to use. CreatedBy Terraform"
 }
 
-resource "tfe_variable" "dev_enable_spid_test" {
+resource "tfe_variable" "uat_enable_spid_test" {
   key          = "enable_spid_test"
   value        = true
   category     = "terraform"
-  workspace_id = data.tfe_workspace.dev.id
+  workspace_id = data.tfe_workspace.uat.id
   description  = "Create spid test container group. Default false"
 }
