@@ -133,7 +133,7 @@ module "spid_login" {
 
     ENDPOINT_ACS      = "/acs"
     ENDPOINT_ERROR    = "/error"
-    ENDPOINT_SUCCESS  = "/spid/v1/success"
+    ENDPOINT_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
@@ -142,9 +142,8 @@ module "spid_login" {
     SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
     SPID_VALIDATOR_URL = "http://localhost"
 
-    # TODO fix this
-    METADATA_PUBLIC_CERT  = "./certs/cert.pem"
-    METADATA_PRIVATE_CERT = "./certs/key.pem"
+    METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
+    METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
