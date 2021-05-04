@@ -9,7 +9,7 @@ resource "azurerm_dns_zone" "public" {
 }
 
 resource "azurerm_dns_a_record" "api" {
-  count               = terraform.workspace == "prod" ? 1 : 0
+  count               = var.enable_custom_dns ? 1 : 0
   name                = "api"
   records             = [azurerm_public_ip.apigateway_public_ip.ip_address]
   resource_group_name = azurerm_resource_group.rg_public.name
@@ -20,7 +20,7 @@ resource "azurerm_dns_a_record" "api" {
 }
 
 resource "azurerm_dns_cname_record" "frontend" {
-  count               = terraform.workspace == "prod" ? 1 : 0
+  count               = var.enable_custom_dns ? 1 : 0
   name                = "portal"
   record              = module.cdn_portal_frontend.hostname
   resource_group_name = azurerm_resource_group.rg_public.name

@@ -82,6 +82,11 @@ variable "cidr_subnet_spid_login" {
 }
 
 ## DNS
+variable "enable_custom_dns" {
+  type    = bool
+  default = false
+}
+
 variable "external_domain" {
   type    = string
   default = null

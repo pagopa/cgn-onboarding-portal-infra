@@ -1,6 +1,17 @@
 <policies>
   <inbound>
     <base />
+    <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true">
+      <issuer-signing-keys>
+        <key certificate-id="jwt-spid-crt" />
+      </issuer-signing-keys>
+      <issuers>
+        <issuer>SPID</issuer>
+      </issuers>
+    </validate-jwt>
+    <set-header name="X-CGN-USER-ROLE" exists-action="override">
+      <value>merchant</value>
+    </set-header>
     <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
     <cors>
       <allowed-origins>

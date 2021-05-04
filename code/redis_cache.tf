@@ -1,5 +1,5 @@
 module "redis_cache" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache"
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=main"
   name                  = format("%s-apim", local.project)
   resource_group_name   = azurerm_resource_group.rg_db.name
   location              = azurerm_resource_group.rg_db.location

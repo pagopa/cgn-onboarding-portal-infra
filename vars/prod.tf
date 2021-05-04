@@ -23,10 +23,10 @@ resource "tfe_variable" "prod_tags" {
   description  = "tags for the cloud resources. CreatedBy Terraform"
 }
 
-resource "tfe_variable" "dev_enable_spid_test" {
+resource "tfe_variable" "prod_enable_spid_test" {
   key          = "enable_spid_test"
   value        = false
   category     = "terraform"
-  workspace_id = data.tfe_workspace.dev.id
+  workspace_id = data.tfe_workspace.prod.id
   description  = "Create spid test container group. Default false"
 }
