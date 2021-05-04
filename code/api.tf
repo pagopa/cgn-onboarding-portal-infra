@@ -57,7 +57,7 @@ module "portal_backend_1" {
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE     = "prod"
     SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
-    SPRING_DATASOURCE_USERNAME = "${var.db_administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
+    SPRING_DATASOURCE_USERNAME = format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
     JAVA_OPTS                  = "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication"
 
@@ -70,12 +70,14 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
     # application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
+    APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
+    azurerm_application_insights.application_insights.instrumentation_key)
 
   }
 
-  linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/cgn-onboarding-portal-backend:latest"
-  always_on        = "true"
+  linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
+  azurerm_container_registry.container_registry.login_server, "latest")
+  always_on = "true"
 
   allowed_subnets = [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
@@ -138,8 +140,8 @@ module "spid_login" {
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
 
-    SPID_ATTRIBUTES  = "address,email,name,familyName,fiscalNumber,mobilePhone"
-    SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
+    SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
+    SPID_TESTENV_URL   = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
     SPID_VALIDATOR_URL = "http://localhost"
 
     # TODO fix this
