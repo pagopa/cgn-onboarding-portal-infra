@@ -102,7 +102,7 @@ module "spid_login" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "10.14.1"
+    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     // ENVIRONMENT
@@ -158,6 +158,8 @@ module "spid_login" {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
   }
+
+  linux_fx_version = "NODE|12-lts"
 
   always_on = "true"
 
