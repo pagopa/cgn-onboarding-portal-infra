@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg_spid_testenv" {
-  count    = terraform.workspace == "prod" ? 0 : 1
+  count    = var.enable_spid_test ? 1 : 0
   name     = format("%s-spid-testenv-rg", local.project)
   location = var.location
 
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_spid_testenv" {
 
 
 resource "azurerm_storage_account" "spid_testenv_storage_account" {
-  count                     = terraform.workspace == "prod" ? 0 : 1
+  count                     = var.enable_spid_test ? 1 : 0
   name                      = replace(format("%s-sa-st", local.project), "-", "")
   resource_group_name       = azurerm_resource_group.rg_spid_testenv[0].name
   location                  = var.location
@@ -20,7 +20,7 @@ resource "azurerm_storage_account" "spid_testenv_storage_account" {
 }
 
 resource "azurerm_storage_share" "spid_testenv_storage_share" {
-  count = terraform.workspace == "prod" ? 0 : 1
+  count = var.enable_spid_test ? 1 : 0
   name  = format("%s-spid-testenv-share", local.project)
 
   storage_account_name = azurerm_storage_account.spid_testenv_storage_account[0].name
@@ -29,7 +29,7 @@ resource "azurerm_storage_share" "spid_testenv_storage_share" {
 }
 
 resource "azurerm_storage_share" "spid_testenv_caddy_storage_share" {
-  count = terraform.workspace == "prod" ? 0 : 1
+  count = var.enable_spid_test ? 1 : 0
   name  = format("%s-spid-testenv-caddy-share", local.project)
 
   storage_account_name = azurerm_storage_account.spid_testenv_storage_account[0].name
@@ -38,7 +38,7 @@ resource "azurerm_storage_share" "spid_testenv_caddy_storage_share" {
 }
 
 resource "azurerm_container_group" "spid_testenv" {
-  count               = terraform.workspace == "prod" ? 0 : 1
+  count               = var.enable_spid_test ? 1 : 0
   name                = format("%s-spid-testenv", local.project)
   location            = azurerm_resource_group.rg_spid_testenv[0].location
   resource_group_name = azurerm_resource_group.rg_spid_testenv[0].name
@@ -125,6 +125,7 @@ resource "azurerm_container_group" "spid_testenv" {
 }
 
 resource "local_file" "spid_testenv_config" {
+  count    = var.enable_spid_test ? 1 : 0
   filename = "./spid_testenv_conf/config.yaml"
   content = templatefile(
     "./spid_testenv_conf/config.yaml.tpl",
@@ -136,8 +137,9 @@ resource "local_file" "spid_testenv_config" {
 }
 
 resource "null_resource" "upload_config_spid_testenv" {
+  count = var.enable_spid_test ? 1 : 0
   triggers = {
-    "changes-in-config" : md5(local_file.spid_testenv_config.content)
+    "changes-in-config" : md5(local_file.spid_testenv_config[count.index].content)
   }
 
   provisioner "local-exec" {
