@@ -98,3 +98,24 @@ resource "pkcs12_from_pem" "jwt_pkcs12" {
   private_key_pem = tls_private_key.jwt.private_key_pem
 }
 
+resource "tls_private_key" "spid" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "tls_self_signed_cert" "spid_self" {
+  allowed_uses = [
+    "cRLSign",
+    "dataEncipherment",
+    "digitalSignature",
+    "keyAgreement",
+    "keyCertSign",
+    "keyEncipherment"
+  ]
+  key_algorithm         = "RSA"
+  private_key_pem       = tls_private_key.jwt.private_key_pem
+  validity_period_hours = 8640
+  subject {
+    common_name = "hub-spid-login-ms"
+  }
+}
