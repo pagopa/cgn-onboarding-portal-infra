@@ -259,3 +259,10 @@ variable "redis_cache_sku_name" {
   type        = string
   description = "The SKU of Redis to use."
 }
+
+## Spit test
+variable "enable_spid_test" {
+  type        = bool
+  description = "Create spid test container group. Default false"
+  default     = false
+}

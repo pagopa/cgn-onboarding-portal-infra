@@ -122,8 +122,8 @@ module "spid_login" {
     REDIS_PORT     = module.redis_cache.ssl_port
     REDIS_PASSWORD = module.redis_cache.primary_access_key
 
-    # application insights
-    APPLICATIONINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${azurerm_application_insights.application_insights.instrumentation_key}"
+    # application insights key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
   }
 
@@ -265,4 +265,22 @@ module "apim_backoffice_api" {
   content_value = file("./backoffice_api/swagger.json")
 
   xml_content = file("./backoffice_api/policy.xml")
+}
+
+module "apim_spid_login_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api"
+
+  name                = format("%s-spid-login-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "Login SPID Service Provider"
+  display_name = "SPID"
+  path         = "spid/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.spid_login.default_site_hostname)
+
+  content_value = file("./spidlogin_api/swagger.json")
+
+  xml_content = file("./spidlogin_api/policy.xml")
 }

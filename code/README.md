@@ -20,6 +20,7 @@
 | <a name="module_apim"></a> [apim](#module\_apim) | ./modules/apim |  |
 | <a name="module_apim_backend_api"></a> [apim\_backend\_api](#module\_apim\_backend\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api |  |
 | <a name="module_apim_backoffice_api"></a> [apim\_backoffice\_api](#module\_apim\_backoffice\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api |  |
+| <a name="module_apim_spid_login_api"></a> [apim\_spid\_login\_api](#module\_apim\_spid\_login\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api |  |
 | <a name="module_cdn_portal_frontend"></a> [cdn\_portal\_frontend](#module\_cdn\_portal\_frontend) | ./modules/cdn_endpoint |  |
 | <a name="module_cdn_portal_storage"></a> [cdn\_portal\_storage](#module\_cdn\_portal\_storage) | ./modules/cdn_endpoint |  |
 | <a name="module_portal_backend_1"></a> [portal\_backend\_1](#module\_portal\_backend\_1) | ./modules/app_service |  |
@@ -83,6 +84,7 @@
 | [null_resource.cdn_custom_domain](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.upload_config_spid_testenv](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
 
@@ -119,6 +121,7 @@
 | <a name="input_db_version"></a> [db\_version](#input\_db\_version) | Specifies the version of PostgreSQL to use. | `string` | n/a | yes |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | n/a | `string` | `null` | no |
 | <a name="input_enable_sonarqube"></a> [enable\_sonarqube](#input\_enable\_sonarqube) | Enable sonarqube resources | `bool` | `false` | no |
+| <a name="input_enable_spid_test"></a> [enable\_spid\_test](#input\_enable\_spid\_test) | Create spid test container group. Default false | `bool` | `false` | no |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | # DNS | `string` | `null` | no |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
@@ -148,3 +151,4 @@
 | <a name="output_db_fqdn"></a> [db\_fqdn](#output\_db\_fqdn) | n/a |
 | <a name="output_law_workpace_id"></a> [law\_workpace\_id](#output\_law\_workpace\_id) | monitor |
 | <a name="output_web_app_1_default_host_name"></a> [web\_app\_1\_default\_host\_name](#output\_web\_app\_1\_default\_host\_name) | web app service |
+| <a name="output_workspace"></a> [workspace](#output\_workspace) | terraform workspace |
