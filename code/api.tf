@@ -140,6 +140,7 @@ module "spid_login" {
 
     SPID_ATTRIBUTES  = "address,email,name,familyName,fiscalNumber,mobilePhone"
     SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
+    SPID_VALIDATOR_URL = "http://localhost"
 
     # TODO fix this
     METADATA_PUBLIC_CERT  = "./certs/cert.pem"
