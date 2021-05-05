@@ -29,7 +29,7 @@ resource "azurerm_application_gateway" "api_gateway" {
     tier = "WAF_v2"
   }
 
-  enable_http2 = false
+  enable_http2 = true
 
   ssl_policy {
     policy_type = "Predefined"

@@ -135,7 +135,7 @@ module "spid_login" {
 
     ENDPOINT_ACS      = "/acs"
     ENDPOINT_ERROR    = "/error"
-    ENDPOINT_SUCCESS  = "http://localhost:3000/"
+    ENDPOINT_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
@@ -182,6 +182,16 @@ locals {
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
 }
 
+data "template_file" "apim_policy_content" {
+  template = file("./apim_global/policy.xml.tpl")
+  vars = {
+    origins = [
+      format("https://%s", azurerm_container_group.spid_testenv[0].fqdn),
+      format("https://%s/", module.cdn_portal_frontend.hostname),
+      "http://localhost:3000"
+    ]
+  }
+}
 
 module "apim" {
   source                    = "./modules/apim"
@@ -193,7 +203,7 @@ module "apim" {
   publisher_email           = var.apim_publisher_email
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
-  xml_content               = file("./apim_global/policy.xml")
+  xml_content               = data.template_file.apim_policy_content.rendered
   tags                      = var.tags
 }
 

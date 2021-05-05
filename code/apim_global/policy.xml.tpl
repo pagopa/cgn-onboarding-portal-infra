@@ -2,10 +2,9 @@
   <inbound>
     <cors allow-credentials="true">
       <allowed-origins>
-        <origin>https://api.cgn-dev.caravan-azure.bitrock.it</origin>
-        <origin>https://cgnportaltest-d-spid-testenv.westeurope.azurecontainer.io</origin>
-        <origin>https://cgnportaltest-d-cdnendpoint-frontend.azureedge.net</origin>
-        <origin>http://localhost:3000</origin>
+        %{ for origin in origins ~}
+        <origin>${origin}</origin>
+        %{ endfor ~}
       </allowed-origins>
       <allowed-methods preflight-result-max-age="300">
         <method>GET</method>
