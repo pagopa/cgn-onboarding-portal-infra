@@ -183,17 +183,6 @@ locals {
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
 }
 
-data "template_file" "apim_policy_content" {
-  template = file("./apim_global/policy.xml.tpl")
-  vars = {
-    origins = [
-      format("https://%s", azurerm_container_group.spid_testenv[0].fqdn),
-      format("https://%s/", module.cdn_portal_frontend.hostname),
-      "http://localhost:3000"
-    ]
-  }
-}
-
 module "apim" {
   source                    = "./modules/apim"
   subnet_id                 = azurerm_subnet.subnet_apim.id
@@ -204,8 +193,10 @@ module "apim" {
   publisher_email           = var.apim_publisher_email
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
-  xml_content               = data.template_file.apim_policy_content.rendered
-  tags                      = var.tags
+  xml_content = templatefile("./apim_global/policy.xml.tpl", {
+    origins = var.apim_allowed_origins
+  })
+  tags = var.tags
 }
 
 resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
