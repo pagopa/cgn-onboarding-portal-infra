@@ -130,9 +130,8 @@ resource "local_file" "spid_testenv_config" {
   content = templatefile(
     "./spid_testenv_conf/config.yaml.tpl",
     {
-      base_url                      = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
-      service_provider_metadata_url = format("http://%s/spid/v1/metadata", azurerm_public_ip.apigateway_public_ip.ip_address)
-      # TODO change to APIM endpoint
+      base_url                      = format("https://%s", trim(azurerm_container_group.spid_testenv[0].fqdn, "."))
+      service_provider_metadata_url = format("https://%s/spid/v1/metadata", trim(azurerm_dns_a_record.api[0].fqdn, "."))
   })
 }
 

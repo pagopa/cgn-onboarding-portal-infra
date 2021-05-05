@@ -19,6 +19,12 @@ variable "tags" {
   }
 }
 
+variable "azure_client_secret" {
+  description = "AZURE_CLIENT_SECRET"
+  default     = null
+  sensitive   = true
+}
+
 # Apim
 
 variable "apim_private_domain" {

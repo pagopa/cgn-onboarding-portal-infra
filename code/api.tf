@@ -44,7 +44,7 @@ module "portal_backend_1" {
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    WEBSITES_PORT                       = 8080
+    WEBSITES_PORT                       = 9090
 
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.container_registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.container_registry.admin_username
@@ -127,7 +127,7 @@ module "spid_login" {
 
     # SPID
     ORG_ISSUER       = "https://spid.agid.gov.it/cd"
-    ORG_URL          = format("http://%s/spid/v1", azurerm_public_ip.apigateway_public_ip.ip_address)
+    ORG_URL          = format("https://%s/spid/v1", trim(azurerm_dns_a_record.api[0].fqdn, "."))
     ORG_DISPLAY_NAME = "Organization display name"
     ORG_NAME         = "Organization name"
 
@@ -135,14 +135,14 @@ module "spid_login" {
 
     ENDPOINT_ACS      = "/acs"
     ENDPOINT_ERROR    = "/error"
-    ENDPOINT_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
+    ENDPOINT_SUCCESS  = "http://localhost:3000/"
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
 
     SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
     SPID_TESTENV_URL   = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
-    SPID_VALIDATOR_URL = "http://localhost"
+    SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
     METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
@@ -193,6 +193,7 @@ module "apim" {
   publisher_email           = var.apim_publisher_email
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
+  xml_content               = file("./apim_global/policy.xml")
   tags                      = var.tags
 }
 

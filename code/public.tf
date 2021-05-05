@@ -7,12 +7,16 @@ resource "azurerm_resource_group" "rg_public" {
 
 # Since these variables are re-used - a locals block makes this more maintainable
 locals {
-  backend_address_pool_name      = format("%s-appgw-be-address-pool", local.project)
-  frontend_port_name             = format("%s-appgw-fe-port", local.project)
-  frontend_ip_configuration_name = format("%s-appgw-fe-ip-configuration", local.project)
-  http_setting_name              = format("%s-appgw-be-http-settings", local.project)
-  listener_name                  = format("%s-appgw-fe-http-settings", local.project)
-  request_routing_rule_name      = format("%s-appgw-reqs-routing-rule", local.project)
+  backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
+  frontend_http_port_name         = format("%s-appgw-fe-http-port", local.project)
+  frontend_https_port_name        = format("%s-appgw-fe-https-port", local.project)
+  frontend_ip_configuration_name  = format("%s-appgw-fe-ip-configuration", local.project)
+  http_setting_name               = format("%s-appgw-be-http-settings", local.project)
+  http_listener_name              = format("%s-appgw-fe-http-settings", local.project)
+  https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
+  http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
+  https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
+  ssl_cert_name                   = format("%s-appgw-ssl-cert", local.project)
 }
 
 resource "azurerm_application_gateway" "api_gateway" {
@@ -25,7 +29,7 @@ resource "azurerm_application_gateway" "api_gateway" {
     tier = "WAF_v2"
   }
 
-  enable_http2 = true
+  enable_http2 = false
 
   ssl_policy {
     policy_type = "Predefined"
@@ -38,8 +42,13 @@ resource "azurerm_application_gateway" "api_gateway" {
   }
 
   frontend_port {
-    name = local.frontend_port_name
+    name = local.frontend_http_port_name
     port = 80
+  }
+
+  frontend_port {
+    name = local.frontend_https_port_name
+    port = 443
   }
 
   frontend_ip_configuration {
@@ -81,19 +90,48 @@ resource "azurerm_application_gateway" "api_gateway" {
   }
 
   http_listener {
-    name                           = local.listener_name
+    name                           = local.http_listener_name
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_port_name
+    frontend_port_name             = local.frontend_http_port_name
     protocol                       = "Http"
   }
 
+  http_listener {
+    name                           = local.https_listener_name
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
+    frontend_port_name             = local.frontend_https_port_name
+    protocol                       = "Https"
+    ssl_certificate_name           = local.ssl_cert_name
+    require_sni                    = false
+  }
+
   request_routing_rule {
-    name                       = local.request_routing_rule_name
+    name                       = local.http_request_routing_rule_name
     rule_type                  = "Basic"
-    http_listener_name         = local.listener_name
+    http_listener_name         = local.http_listener_name
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
   }
+
+  request_routing_rule {
+    name                       = local.https_request_routing_rule_name
+    rule_type                  = "Basic"
+    http_listener_name         = local.https_listener_name
+    backend_address_pool_name  = local.backend_address_pool_name
+    backend_http_settings_name = local.http_setting_name
+  }
+
+  ssl_certificate {
+    name     = local.ssl_cert_name
+    data     = module.acme_le.certificate_p12
+    password = module.acme_le.certificate_p12_password
+  }
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.main.id]
+  }
+
 
   waf_configuration {
     enabled                  = true

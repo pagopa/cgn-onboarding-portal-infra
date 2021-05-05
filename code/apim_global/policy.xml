@@ -1,0 +1,31 @@
+<policies>
+  <inbound>
+    <cors allow-credentials="true">
+      <allowed-origins>
+        <origin>https://api.cgn-dev.caravan-azure.bitrock.it</origin>
+        <origin>https://cgnportaltest-d-spid-testenv.westeurope.azurecontainer.io</origin>
+        <origin>https://cgnportaltest-d-cdnendpoint-frontend.azureedge.net</origin>
+        <origin>http://localhost:3000</origin>
+      </allowed-origins>
+      <allowed-methods preflight-result-max-age="300">
+        <method>GET</method>
+        <method>POST</method>
+        <method>PUT</method>
+        <method>DELETE</method>
+        <method>OPTIONS</method>
+      </allowed-methods>
+      <allowed-headers>
+        <header>Content-Type</header>
+        <header>Authorization</header>
+        <header>Accept</header>
+      </allowed-headers>
+      <expose-headers>
+        <header>*</header>
+      </expose-headers>
+    </cors>
+  </inbound>
+  <backend>
+    <forward-request />
+  </backend>
+  <outbound />
+</policies>
