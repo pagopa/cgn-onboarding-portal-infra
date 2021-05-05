@@ -194,7 +194,11 @@ module "apim" {
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
   xml_content = templatefile("./apim_global/policy.xml.tpl", {
-    origins = var.apim_allowed_origins
+    origins = [
+      format("https://%s", azurerm_container_group.spid_testenv[0].fqdn),
+      format("https://%s/", module.cdn_portal_frontend.hostname),
+      "http://localhost:3000"
+    ]
   })
   tags = var.tags
 }

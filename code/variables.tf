@@ -52,11 +52,6 @@ variable "apim_notification_sender_email" {
   type = string
 }
 
-variable "apim_allowed_origins" {
-  type    = list(string)
-  default = ["*"]
-}
-
 # App Gateway
 variable "app_gateway_min_capacity" {
   type    = number
