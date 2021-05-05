@@ -44,7 +44,7 @@ module "portal_backend_1" {
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    WEBSITES_PORT                       = 9090
+    WEBSITES_PORT                       = 8080
 
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.container_registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.container_registry.admin_username
@@ -56,6 +56,7 @@ module "portal_backend_1" {
 
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE     = "prod"
+    SERVER_PORT                = 8080
     SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
     SPRING_DATASOURCE_USERNAME = format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
