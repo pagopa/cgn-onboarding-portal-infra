@@ -113,7 +113,7 @@ resource "tls_self_signed_cert" "spid_self" {
     "keyEncipherment"
   ]
   key_algorithm         = "RSA"
-  private_key_pem       = tls_private_key.jwt.private_key_pem
+  private_key_pem       = tls_private_key.spid.private_key_pem
   validity_period_hours = 8640
   subject {
     common_name = "hub-spid-login-ms"
