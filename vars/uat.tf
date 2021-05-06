@@ -194,11 +194,3 @@ resource "tfe_variable" "uat_app_gateway_certificate_name" {
   workspace_id = data.tfe_workspace.uat.id
   description  = "Application gateway certificate name on Key Vault. CreatedBy Terraform"
 }
-
-resource "tfe_variable" "uat_azure_client_secret" {
-  key          = "TF_VAR_azure_client_secret"
-  value        = "$ARM_CLIENT_SECRET"
-  category     = "env"
-  sensitive    = true
-  workspace_id = data.tfe_workspace.uat.id
-}
