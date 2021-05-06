@@ -131,7 +131,7 @@ resource "local_file" "spid_testenv_config" {
     "./spid_testenv_conf/config.yaml.tpl",
     {
       base_url                      = format("https://%s", trim(azurerm_container_group.spid_testenv[0].fqdn, "."))
-      service_provider_metadata_url = format("https://%s/spid/v1/metadata", trim(azurerm_dns_a_record.api[0].fqdn, "."))
+      service_provider_metadata_url = format("https://%s/spid/v1/metadata", var.app_gateway_host_name)
   })
 }
 

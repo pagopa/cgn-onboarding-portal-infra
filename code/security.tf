@@ -93,6 +93,12 @@ resource "azurerm_key_vault" "key_vault" {
   ]
 }
 
+data "azurerm_key_vault_secret" "app_gw_cert" {
+  count        = var.app_gateway_certificate_name != null ? 1 : 0
+  name         = var.app_gateway_certificate_name
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
 resource "tls_private_key" "jwt" {
   algorithm = "RSA"
   rsa_bits  = 2048

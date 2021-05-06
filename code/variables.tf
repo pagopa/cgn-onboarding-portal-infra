@@ -62,6 +62,17 @@ variable "app_gateway_max_capacity" {
   default = 2
 }
 
+variable "app_gateway_host_name" {
+  type        = string
+  description = "Application gateway host name"
+}
+
+variable "app_gateway_certificate_name" {
+  type        = string
+  description = "Application gateway certificate name on Key Vault"
+  default     = null
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)

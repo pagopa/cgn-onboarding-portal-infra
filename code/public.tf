@@ -16,7 +16,8 @@ locals {
   https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
   http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
   https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
-  ssl_cert_name                   = format("%s-appgw-ssl-cert", local.project)
+  acme_le_ssl_cert_name           = format("%s-appgw-acme-le-ssl-cert", local.project)
+  http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
 }
 
 resource "azurerm_application_gateway" "api_gateway" {
@@ -101,8 +102,9 @@ resource "azurerm_application_gateway" "api_gateway" {
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = local.frontend_https_port_name
     protocol                       = "Https"
-    ssl_certificate_name           = local.ssl_cert_name
-    require_sni                    = false
+    ssl_certificate_name           = var.enable_custom_dns ? local.acme_le_ssl_cert_name : data.azurerm_key_vault_secret.app_gw_cert[0].name
+    require_sni                    = true
+    host_name                      = var.app_gateway_host_name
   }
 
   request_routing_rule {
@@ -121,10 +123,29 @@ resource "azurerm_application_gateway" "api_gateway" {
     backend_http_settings_name = local.http_setting_name
   }
 
-  ssl_certificate {
-    name     = local.ssl_cert_name
-    data     = module.acme_le.certificate_p12
-    password = module.acme_le.certificate_p12_password
+  dynamic "ssl_certificate" {
+    for_each = var.enable_custom_dns ? [true] : []
+    content {
+      name     = local.acme_le_ssl_cert_name
+      data     = module.acme_le[0].certificate_p12
+      password = module.acme_le[0].certificate_p12_password
+    }
+  }
+
+  dynamic "ssl_certificate" {
+    for_each = var.enable_custom_dns ? [] : [true]
+    content {
+      name                = data.azurerm_key_vault_secret.app_gw_cert[0].name
+      key_vault_secret_id = replace(data.azurerm_key_vault_secret.app_gw_cert[0].id, "/${data.azurerm_key_vault_secret.app_gw_cert[0].version}", "")
+    }
+  }
+
+  redirect_configuration {
+    name                 = local.http_to_https_redirect_rule
+    redirect_type        = "Permanent"
+    target_listener_name = local.https_listener_name
+    include_path         = true
+    include_query_string = true
   }
 
   identity {

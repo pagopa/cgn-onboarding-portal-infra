@@ -3,11 +3,12 @@ provider "acme" {
 }
 
 module "acme_le" {
+  count                 = var.enable_custom_dns ? 1 : 0
   depends_on            = [azurerm_dns_zone.public]
   source                = "git::https://github.com/bitrockteam/caravan-acme-le?ref=main"
   common_name           = azurerm_dns_zone.public[0].name
   dns_provider          = "azure"
-  private_key           = tls_private_key.cert_private_key.private_key_pem
+  private_key           = tls_private_key.cert_private_key[0].private_key_pem
   azure_subscription_id = data.azurerm_client_config.current.subscription_id
   azure_tenant_id       = data.azurerm_client_config.current.tenant_id
   azure_resource_group  = azurerm_resource_group.rg_public.name
@@ -18,5 +19,6 @@ module "acme_le" {
 }
 
 resource "tls_private_key" "cert_private_key" {
+  count     = var.enable_custom_dns ? 1 : 0
   algorithm = "RSA"
 }
