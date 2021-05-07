@@ -56,6 +56,7 @@ module "portal_backend_1" {
 
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE     = "prod"
+    SERVER_PORT                = 8080
     SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
     SPRING_DATASOURCE_USERNAME = format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
@@ -127,7 +128,7 @@ module "spid_login" {
 
     # SPID
     ORG_ISSUER       = "https://spid.agid.gov.it/cd"
-    ORG_URL          = format("http://%s/spid/v1", azurerm_public_ip.apigateway_public_ip.ip_address)
+    ORG_URL          = format("https://%s/spid/v1", var.app_gateway_host_name)
     ORG_DISPLAY_NAME = "Organization display name"
     ORG_NAME         = "Organization name"
 
@@ -142,7 +143,7 @@ module "spid_login" {
 
     SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
     SPID_TESTENV_URL   = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
-    SPID_VALIDATOR_URL = "http://localhost"
+    SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
     METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
@@ -182,7 +183,6 @@ locals {
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
 }
 
-
 module "apim" {
   source                    = "./modules/apim"
   subnet_id                 = azurerm_subnet.subnet_apim.id
@@ -193,7 +193,14 @@ module "apim" {
   publisher_email           = var.apim_publisher_email
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
-  tags                      = var.tags
+  xml_content = templatefile("./apim_global/policy.xml.tpl", {
+    origins = [
+      format("https://%s", azurerm_container_group.spid_testenv[0].fqdn),
+      format("https://%s/", module.cdn_portal_frontend.hostname),
+      "http://localhost:3000"
+    ]
+  })
+  tags = var.tags
 }
 
 resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {

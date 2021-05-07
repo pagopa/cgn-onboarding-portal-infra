@@ -19,6 +19,12 @@ variable "tags" {
   }
 }
 
+variable "azure_client_secret" {
+  description = "AZURE_CLIENT_SECRET"
+  default     = null
+  sensitive   = true
+}
+
 # Apim
 
 variable "apim_private_domain" {
@@ -54,6 +60,17 @@ variable "app_gateway_min_capacity" {
 variable "app_gateway_max_capacity" {
   type    = number
   default = 2
+}
+
+variable "app_gateway_host_name" {
+  type        = string
+  description = "Application gateway host name"
+}
+
+variable "app_gateway_certificate_name" {
+  type        = string
+  description = "Application gateway certificate name on Key Vault"
+  default     = null
 }
 
 # Network

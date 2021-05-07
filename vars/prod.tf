@@ -28,5 +28,21 @@ resource "tfe_variable" "prod_enable_spid_test" {
   value        = false
   category     = "terraform"
   workspace_id = data.tfe_workspace.prod.id
-  description  = "Create spid test container group. Default false"
+  description  = "Create spid test container group. Default false. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "prod_app_gateway_host_name" {
+  key          = "app_gateway_host_name"
+  value        = "XXXXXX"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.prod.id
+  description  = "Application gateway host name. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "prod_app_gateway_certificate_name" {
+  key          = "app_gateway_certificate_name"
+  value        = "XXXXXXX"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.prod.id
+  description  = "Application gateway certificate name on Key Vault. CreatedBy Terraform"
 }

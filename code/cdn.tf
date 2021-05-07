@@ -149,6 +149,7 @@ resource "null_resource" "cdn_custom_domain" {
   provisioner "local-exec" {
     command = <<EOT
       az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && \
+      az account set -s ${data.azurerm_subscription.current.display_name} && \
       az cdn custom-domain create \
         --resource-group ${azurerm_resource_group.rg_public.name} \
         --endpoint-name ${module.cdn_portal_frontend.name} \

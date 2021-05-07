@@ -7,12 +7,17 @@ resource "azurerm_resource_group" "rg_public" {
 
 # Since these variables are re-used - a locals block makes this more maintainable
 locals {
-  backend_address_pool_name      = format("%s-appgw-be-address-pool", local.project)
-  frontend_port_name             = format("%s-appgw-fe-port", local.project)
-  frontend_ip_configuration_name = format("%s-appgw-fe-ip-configuration", local.project)
-  http_setting_name              = format("%s-appgw-be-http-settings", local.project)
-  listener_name                  = format("%s-appgw-fe-http-settings", local.project)
-  request_routing_rule_name      = format("%s-appgw-reqs-routing-rule", local.project)
+  backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
+  frontend_http_port_name         = format("%s-appgw-fe-http-port", local.project)
+  frontend_https_port_name        = format("%s-appgw-fe-https-port", local.project)
+  frontend_ip_configuration_name  = format("%s-appgw-fe-ip-configuration", local.project)
+  http_setting_name               = format("%s-appgw-be-http-settings", local.project)
+  http_listener_name              = format("%s-appgw-fe-http-settings", local.project)
+  https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
+  http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
+  https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
+  acme_le_ssl_cert_name           = format("%s-appgw-acme-le-ssl-cert", local.project)
+  http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
 }
 
 resource "azurerm_application_gateway" "api_gateway" {
@@ -38,8 +43,13 @@ resource "azurerm_application_gateway" "api_gateway" {
   }
 
   frontend_port {
-    name = local.frontend_port_name
+    name = local.frontend_http_port_name
     port = 80
+  }
+
+  frontend_port {
+    name = local.frontend_https_port_name
+    port = 443
   }
 
   frontend_ip_configuration {
@@ -81,19 +91,60 @@ resource "azurerm_application_gateway" "api_gateway" {
   }
 
   http_listener {
-    name                           = local.listener_name
+    name                           = local.http_listener_name
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_port_name
+    frontend_port_name             = local.frontend_http_port_name
     protocol                       = "Http"
   }
 
+  http_listener {
+    name                           = local.https_listener_name
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
+    frontend_port_name             = local.frontend_https_port_name
+    protocol                       = "Https"
+    ssl_certificate_name           = var.app_gateway_certificate_name
+    require_sni                    = true
+    host_name                      = var.app_gateway_host_name
+  }
+
   request_routing_rule {
-    name                       = local.request_routing_rule_name
+    name                       = local.http_request_routing_rule_name
     rule_type                  = "Basic"
-    http_listener_name         = local.listener_name
+    http_listener_name         = local.http_listener_name
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
   }
+
+  request_routing_rule {
+    name                       = local.https_request_routing_rule_name
+    rule_type                  = "Basic"
+    http_listener_name         = local.https_listener_name
+    backend_address_pool_name  = local.backend_address_pool_name
+    backend_http_settings_name = local.http_setting_name
+  }
+
+  dynamic "ssl_certificate" {
+    for_each = var.enable_custom_dns ? [true] : []
+    content {
+      name                = data.azurerm_key_vault_secret.app_gw_cert[0].name
+      key_vault_secret_id = trimsuffix(data.azurerm_key_vault_secret.app_gw_cert[0].id, data.azurerm_key_vault_secret.app_gw_cert[0].version)
+    }
+
+  }
+
+  redirect_configuration {
+    name                 = local.http_to_https_redirect_rule
+    redirect_type        = "Permanent"
+    target_listener_name = local.https_listener_name
+    include_path         = true
+    include_query_string = true
+  }
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.main.id]
+  }
+
 
   waf_configuration {
     enabled                  = true

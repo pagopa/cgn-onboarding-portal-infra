@@ -12,23 +12,6 @@
     <set-header name="X-CGN-USER-ROLE" exists-action="override">
       <value>merchant</value>
     </set-header>
-    <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
-    <cors>
-      <allowed-origins>
-        <origin>*</origin>
-      </allowed-origins>
-      <allowed-methods>
-        <method>GET</method>
-        <method>POST</method>
-        <method>PUT</method>
-        <method>DELETE</method>
-        <method>OPTIONS</method>
-      </allowed-methods>
-      <allowed-headers>
-        <header>Content-Type</header>
-        <header>Authorization</header>
-      </allowed-headers>
-    </cors>
   </inbound>
   <outbound>
     <base />

@@ -82,11 +82,28 @@ resource "tfe_variable" "uat_cidr_subnet_apim" {
 # DNS
 resource "tfe_variable" "uat_external_domain" {
   key          = "external_domain"
-  value        = "XXXXXX"
+  value        = "pagopa.it"
   hcl          = false
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
   description  = "DNS External domain. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_enable_custom_dns" {
+  key          = "enable_custom_dns"
+  value        = true
+  hcl          = false
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "Enable custom domain. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_app_gateway_host_name" {
+  key          = "app_gateway_host_name"
+  value        = "uat.cgnonboardingportal.pagopa.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "Application gateway host name. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "uat_dns_zone_prefix" {
@@ -176,5 +193,21 @@ resource "tfe_variable" "uat_enable_spid_test" {
   value        = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
-  description  = "Create spid test container group. Default false"
+  description  = "Create spid test container group. Default false. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_app_gateway_host_name" {
+  key          = "app_gateway_host_name"
+  value        = "test.cgnonboardingportal.pagopa.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "Application gateway host name. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_app_gateway_certificate_name" {
+  key          = "app_gateway_certificate_name"
+  value        = "XXXXXXXXX"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "Application gateway certificate name on Key Vault. CreatedBy Terraform"
 }

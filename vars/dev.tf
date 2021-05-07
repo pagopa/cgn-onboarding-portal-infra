@@ -188,5 +188,22 @@ resource "tfe_variable" "dev_enable_spid_test" {
   value        = true
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
-  description  = "Create spid test container group. Default false"
+  description  = "Create spid test container group. Default false.  CreatedBy Terraform"
+}
+
+
+resource "tfe_variable" "dev_app_gateway_host_name" {
+  key          = "app_gateway_host_name"
+  value        = "api.cgn-dev.caravan-azure.bitrock.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Application gateway host name. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_azure_client_secret" {
+  key          = "TF_VAR_azure_client_secret"
+  value        = "$ARM_CLIENT_SECRET"
+  category     = "env"
+  sensitive    = true
+  workspace_id = data.tfe_workspace.dev.id
 }

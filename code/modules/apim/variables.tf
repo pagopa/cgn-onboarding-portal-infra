@@ -38,6 +38,10 @@ variable "subnet_id" {
   type = string
 }
 
+variable "xml_content" {
+  type = string
+}
+
 variable "tags" {
   type = map(any)
 }
