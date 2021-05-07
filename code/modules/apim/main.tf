@@ -21,4 +21,5 @@ resource "azurerm_api_management" "this" {
     subnet_id = var.subnet_id
   }
 
+  tags = var.tags
 }

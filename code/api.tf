@@ -45,6 +45,8 @@ module "portal_backend_1" {
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
+    WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
+    WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
 
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.container_registry.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.container_registry.admin_username
