@@ -323,3 +323,14 @@ variable "enable_ade_aa_mock" {
   type    = bool
   default = false
 }
+
+## AD B2C
+variable "adb2c_openid_config_url" {
+  type        = string
+  description = "Azure AD B2C OpenID Connect metadata document"
+}
+
+variable "adb2c_audience" {
+  type        = string
+  description = "recipients that the JWT is intended for"
+}

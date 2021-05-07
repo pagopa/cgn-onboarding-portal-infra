@@ -238,3 +238,19 @@ resource "tfe_variable" "dev_enable_ade_aa_mock" {
 }
 
 
+
+resource "tfe_variable" "dev_adb2c_openid_config_url" {
+  key          = "adb2c_openid_config_url"
+  value        = "https://login.microsoftonline.com/testcgnportalbitrock.onmicrosoft.com/v2.0/.well-known/openid-configuration"
+  category     = "terraform"
+  sensitive    = true
+  workspace_id = data.tfe_workspace.dev.id
+}
+
+resource "tfe_variable" "dev_adb2c_audience" {
+  key          = "adb2c_audience"
+  value        = "bcab7c72-7b61-4ac6-bd6e-122c1fb6c4d3"
+  category     = "terraform"
+  sensitive    = true
+  workspace_id = data.tfe_workspace.dev.id
+}
