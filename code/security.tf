@@ -38,6 +38,7 @@ resource "azurerm_key_vault" "key_vault" {
 
   access_policy = [
     {
+      // Terraform cloud
       tenant_id      = data.azurerm_client_config.current.tenant_id
       object_id      = data.azurerm_client_config.current.object_id
       application_id = ""
@@ -58,6 +59,7 @@ resource "azurerm_key_vault" "key_vault" {
       storage_permissions = []
     },
     {
+      // api management
       tenant_id      = data.azurerm_client_config.current.tenant_id
       object_id      = module.apim.principal_id
       application_id = ""
@@ -68,6 +70,7 @@ resource "azurerm_key_vault" "key_vault" {
       storage_permissions     = []
     },
     {
+      // user assined identity: (application gateway)
       tenant_id      = azurerm_user_assigned_identity.main.tenant_id
       object_id      = azurerm_user_assigned_identity.main.principal_id
       application_id = ""
@@ -78,6 +81,7 @@ resource "azurerm_key_vault" "key_vault" {
       storage_permissions     = []
     },
     {
+      // active directory group
       application_id = ""
       tenant_id      = data.azurerm_client_config.current.tenant_id
       object_id      = var.ad_key_vault_group_object_id
