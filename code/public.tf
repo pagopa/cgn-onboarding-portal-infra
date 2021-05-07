@@ -124,11 +124,12 @@ resource "azurerm_application_gateway" "api_gateway" {
   }
 
   dynamic "ssl_certificate" {
-    for_each = var.enable_custom_dns ? [] : [true]
+    for_each = var.enable_custom_dns ? [true] : []
     content {
       name                = data.azurerm_key_vault_secret.app_gw_cert[0].name
-      key_vault_secret_id = replace(data.azurerm_key_vault_secret.app_gw_cert[0].id, "/${data.azurerm_key_vault_secret.app_gw_cert[0].version}", "")
+      key_vault_secret_id = trimsuffix(data.azurerm_key_vault_secret.app_gw_cert[0].id, data.azurerm_key_vault_secret.app_gw_cert[0].version)
     }
+
   }
 
   redirect_configuration {
