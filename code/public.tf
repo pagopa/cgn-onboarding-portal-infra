@@ -160,4 +160,6 @@ resource "azurerm_application_gateway" "api_gateway" {
     min_capacity = var.app_gateway_min_capacity
     max_capacity = var.app_gateway_max_capacity
   }
+
+  tags = var.tags
 }

@@ -10,7 +10,7 @@
       </issuers>
     </validate-jwt>
     <set-header name="X-CGN-USER-ROLE" exists-action="override">
-      <value>merchant</value>
+      <value>ROLE_MERCHANT</value>
     </set-header>
   </inbound>
   <outbound>

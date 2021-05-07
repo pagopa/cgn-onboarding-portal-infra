@@ -17,6 +17,8 @@ resource "azurerm_storage_account" "spid_testenv_storage_account" {
   account_tier              = "Standard"
 
   account_replication_type = "LRS"
+
+  tags = var.tags
 }
 
 resource "azurerm_storage_share" "spid_testenv_storage_share" {
