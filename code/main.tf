@@ -11,10 +11,6 @@ terraform {
       version = ">= 1.4.0"
     }
 
-    acme = {
-      source = "vancluever/acme"
-    }
-
     pkcs12 = {
       source  = "chilicat/pkcs12"
       version = "0.0.6"

@@ -102,7 +102,7 @@ resource "azurerm_application_gateway" "api_gateway" {
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = local.frontend_https_port_name
     protocol                       = "Https"
-    ssl_certificate_name           = var.enable_custom_dns ? local.acme_le_ssl_cert_name : data.azurerm_key_vault_secret.app_gw_cert[0].name
+    ssl_certificate_name           = var.app_gateway_certificate_name
     require_sni                    = true
     host_name                      = var.app_gateway_host_name
   }
@@ -121,15 +121,6 @@ resource "azurerm_application_gateway" "api_gateway" {
     http_listener_name         = local.https_listener_name
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
-  }
-
-  dynamic "ssl_certificate" {
-    for_each = var.enable_custom_dns ? [true] : []
-    content {
-      name     = local.acme_le_ssl_cert_name
-      data     = module.acme_le[0].certificate_p12
-      password = module.acme_le[0].certificate_p12_password
-    }
   }
 
   dynamic "ssl_certificate" {

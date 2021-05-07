@@ -1,3 +1,4 @@
+/*
 provider "acme" {
   server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
@@ -22,3 +23,4 @@ resource "tls_private_key" "cert_private_key" {
   count     = var.enable_custom_dns ? 1 : 0
   algorithm = "RSA"
 }
+*/
