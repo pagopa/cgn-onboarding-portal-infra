@@ -36,67 +36,73 @@ resource "azurerm_key_vault" "key_vault" {
     default_action = "Allow" #tfsec:ignore:AZU020
   }
 
-  access_policy = [
-    {
-      // Terraform cloud
-      tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = data.azurerm_client_config.current.object_id
-      application_id = ""
-
-      key_permissions = ["Get", "List", "Update", "Create", "Import", "Delete",
-        "Recover", "Backup", "Restore"
-      ]
-
-      secret_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup",
-        "Restore"
-      ]
-
-      certificate_permissions = ["Get", "List", "Update", "Create", "Import",
-        "Delete", "Recover", "Backup", "Restore", "ManageContacts", "ManageIssuers",
-        "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers", "Purge"
-      ]
-
-      storage_permissions = []
-    },
-    {
-      // api management
-      tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = module.apim.principal_id
-      application_id = ""
-
-      key_permissions         = []
-      secret_permissions      = ["Get", "List"]
-      certificate_permissions = ["Get", "List"]
-      storage_permissions     = []
-    },
-    {
-      // user assined identity: (application gateway)
-      tenant_id      = azurerm_user_assigned_identity.main.tenant_id
-      object_id      = azurerm_user_assigned_identity.main.principal_id
-      application_id = ""
-
-      key_permissions         = ["Get", "List"]
-      secret_permissions      = ["Get", "List"]
-      certificate_permissions = ["Get", "List"]
-      storage_permissions     = []
-    },
-    {
-      // active directory group
-      application_id = ""
-      tenant_id      = data.azurerm_client_config.current.tenant_id
-      object_id      = var.ad_key_vault_group_object_id
-
-      key_permissions     = []
-      secret_permissions  = []
-      storage_permissions = []
-      certificate_permissions = [
-        "Get", "List", "Update", "Create", "Import",
-        "Delete", "Restore", "Purge", "Recover"
-      ]
-    },
-  ]
 }
 
+# terraform cloud policy
+resource "azurerm_key_vault_access_policy" "terraform_cloud_policy" {
+  key_vault_id = azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = ["Get", "List", "Update", "Create", "Import", "Delete",
+    "Recover", "Backup", "Restore"
+  ]
+
+  secret_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup",
+    "Restore"
+  ]
+
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import",
+    "Delete", "Recover", "Backup", "Restore", "ManageContacts", "ManageIssuers",
+    "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers", "Purge"
+  ]
+
+  storage_permissions = []
+
+}
+
+# api management policy 
+resource "azurerm_key_vault_access_policy" "api_management_policy" {
+  key_vault_id = azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apim.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+// user assined identity: (application gateway)
+resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
+  key_vault_id = azurerm_key_vault.key_vault.id
+
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.main.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+# ad group policy
+resource "azurerm_key_vault_access_policy" "ad_group_policy" {
+  key_vault_id = azurerm_key_vault.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = var.ad_key_vault_group_object_id
+
+  key_permissions     = []
+  secret_permissions  = []
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+
+}
+
+# azure devops
 resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
   count          = var.cert_renew_app_object_id == null ? 0 : 1
   key_vault_id   = azurerm_key_vault.key_vault.id
@@ -126,6 +132,7 @@ resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
 }
 
 data "azurerm_key_vault_secret" "app_gw_cert" {
+  depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
   count        = var.app_gateway_certificate_name != null ? 1 : 0
   name         = var.app_gateway_certificate_name
   key_vault_id = azurerm_key_vault.key_vault.id
