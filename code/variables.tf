@@ -98,6 +98,10 @@ variable "cidr_subnet_spid_login" {
   type = list(string)
 }
 
+variable "cidr_subnet_function" {
+  type = list(string)
+}
+
 ## DNS
 variable "enable_custom_dns" {
   type    = bool

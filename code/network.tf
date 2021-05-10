@@ -126,6 +126,28 @@ module "subnet_spid_login" {
   ]
 }
 
+module "subnet_function" {
+  source               = "./modules/subnet"
+  name                 = format("%s-function-subnet", local.project)
+  address_prefixes     = var.cidr_subnet_function
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+
+  delegation = {
+    name = "default"
+
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.Storage",
+  ]
+}
+
 # APIM subnet
 
 resource "azurerm_subnet" "subnet_apim" {

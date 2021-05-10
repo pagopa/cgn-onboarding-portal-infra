@@ -90,6 +90,17 @@ resource "tfe_variable" "dev_cidr_subnet_spid_login" {
   description  = "cidr virtual spid login. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "dev_cidr_subnet_function" {
+  key          = "cidr_subnet_function"
+  value        = <<-EOT
+  ["10.0.6.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "cidr virtual function. CreatedBy Terraform"
+}
+
 # DNS
 resource "tfe_variable" "dev_external_domain" {
   key          = "external_domain"
