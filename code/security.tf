@@ -97,6 +97,34 @@ resource "azurerm_key_vault" "key_vault" {
   ]
 }
 
+resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
+  count          = var.cert_renew_app_object_id == null ? 0 : 1
+  key_vault_id   = azurerm_key_vault.key_vault.id
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  object_id      = var.cert_renew_app_object_id
+  application_id = var.cert_renew_app_id
+
+  key_permissions = [
+    "Get",
+    "List",
+    "Update",
+    "Create",
+    "Import",
+  ]
+
+  secret_permissions = [
+    "Get",
+    "List",
+    "Set",
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List",
+    "Import",
+  ]
+}
+
 data "azurerm_key_vault_secret" "app_gw_cert" {
   count        = var.app_gateway_certificate_name != null ? 1 : 0
   name         = var.app_gateway_certificate_name

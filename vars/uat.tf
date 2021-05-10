@@ -196,18 +196,28 @@ resource "tfe_variable" "uat_enable_spid_test" {
   description  = "Create spid test container group. Default false. CreatedBy Terraform"
 }
 
-resource "tfe_variable" "uat_app_gateway_host_name" {
-  key          = "app_gateway_host_name"
-  value        = "test.cgnonboardingportal.pagopa.it"
-  category     = "terraform"
-  workspace_id = data.tfe_workspace.uat.id
-  description  = "Application gateway host name. CreatedBy Terraform"
-}
-
 resource "tfe_variable" "uat_app_gateway_certificate_name" {
   key          = "app_gateway_certificate_name"
   value        = "XXXXXXXXX"
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
   description  = "Application gateway certificate name on Key Vault. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_cert_renew_app_object_id" {
+  key          = "cert_renew_app_object_id"
+  value        = "XXX"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  sensitive    = true
+  description  = "Object id of the azure devops app responsible to create and renew TLS certificates. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_cert_renew_app_id" {
+  key          = "cert_renew_app_id"
+  value        = "XXX"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  sensitive    = true
+  description  = "Application id of the azure devops app responsible to create and renew TLS certificates. CreatedBy Terraform"
 }
