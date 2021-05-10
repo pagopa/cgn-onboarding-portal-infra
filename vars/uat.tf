@@ -210,7 +210,7 @@ resource "tfe_variable" "uat_cert_renew_app_object_id" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
   sensitive    = true
-  description  = "Object id of the azure devops app responsible to create and renew tsl certificates. CreatedBy Terraform"
+  description  = "Object id of the azure devops app responsible to create and renew TLS certificates. CreatedBy Terraform"
 }
 
 resource "tfe_variable" "uat_cert_renew_app_id" {
