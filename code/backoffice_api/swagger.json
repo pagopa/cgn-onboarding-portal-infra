@@ -8,6 +8,12 @@
   "schemes": [
     "https"
   ],
+  "security": [
+    {
+      "Bearer": [],
+      "UserRole": []
+    }
+  ],
   "tags": [
     {
       "name": "agreement",
@@ -347,6 +353,85 @@
           }
         }
       }
+    },
+    "/approved-agreements": {
+      "get": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Get list of approved agreements",
+        "operationId": "getApprovedAgreements",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "profileFullName",
+            "description": "String to search in profile full name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "lastUpdateDateFrom",
+            "description": "Agreement last update date lower bound",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "in": "query",
+            "name": "lastUpdateDateTo",
+            "description": "Agreement last update date upper bound",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "$ref": "#/parameters/PageSize"
+          },
+          {
+            "$ref": "#/parameters/PageNumber"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of approved agreements",
+            "schema": {
+              "$ref": "#/definitions/ApprovedAgreements"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/approved-agreements/{agreementId}": {
+      "get": {
+        "tags": [
+          "agreement"
+        ],
+        "summary": "Get approved agreement",
+        "operationId": "getApprovedAgreement",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Approved agreement",
+            "schema": {
+              "$ref": "#/definitions/ApprovedAgreementDetail"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "consumes": [
@@ -416,6 +501,23 @@
         }
       }
     },
+    "ApprovedAgreements": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovedAgreement"
+          }
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
     "Agreement": {
       "type": "object",
       "discriminator": "state",
@@ -470,32 +572,51 @@
       ]
     },
     "ApprovedAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
+      "type": "object",
+      "required": [
+        "agreementId",
+        "fullName",
+        "agreementStartDate",
+        "agreementLastUpdateDate"
+      ],
+      "properties": {
+        "agreementId": {
+          "type": "string"
         },
-        {
-          "type": "object"
+        "fullName": {
+          "type": "string"
+        },
+        "agreementStartDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "agreementLastUpdateDate": {
+          "type": "string",
+          "format": "date"
         }
-      ]
+      }
     },
-    "RejectedAgreement": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Agreement"
+    "ApprovedAgreementDetail": {
+      "type": "object",
+      "required": [
+        "agreementId",
+        "profile",
+        "documents"
+      ],
+      "properties": {
+        "agreementId": {
+          "type": "string"
         },
-        {
-          "type": "object",
-          "required": [
-            "reasonMessage"
-          ],
-          "properties": {
-            "reasonMessage": {
-              "type": "string"
-            }
-          }
+        "profile": {
+          "$ref": "#/definitions/ApprovedAgreementProfile"
+        },
+        "discounts": {
+          "$ref": "#/definitions/ApprovedAgreementDiscounts"
+        },
+        "documents": {
+          "$ref": "#/definitions/Documents"
         }
-      ]
+      }
     },
     "AgreementState": {
       "type": "string",
@@ -535,9 +656,7 @@
         "agreementId",
         "fullName",
         "pecAddress",
-        "referent",
-        "description",
-        "salesChannel"
+        "referent"
       ],
       "properties": {
         "id": {
@@ -551,6 +670,68 @@
         },
         "referent": {
           "$ref": "#/definitions/Referent"
+        }
+      }
+    },
+    "ApprovedAgreementProfile": {
+      "type": "object",
+      "required": [
+        "description",
+        "salesChannel",
+        "lastUpateDate",
+        "fullName",
+        "taxCodeOrVat",
+        "pecAddress",
+        "legalOffice",
+        "telephoneNumber",
+        "legalRepresentativeFullName",
+        "legalRepresentativeTaxCode",
+        "referent"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "salesChannel": {
+          "$ref": "#/definitions/SalesChannel"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "lastUpateDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "taxCodeOrVat": {
+          "type": "string",
+          "minLength": 11,
+          "maxLength": 16
+        },
+        "pecAddress": {
+          "type": "string",
+          "format": "email"
+        },
+        "legalOffice": {
+          "type": "string"
+        },
+        "telephoneNumber": {
+          "type": "string",
+          "maxLength": 15
+        },
+        "legalRepresentativeFullName": {
+          "type": "string"
+        },
+        "legalRepresentativeTaxCode": {
+          "type": "string"
+        },
+        "referent": {
+          "$ref": "#/definitions/ApprovedAgreementReferent"
         }
       }
     },
@@ -578,10 +759,45 @@
         }
       }
     },
+    "ApprovedAgreementReferent": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "emailAddress",
+        "telephoneNumber",
+        "role"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string",
+          "format": "email"
+        },
+        "telephoneNumber": {
+          "type": "string",
+          "maxLength": 15
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
     "Discounts": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/Discount"
+      }
+    },
+    "ApprovedAgreementDiscounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ApprovedAgreementDiscount"
       }
     },
     "Discount": {
@@ -607,13 +823,198 @@
         }
       }
     },
+    "ApprovedAgreementDiscount": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "description",
+        "startDate",
+        "endDate",
+        "discount",
+        "productCategories",
+        "condition",
+        "lastUpateDate",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "discount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "productCategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductCategory"
+          },
+          "minItems": 1
+        },
+        "condition": {
+          "type": "string"
+        },
+        "lastUpateDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "state": {
+          "$ref": "#/definitions/DiscountState"
+        }
+      }
+    },
     "DiscountState": {
       "type": "string",
       "enum": [
         "draft",
         "published",
-        "rejected"
+        "suspended",
+        "expired"
       ]
+    },
+    "ProductCategory": {
+      "type": "string",
+      "enum": [
+        "Entertainments",
+        "Travels",
+        "Transportation",
+        "Connectivity",
+        "Books",
+        "Arts",
+        "Sports",
+        "Health"
+      ]
+    },
+    "SalesChannel": {
+      "type": "object",
+      "discriminator": "channelType",
+      "required": [
+        "channelType"
+      ],
+      "properties": {
+        "channelType": {
+          "$ref": "#/definitions/SalesChannelType"
+        }
+      }
+    },
+    "OnlineChannel": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SalesChannel"
+        },
+        {
+          "type": "object",
+          "required": [
+            "websiteUrl"
+          ],
+          "properties": {
+            "websiteUrl": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "OfflineChannel": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SalesChannel"
+        },
+        {
+          "type": "object",
+          "required": [
+            "addresses"
+          ],
+          "properties": {
+            "websiteUrl": {
+              "type": "string"
+            },
+            "addresses": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/definitions/Address"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "BothChannels": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SalesChannel"
+        },
+        {
+          "type": "object",
+          "required": [
+            "websiteUrl",
+            "addresses"
+          ],
+          "properties": {
+            "websiteUrl": {
+              "type": "string"
+            },
+            "addresses": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/definitions/Address"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SalesChannelType": {
+      "type": "string",
+      "enum": [
+        "OnlineChannel",
+        "OfflineChannel",
+        "BothChannels"
+      ]
+    },
+    "Address": {
+      "type": "object",
+      "required": [
+        "street",
+        "zipCode",
+        "city",
+        "district"
+      ],
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5
+        },
+        "city": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        }
+      }
     },
     "Documents": {
       "type": "array",
@@ -672,6 +1073,20 @@
     },
     "Conflict": {
       "description": "Conflict"
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "JWT Authorization header using the Bearer scheme"
+    },
+    "UserRole": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-CGN-USER-ROLE",
+      "description": "Custom header containing requesting user role"
     }
   }
 }
