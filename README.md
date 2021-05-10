@@ -159,3 +159,21 @@
 | <a name="output_db_fqdn"></a> [db\_fqdn](#output\_db\_fqdn) | n/a |
 | <a name="output_law_workpace_id"></a> [law\_workpace\_id](#output\_law\_workpace\_id) | monitor |
 | <a name="output_web_app_1_default_host_name"></a> [web\_app\_1\_default\_host\_name](#output\_web\_app\_1\_default\_host\_name) | web app service |
+
+## Terraform lock.hcl
+
+We have both developers who work with your Terraform configuration on their Linux, macOS or Windows workstations and automated systems that apply the configuration while running on Linux.
+https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target-platforms
+
+So we need to specify this in terraform lock providers:
+
+```sh
+terraform init
+
+rm .terraform.lock.hcl
+
+terraform providers lock \
+  -platform=windows_amd64 \
+  -platform=darwin_amd64 \
+  -platform=linux_amd64
+```
