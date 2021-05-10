@@ -264,10 +264,22 @@ variable "enable_sonarqube" {
   description = "Enable sonarqube resources"
 }
 
+# Key vault
+variable "cert_renew_app_object_id" {
+  type        = string
+  description = "Object id of the azure devops app responsible to create and renew tsl certificates."
+  default     = null
+}
+
+variable "cert_renew_app_id" {
+  type        = string
+  description = "Application id of the azure devops app responsible to create and renew tsl certificates."
+  default     = null
+}
+
 variable "ad_key_vault_group_object_id" {
   type        = string
   description = "Active directory object id group that can access key vault."
-
 }
 
 # Redis Cache
