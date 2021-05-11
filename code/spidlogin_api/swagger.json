@@ -5,9 +5,11 @@
     "version": "1.0",
     "description": "Login SPID Service Provider"
   },
-  "schemes": ["http", "https"],
-  "securityDefinitions": {
-  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {},
   "security": [],
   "paths": {
     "/acs": {
@@ -114,6 +116,18 @@
         "description": "getSuccess",
         "operationId": "getSuccess",
         "summary": "getSuccess",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/upgradeToken": {
+      "post": {
+        "description": "postUpgradeToken",
+        "operationId": "postUpgradeToken",
+        "summary": "postUpgradeToken",
         "responses": {
           "200": {
             "description": "ok"
