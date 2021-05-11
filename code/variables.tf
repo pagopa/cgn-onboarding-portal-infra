@@ -99,7 +99,7 @@ variable "cidr_subnet_spid_login" {
 }
 
 variable "cidr_subnet_ade_aa_mock" {
-  type = list(string)
+  type    = list(string)
   default = null
 }
 
@@ -313,6 +313,6 @@ variable "enable_spid_test" {
 
 # ADE
 variable "enable_ade_aa_mock" {
-  type = bool
+  type    = bool
   default = false
 }
