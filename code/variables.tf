@@ -103,6 +103,11 @@ variable "cidr_subnet_ade_aa_mock" {
   default = null
 }
 
+variable "cidr_subnet_function" {
+  type = list(string)
+
+}
+
 ## DNS
 variable "enable_custom_dns" {
   type    = bool

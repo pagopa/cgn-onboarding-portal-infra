@@ -153,12 +153,12 @@ module "spid_login" {
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
-    DEFAULT_TOKEN_EXPIRATION  = "3600"
-    JWT_TOKEN_ISSUER      = "SPID"
-    JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
+    DEFAULT_TOKEN_EXPIRATION = "3600"
+    JWT_TOKEN_ISSUER         = "SPID"
+    JWT_TOKEN_PRIVATE_KEY    = tls_private_key.jwt.private_key_pem
 
     # ADE
-    ENABLE_ADE_AA = "true"
+    ENABLE_ADE_AA       = "true"
     ADE_AA_API_ENDPOINT = format("https://%s/adeaa/v1", var.app_gateway_host_name)
     ENDPOINT_L1_SUCCESS = format("https://%s/", module.cdn_portal_frontend.hostname)
     L1_TOKEN_EXPIRATION = 60
@@ -188,7 +188,7 @@ module "spid_login" {
 #############################
 module "ade_aa_mock" {
   source = "./modules/app_service"
-  count = var.enable_ade_aa_mock ? 1 : 0
+  count  = var.enable_ade_aa_mock ? 1 : 0
 
   name                = format("%s-ade-aa-mock", local.project)
   plan_name           = format("%s-ade-aa-mock-plan", local.project)
@@ -236,6 +236,37 @@ module "ade_aa_mock" {
 
 }
 
+## APP FUNCTION CGN SEARCH ##
+#############################
+module "operator_search" {
+  source = "./modules/app_function"
+
+  name                = format("%s-os", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = {
+    FUNCTIONS_WORKER_RUNTIME     = "node"
+    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
+    WEBSITE_RUN_FROM_PACKAGE     = "1"
+    NODE_ENV                     = "production"
+
+    CGN_POSTGRES_DB_ADMIN_URI = format("postgresql://%s:5432/%s?user=%s@%s&password=%s&sslmode=require",
+    trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name, var.db_administrator_login_password)
+    CGN_POSTGRES_DB_RO_URI = format("postgresql://%s:5432/%s?user=%s@%s&password=%s&sslmode=require",
+    trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name, var.db_administrator_login_password)
+    CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
+  }
+
+  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_ips     = []
+
+  subnet_name = module.subnet_function.name
+  subnet_id   = module.subnet_function.id
+
+  tags = var.tags
+}
 
 ############
 ### APIM ###
