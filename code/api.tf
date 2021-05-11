@@ -154,6 +154,7 @@ module "spid_login" {
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
     DEFAULT_TOKEN_EXPIRATION = "3600"
+    JWT_TOKEN_EXPIRATION     = "3600" # TODO remove when new version released
     JWT_TOKEN_ISSUER         = "SPID"
     JWT_TOKEN_PRIVATE_KEY    = tls_private_key.jwt.private_key_pem
 
