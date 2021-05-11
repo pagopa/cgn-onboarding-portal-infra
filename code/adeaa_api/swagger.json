@@ -1,0 +1,151 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.1.0",
+    "title": "ADE Attribute Authority Microservice Mock",
+    "contact": {
+      "name": "IO team",
+      "url": "https://forum.italia.it/c/progetto-io"
+    },
+    "x-logo": {
+      "url": "https://io.italia.it/assets/img/io-logo-blue.svg"
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/companies": {
+      "post": {
+        "operationId": "getUserCompanies",
+        "summary": "Get User Companies\n",
+        "description": "Get Companies related to a specific user\n",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/GetCompaniesBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Found.",
+            "schema": {
+              "$ref": "#/definitions/Companies"
+            }
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "operationId": "upsertUser",
+        "summary": "Upsert a User\n",
+        "description": "Upsert a user with his related companies\n",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/GetCompaniesBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upserted."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "FiscalCode": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/FiscalCode"
+    },
+    "OrganizationFiscalCode": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/OrganizationFiscalCode"
+    },
+    "ProblemJson": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/ProblemJson"
+    },
+    "EmailAddress": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/EmailAddress"
+    },
+    "Company": {
+      "type": "object",
+      "properties": {
+        "fiscalCode": {
+          "$ref": "#/definitions/OrganizationFiscalCode"
+        },
+        "organizationName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pec": {
+          "$ref": "#/definitions/EmailAddress"
+        }
+      },
+      "required": [
+        "fiscalCode",
+        "organizationName",
+        "pec"
+      ]
+    },
+    "GetCompaniesBody": {
+      "type": "object",
+      "properties": {
+        "fiscalCode": {
+          "$ref": "#/definitions/FiscalCode"
+        }
+      },
+      "required": [
+        "fiscalCode"
+      ]
+    },
+    "Companies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Company"
+      }
+    },
+    "UserCompanies": {
+      "type": "object",
+      "properties": {
+        "fiscalCode": {
+          "$ref": "#/definitions/FiscalCode"
+        },
+        "companies": {
+          "$ref": "#/definitions/Companies"
+        }
+      },
+      "required": [
+        "fiscalCode",
+        "companies"
+      ]
+    }
+  }
+}

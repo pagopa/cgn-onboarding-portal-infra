@@ -98,8 +98,14 @@ variable "cidr_subnet_spid_login" {
   type = list(string)
 }
 
+variable "cidr_subnet_ade_aa_mock" {
+  type = list(string)
+  default = null
+}
+
 variable "cidr_subnet_function" {
   type = list(string)
+
 }
 
 ## DNS
@@ -303,4 +309,10 @@ variable "enable_spid_test" {
   type        = bool
   description = "Create spid test container group. Default false"
   default     = false
+}
+
+# ADE
+variable "enable_ade_aa_mock" {
+  type = bool
+  default = false
 }

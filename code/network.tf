@@ -126,6 +126,32 @@ module "subnet_spid_login" {
   ]
 }
 
+module "subnet_ade_aa_mock" {
+  source               = "./modules/subnet"
+  count                = (var.enable_ade_aa_mock && var.cidr_subnet_ade_aa_mock != null) ? 1 : 0
+  name                 = format("%s-ade-aa-mock-subnet", local.project)
+  address_prefixes     = var.cidr_subnet_ade_aa_mock
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+
+  delegation = {
+    name = "default"
+
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.Storage",
+  ]
+
+}
+
+
+
 module "subnet_function" {
   source               = "./modules/subnet"
   name                 = format("%s-function-subnet", local.project)

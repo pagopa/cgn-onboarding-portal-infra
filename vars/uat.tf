@@ -79,6 +79,17 @@ resource "tfe_variable" "uat_cidr_subnet_apim" {
   description  = "cidr virtual apim. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "uat_cidr_subnet_ade_aa_mock" {
+  key          = "cidr_subnet_ade_aa_mock"
+  value        = <<-EOT
+  ["10.0.7.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
+  description  = "cidr virtual ade aa mock. CreatedBy Terraform"
+}
+
 # DNS
 resource "tfe_variable" "uat_external_domain" {
   key          = "external_domain"
@@ -220,4 +231,11 @@ resource "tfe_variable" "uat_cert_renew_app_id" {
   workspace_id = data.tfe_workspace.uat.id
   sensitive    = true
   description  = "Application id of the azure devops app responsible to create and renew tsl certificates. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "uat_enable_ade_aa_mock" {
+  key          = "enable_ade_aa_mock"
+  value        = "true"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.uat.id
 }

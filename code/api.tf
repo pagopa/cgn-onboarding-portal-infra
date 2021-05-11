@@ -153,9 +153,16 @@ module "spid_login" {
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
-    JWT_TOKEN_EXPIRATION  = "3600"
-    JWT_TOKEN_ISSUER      = "SPID"
-    JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
+    DEFAULT_TOKEN_EXPIRATION = "3600"
+    JWT_TOKEN_ISSUER         = "SPID"
+    JWT_TOKEN_PRIVATE_KEY    = tls_private_key.jwt.private_key_pem
+
+    # ADE
+    ENABLE_ADE_AA       = "true"
+    ADE_AA_API_ENDPOINT = format("https://%s/adeaa/v1", var.app_gateway_host_name)
+    ENDPOINT_L1_SUCCESS = format("https://%s/", module.cdn_portal_frontend.hostname)
+    L1_TOKEN_EXPIRATION = 60
+    L2_TOKEN_EXPIRATION = 3600
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
@@ -177,6 +184,58 @@ module "spid_login" {
 }
 
 #############################
+## App service ADE AA MOCK ##
+#############################
+module "ade_aa_mock" {
+  source = "./modules/app_service"
+  count  = var.enable_ade_aa_mock ? 1 : 0
+
+  name                = format("%s-ade-aa-mock", local.project)
+  plan_name           = format("%s-ade-aa-mock-plan", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  app_settings = {
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    WEBSITES_PORT                       = 8080
+    SERVER_PORT                         = 8080
+
+    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
+    WEBSITE_RUN_FROM_PACKAGE     = "1"
+
+    // ENVIRONMENT
+    NODE_ENV = "production"
+
+    FETCH_KEEPALIVE_ENABLED = "true"
+    // see https://github.com/MicrosoftDocs/azure-docs/issues/29600#issuecomment-607990556
+    // and https://docs.microsoft.com/it-it/azure/app-service/app-service-web-nodejs-best-practices-and-troubleshoot-guide#scenarios-and-recommendationstroubleshooting
+    // FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL should not exceed 120000 (app service socket timeout)
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL = "110000"
+    // (FETCH_KEEPALIVE_MAX_SOCKETS * number_of_node_processes) should not exceed 160 (max sockets per VM)
+    FETCH_KEEPALIVE_MAX_SOCKETS         = "128"
+    FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
+    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
+    FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+
+    # application insights key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+
+  }
+
+  linux_fx_version = "NODE|12-lts"
+
+  always_on = "true"
+
+  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_ips     = []
+
+  subnet_name = module.subnet_ade_aa_mock[0].name
+  subnet_id   = module.subnet_ade_aa_mock[0].id
+
+  tags = var.tags
+
+}
+
 ## APP FUNCTION CGN SEARCH ##
 #############################
 module "operator_search" {
@@ -365,4 +424,22 @@ module "apim_spid_login_api" {
   content_value = file("./spidlogin_api/swagger.json")
 
   xml_content = file("./spidlogin_api/policy.xml")
+}
+
+module "apim_ade_aa_mock_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+
+  name                = format("%s-ade-aa-mock-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "ADE Attribute Authority Microservice Mock"
+  display_name = "ADEAA"
+  path         = "adeaa/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.ade_aa_mock[0].default_site_hostname)
+
+  content_value = file("./adeaa_api/swagger.json")
+
+  xml_content = file("./adeaa_api/policy.xml")
 }
