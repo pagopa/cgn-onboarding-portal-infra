@@ -104,11 +104,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 # azure devops
 resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
-  count          = var.cert_renew_app_object_id == null ? 0 : 1
-  key_vault_id   = azurerm_key_vault.key_vault.id
-  tenant_id      = data.azurerm_client_config.current.tenant_id
-  object_id      = var.cert_renew_app_object_id
-  application_id = var.cert_renew_app_id
+  count        = var.cert_renew_app_object_id == null ? 0 : 1
+  key_vault_id = azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.cert_renew_app_object_id
 
   key_permissions = [
     "Get",
