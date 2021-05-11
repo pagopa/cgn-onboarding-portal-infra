@@ -17,7 +17,7 @@ resource "azurerm_app_service_plan" "this" {
 }
 
 resource "azurerm_storage_account" "this" {
-  name                     = replace(format("%s-store", var.name), "-", "")
+  name                     = replace(format("st-%s", var.name), "-", "")
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
