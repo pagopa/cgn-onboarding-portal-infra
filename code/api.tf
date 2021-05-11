@@ -225,8 +225,8 @@ module "ade_aa_mock" {
   allowed_subnets = [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
-  subnet_name = module.subnet_spid_login.name
-  subnet_id   = module.subnet_spid_login.id
+  subnet_name = module.subnet_ade_aa_mock[0].name
+  subnet_id   = module.subnet_ade_aa_mock[0].id
 
   tags = var.tags
 

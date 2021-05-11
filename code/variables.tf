@@ -98,6 +98,11 @@ variable "cidr_subnet_spid_login" {
   type = list(string)
 }
 
+variable "cidr_subnet_ade_aa_mock" {
+  type = list(string)
+  default = null
+}
+
 ## DNS
 variable "enable_custom_dns" {
   type    = bool

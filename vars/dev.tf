@@ -90,6 +90,17 @@ resource "tfe_variable" "dev_cidr_subnet_spid_login" {
   description  = "cidr virtual spid login. CreatedBy Terraform"
 }
 
+resource "tfe_variable" "dev_cidr_subnet_ade_aa_mock" {
+  key          = "cidr_subnet_ade_aa_mock"
+  value        = <<-EOT
+  ["10.0.7.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "cidr virtual ade aa mock. CreatedBy Terraform"
+}
+
 # DNS
 resource "tfe_variable" "dev_external_domain" {
   key          = "external_domain"
