@@ -195,6 +195,7 @@ module "ade_aa_mock" {
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
+    SERVER_PORT                         = 8080
 
     WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
@@ -212,6 +213,7 @@ module "ade_aa_mock" {
     FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
