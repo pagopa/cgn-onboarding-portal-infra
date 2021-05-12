@@ -407,7 +407,10 @@ module "apim_backoffice_api" {
 
   content_value = file("./backoffice_api/swagger.json")
 
-  xml_content = file("./backoffice_api/policy.xml")
+  xml_content = templatefile("./backoffice_api/policy.xml.tpl", {
+    openid_config_url = var.adb2c_openid_config_url
+    audience          = var.adb2c_audience
+  })
 }
 
 module "apim_spid_login_api" {
