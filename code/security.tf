@@ -93,7 +93,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   object_id = var.ad_key_vault_group_object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete",]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
