@@ -242,7 +242,7 @@ resource "tfe_variable" "uat_enable_ade_aa_mock" {
 
 resource "tfe_variable" "uat_adb2c_openid_config_url" {
   key          = "adb2c_openid_config_url"
-  value        = "https://login.microsoftonline.com/cgnonboardingportaluat.onmicrosoft.com/v2.0/.well-known/openid-configuration"
+  value        = "https://cgnonboardingportaluat.b2clogin.com/cgnonboardingportaluat.onmicrosoft.com/B2C_1_login/v2.0/.well-known/openid-configuration"
   category     = "terraform"
   sensitive    = true
   workspace_id = data.tfe_workspace.uat.id
