@@ -130,7 +130,8 @@ module "spid_login" {
 
     # SPID
     ORG_ISSUER       = "https://spid.agid.gov.it/cd"
-    ORG_URL          = format("https://%s/spid/v1", var.app_gateway_host_name)
+    ORG_URL          = "https://pagopa.gov.it"
+    ACS_BASE_URL     = format("https://%s/spid/v1", var.app_gateway_host_name)
     ORG_DISPLAY_NAME = "Organization display name"
     ORG_NAME         = "Organization name"
 
