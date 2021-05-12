@@ -277,7 +277,7 @@ module "operator_search" {
 locals {
   apim_name                     = format("%s-apim", local.project)
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
-  apim_origins = flatten([[var.enable_spid_test ? format("https://%s", azurerm_container_group.spid_testenv[0].fqdn) : []],
+  apim_origins = flatten([[var.enable_spid_test ? [format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)] : []],
     [format("https://%s/", module.cdn_portal_frontend.hostname)],
   ["http://localhost:3000"]])
 }
