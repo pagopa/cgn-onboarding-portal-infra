@@ -154,18 +154,18 @@ module "spid_login" {
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
-    TOKEN_EXPIRATION = "3600"
-    JWT_TOKEN_EXPIRATION     = "3600" # TODO remove when new version released
-    JWT_TOKEN_ISSUER         = "SPID"
-    JWT_TOKEN_PRIVATE_KEY    = tls_private_key.jwt.private_key_pem
+    TOKEN_EXPIRATION      = "3600"
+    JWT_TOKEN_EXPIRATION  = "3600" # TODO remove when new version released
+    JWT_TOKEN_ISSUER      = "SPID"
+    JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
 
     # ADE
-    ENABLE_ADE_AA       = "true"
-    ADE_AA_API_ENDPOINT = format("https://%s/adeaa/v1", var.app_gateway_host_name)
-    ENDPOINT_L1_SUCCESS = format("https://%s/", module.cdn_portal_frontend.hostname)
-    L1_TOKEN_EXPIRATION = 60
-    L1_TOKEN_HEADER_NAME = "X-CGN-TOKEN"
-    L2_TOKEN_EXPIRATION = 3600
+    ENABLE_ADE_AA        = "true"
+    ADE_AA_API_ENDPOINT  = format("https://%s/adeaa/v1", var.app_gateway_host_name)
+    ENDPOINT_L1_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
+    L1_TOKEN_EXPIRATION  = 120
+    L1_TOKEN_HEADER_NAME = "x-cgn-token"
+    L2_TOKEN_EXPIRATION  = 3600
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
