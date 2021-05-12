@@ -17,6 +17,7 @@
         <header>Content-Type</header>
         <header>Authorization</header>
         <header>Accept</header>
+        <header>X-CGN-TOKEN</header>
       </allowed-headers>
       <expose-headers>
         <header>*</header>
