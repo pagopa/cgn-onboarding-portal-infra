@@ -124,6 +124,13 @@ variable "dns_zone_prefix" {
   default = null
 }
 
+# TODO
+# these _uat are a temponary resources
+variable "dns_zone_prefix_uat" {
+  type    = string
+  default = null
+}
+
 ## Azure container registry
 variable "sku_container_registry" {
   type    = string
