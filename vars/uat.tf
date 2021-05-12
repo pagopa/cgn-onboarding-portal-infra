@@ -111,7 +111,7 @@ resource "tfe_variable" "uat_enable_custom_dns" {
 
 resource "tfe_variable" "uat_app_gateway_host_name" {
   key          = "app_gateway_host_name"
-  value        = "uat.cgnonboardingportal.pagopa.it"
+  value        = "api.cgnonboardingportal-uat.pagopa.it"
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
   description  = "Application gateway host name. CreatedBy Terraform"
