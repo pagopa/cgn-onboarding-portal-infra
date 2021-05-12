@@ -92,8 +92,8 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = var.ad_key_vault_group_object_id
 
-  key_permissions     = []
-  secret_permissions  = []
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete",]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",

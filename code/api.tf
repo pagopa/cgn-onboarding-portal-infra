@@ -145,7 +145,7 @@ module "spid_login" {
     ENDPOINT_LOGOUT   = "/logout"
 
     SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
-    SPID_TESTENV_URL   = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
+    SPID_TESTENV_URL   = var.enable_spid_test ? format("https://%s", azurerm_container_group.spid_testenv[0].fqdn) : ""
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
@@ -277,6 +277,7 @@ module "operator_search" {
 locals {
   apim_name                     = format("%s-apim", local.project)
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
+  apim_origins = concat([var.enable_spid_test ? format("https://%s", azurerm_container_group.spid_testenv[0].fqdn) : ""] [format("https://%s/", module.cdn_portal_frontend.hostname)], ["http://localhost:3000"])
 }
 
 module "apim" {
@@ -290,11 +291,7 @@ module "apim" {
   notification_sender_email = var.apim_notification_sender_email
   sku_name                  = var.apim_sku
   xml_content = templatefile("./apim_global/policy.xml.tpl", {
-    origins = [
-      format("https://%s", azurerm_container_group.spid_testenv[0].fqdn),
-      format("https://%s/", module.cdn_portal_frontend.hostname),
-      "http://localhost:3000"
-    ]
+    origins = local.apim_origins
   })
   tags = var.tags
 }
@@ -430,6 +427,7 @@ module "apim_spid_login_api" {
 }
 
 module "apim_ade_aa_mock_api" {
+  count = var.enable_spid_test ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
 
   name                = format("%s-ade-aa-mock-api", local.project)
