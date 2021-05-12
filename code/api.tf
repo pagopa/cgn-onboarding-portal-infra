@@ -64,6 +64,8 @@ module "portal_backend_1" {
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
     JAVA_OPTS                  = "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication"
 
+    MANAGEMENT_HEALTH_MAIL_ENABLED = "false"
+
     # Blob Storage Account
     CGN_PE_STORAGE_AZURE_DEFAULT_ENDPOINTS_PROTOCOL = "https"
     CGN_PE_STORAGE_AZURE_ACCOUNT_NAME               = module.storage_account.name
