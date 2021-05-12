@@ -239,3 +239,19 @@ resource "tfe_variable" "uat_enable_ade_aa_mock" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.uat.id
 }
+
+resource "tfe_variable" "uat_adb2c_openid_config_url" {
+  key          = "adb2c_openid_config_url"
+  value        = "https://cgnonboardingportaluat.b2clogin.com/cgnonboardingportaluat.onmicrosoft.com/B2C_1_login/v2.0/.well-known/openid-configuration"
+  category     = "terraform"
+  sensitive    = true
+  workspace_id = data.tfe_workspace.uat.id
+}
+
+resource "tfe_variable" "uat_adb2c_audience" {
+  key          = "adb2c_audience"
+  value        = "2416d411-9cbb-4d4c-a902-2570f031b9f0"
+  category     = "terraform"
+  sensitive    = true
+  workspace_id = data.tfe_workspace.uat.id
+}
