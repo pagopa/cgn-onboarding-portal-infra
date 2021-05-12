@@ -164,7 +164,7 @@ module "spid_login" {
     ADE_AA_API_ENDPOINT = format("https://%s/adeaa/v1", var.app_gateway_host_name)
     ENDPOINT_L1_SUCCESS = format("https://%s/", module.cdn_portal_frontend.hostname)
     L1_TOKEN_EXPIRATION = 120
-    L1_TOKEN_HEADER_NAME = "X-CGN-TOKEN"
+    L1_TOKEN_HEADER_NAME = lower("X-CGN-TOKEN")
     L2_TOKEN_EXPIRATION = 3600
 
     # application insights key
