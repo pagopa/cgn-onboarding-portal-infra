@@ -242,7 +242,7 @@ resource "tfe_variable" "uat_enable_ade_aa_mock" {
 
 resource "tfe_variable" "uat_adb2c_openid_config_url" {
   key          = "adb2c_openid_config_url"
-  value        = "https://login.microsoftonline.com/XXXXXXXX.onmicrosoft.com/v2.0/.well-known/openid-configuration"
+  value        = "https://login.microsoftonline.com/cgnonboardingportaluat.onmicrosoft.com/v2.0/.well-known/openid-configuration"
   category     = "terraform"
   sensitive    = true
   workspace_id = data.tfe_workspace.uat.id
@@ -250,7 +250,7 @@ resource "tfe_variable" "uat_adb2c_openid_config_url" {
 
 resource "tfe_variable" "uat_adb2c_audience" {
   key          = "adb2c_audience"
-  value        = "XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX"
+  value        = "2416d411-9cbb-4d4c-a902-2570f031b9f0"
   category     = "terraform"
   sensitive    = true
   workspace_id = data.tfe_workspace.uat.id
