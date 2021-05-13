@@ -63,3 +63,25 @@ module "storage_account_website" {
   lock_notes               = var.storage_account_website_lock != null ? var.storage_account_website_lock.notes : null
   tags                     = var.tags
 }
+
+
+resource "azurerm_storage_account" "ade_aa_mock" {
+  count                     = var.enable_ade_aa_mock ? 1 : 0
+  name                      = replace(format("%s-sa-aa", local.project), "-", "")
+  resource_group_name       = azurerm_resource_group.rg_storage.name
+  location                  = var.location
+  enable_https_traffic_only = true
+  min_tls_version           = "TLS1_2"
+  account_tier              = "Standard"
+
+  account_replication_type = "LRS"
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_container" "ade_aa_config" {
+  count                 = var.enable_ade_aa_mock ? 1 : 0
+  name                  = "conf"
+  storage_account_name  = azurerm_storage_account.ade_aa_mock[0].name
+  container_access_type = "private"
+}

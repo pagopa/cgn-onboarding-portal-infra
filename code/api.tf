@@ -221,6 +221,10 @@ module "ade_aa_mock" {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+    # Blob storage
+    CONTAINER_NAME            = azurerm_storage_container.ade_aa_config[0].name
+    BLOB_NAME                 = "userCompanies.json"
+    STORAGE_CONNECTION_STRING = azurerm_storage_account.ade_aa_mock[0].primary_blob_connection_string
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
