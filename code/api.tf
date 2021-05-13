@@ -257,10 +257,16 @@ module "operator_search" {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     NODE_ENV                     = "production"
 
-    CGN_POSTGRES_DB_ADMIN_URI = format("postgresql://%s:5432/%s?user=%s@%s&password=%s&sslmode=require",
-    trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name, var.db_administrator_login_password)
-    CGN_POSTGRES_DB_RO_URI = format("postgresql://%s:5432/%s?user=%s@%s&password=%s&sslmode=require",
-    trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name, var.db_administrator_login_password)
+    # DNS configuration to use private endpoint
+    WEBSITE_DNS_SERVER     = "168.63.129.16"
+    WEBSITE_VNET_ROUTE_ALL = 1
+
+    CGN_POSTGRES_DB_ADMIN_URI = format("postgresql://%s:%s@%s:5432/%s",
+    urlencode(format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)), urlencode(var.db_administrator_login_password), trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."), var.database_name)
+    CGN_POSTGRES_DB_RO_URI = format("postgresql://%s:%s@%s:5432/%s",
+    urlencode(format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)), urlencode(var.db_administrator_login_password), trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."), var.database_name)
+    CGN_POSTGRES_DB_SSL_ENABLED = "true"
+
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
   }
 
