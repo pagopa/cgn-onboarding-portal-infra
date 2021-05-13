@@ -23,6 +23,7 @@
 | <a name="module_apim"></a> [apim](#module\_apim) | ./modules/apim |  |
 | <a name="module_apim_backend_api"></a> [apim\_backend\_api](#module\_apim\_backend\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main |  |
 | <a name="module_apim_backoffice_api"></a> [apim\_backoffice\_api](#module\_apim\_backoffice\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main |  |
+| <a name="module_apim_public_api"></a> [apim\_public\_api](#module\_apim\_public\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main |  |
 | <a name="module_apim_spid_login_api"></a> [apim\_spid\_login\_api](#module\_apim\_spid\_login\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main |  |
 | <a name="module_cdn_portal_frontend"></a> [cdn\_portal\_frontend](#module\_cdn\_portal\_frontend) | ./modules/cdn_endpoint |  |
 | <a name="module_cdn_portal_storage"></a> [cdn\_portal\_storage](#module\_cdn\_portal\_storage) | ./modules/cdn_endpoint |  |
@@ -75,8 +76,10 @@
 | [azurerm_resource_group.rg_spid_testenv](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
+| [azurerm_storage_account.ade_aa_mock](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_account.sonarqube_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_account.spid_testenv_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.ade_aa_config](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.profile_images](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.user_documents](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_share.caddy_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_share) | resource |
