@@ -334,3 +334,30 @@ variable "adb2c_audience" {
   type        = string
   description = "recipients that the JWT is intended for"
 }
+
+## Email
+variable "email_host" {
+  type        = string
+  description = "email server hostname"
+  default     = "fast.smtpok.com"
+}
+
+variable "email_port" {
+  type        = number
+  description = "email server port"
+  default     = 80
+}
+
+variable "email_username" {
+  type = string
+}
+
+variable "email_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "email_department_email" {
+  type        = string
+  description = "Receipent email address of the CGN Onboarding Department"
+}
