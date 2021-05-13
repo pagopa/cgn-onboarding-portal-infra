@@ -38,10 +38,6 @@
     {
       "name": "api-token",
       "description": "API Token"
-    },
-    {
-      "name": "help",
-      "description": "Help"
     }
   ],
   "paths": {
