@@ -415,6 +415,24 @@ module "apim_backoffice_api" {
   })
 }
 
+module "apim_public_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+
+  name                = format("%s-public-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = "CGN Onboarding Portal Public"
+  display_name = "PUBLIC"
+  path         = "public/v1"
+  protocols    = ["http", "https"]
+  service_url  = format("https://%s", module.portal_backend_1.default_site_hostname)
+
+  content_value = file("./public_api/swagger.json")
+
+  xml_content = file("./public_api/policy.xml")
+}
+
 module "apim_spid_login_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
 

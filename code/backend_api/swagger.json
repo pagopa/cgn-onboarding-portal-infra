@@ -8,6 +8,12 @@
   "schemes": [
     "https"
   ],
+  "security": [
+    {
+      "Bearer": [],
+      "UserRole": []
+    }
+  ],
   "tags": [
     {
       "name": "agreement",
@@ -28,6 +34,10 @@
     {
       "name": "document",
       "description": "Document"
+    },
+    {
+      "name": "api-token",
+      "description": "API Token"
     }
   ],
   "paths": {
@@ -533,6 +543,101 @@
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/agreements/{agreementId}/api-tokens": {
+      "post": {
+        "tags": [
+          "api-token"
+        ],
+        "summary": "Retrieve or Create API Tokens",
+        "operationId": "getTokens",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Api Token",
+            "schema": {
+              "$ref": "#/definitions/ApiTokens"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/agreements/{agreementId}/api-tokens/{tokenType}": {
+      "post": {
+        "tags": [
+          "api-token"
+        ],
+        "summary": "Regenerate Api Token",
+        "operationId": "regenerateToken",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "name": "tokenType",
+            "in": "path",
+            "description": "Token type",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New Api Tokens",
+            "schema": {
+              "$ref": "#/definitions/ApiTokens"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/agreements/{agreementId}/help": {
+      "post": {
+        "tags": [
+          "help"
+        ],
+        "summary": "Send an help request",
+        "operationId": "sendHelpRequest",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "in": "body",
+            "description": "Help request",
+            "name": "helpRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HelpRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Request Received"
           }
         }
       }
@@ -1222,7 +1327,8 @@
       "enum": [
         "draft",
         "published",
-        "rejected"
+        "suspended",
+        "expired"
       ]
     },
     "ProductCategory": {
@@ -1293,6 +1399,50 @@
           "type": "string"
         }
       }
+    },
+    "ApiTokens": {
+      "type": "object",
+      "required": [
+        "primaryToken",
+        "secondaryToken"
+      ],
+      "properties": {
+        "primaryToken": {
+          "type": "string"
+        },
+        "secondaryToken": {
+          "type": "string"
+        }
+      }
+    },
+    "HelpRequest": {
+      "type": "object",
+      "required": [
+        "category",
+        "message"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "Access",
+            "DataFilling",
+            "Discounts",
+            "Documents",
+            "TechnicalProblem",
+            "CgnOwnerReporting",
+            "Suggestions",
+            "Other"
+          ]
+        },
+        "topic": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 200
+        }
+      }
     }
   },
   "responses": {
@@ -1304,6 +1454,20 @@
     },
     "NotFound": {
       "description": "Not found"
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "JWT Authorization header using the Bearer scheme"
+    },
+    "UserRole": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-CGN-USER-ROLE",
+      "description": "Custom header containing requesting user role"
     }
   }
 }
