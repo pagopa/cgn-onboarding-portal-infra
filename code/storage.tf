@@ -83,5 +83,5 @@ resource "azurerm_storage_container" "ade_aa_config" {
   count                 = var.enable_ade_aa_mock ? 1 : 0
   name                  = "conf"
   storage_account_name  = azurerm_storage_account.ade_aa_mock[0].name
-  container_access_type = "blob"
+  container_access_type = "private"
 }
