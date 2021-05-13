@@ -32,7 +32,6 @@ resource "azurerm_container_registry" "container_registry" {
 //  skip_service_principal_aad_check = true
 //}
 
-
 module "portal_backend_1" {
   source = "./modules/app_service"
 
@@ -74,6 +73,7 @@ module "portal_backend_1" {
 
     # File Upload
     SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE = "5MB"
+
     # EMAIL
     MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"
     SPRING_MAIL_HOST                                   = var.email_host
@@ -87,6 +87,15 @@ module "portal_backend_1" {
     CGN_EMAIL_NOTIFICATION_SENDER = "CGN Portal<no-reply@cgn.pagopa.it>"
     CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
     CGN_EMAIL_PORTAL_BASE_URL     = format("https://%s/", module.cdn_portal_frontend.hostname)
+
+    # APIM API TOKEN
+    CGN_APIM_RESOURCEGROUP = azurerm_resource_group.rg_api.name
+    CGN_APIM_RESOURCE      = module.apim.name
+    CGN_APIM_PRODUCTID     = azurerm_api_management_product.cgn_onbording_portal.id
+    AZURE_SUBSCRIPTION_ID  = data.azurerm_subscription.current.subscription_id
+    AZURE_TENANT_ID        = data.azurerm_subscription.current.tenant_id
+    AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id
+    AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret
 
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
@@ -105,6 +114,16 @@ module "portal_backend_1" {
   subnet_id   = module.subnet_api.id
 
   tags = var.tags
+}
+
+data "azurerm_key_vault_secret" "backend_client_id" {
+  name         = "backend-CLIENT-ID"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "backend_client_secret" {
+  name         = "backend-CLIENT-SECRET"
+  key_vault_id = azurerm_key_vault.key_vault.id
 }
 
 ############################
@@ -408,6 +427,20 @@ resource "azurerm_api_management_certificate" "jwt_certificate" {
   resource_group_name = azurerm_resource_group.rg_api.name
   data                = pkcs12_from_pem.jwt_pkcs12.result
 }
+
+# API Product
+
+resource "azurerm_api_management_product" "cgn_onbording_portal" {
+  product_id            = "cgn-onboarding-portal-api"
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = module.apim.name
+  display_name          = "CGN ONBOARDING PORTAL API"
+  description           = "CGN Onboarding Portal API"
+  subscription_required = true
+  approval_required     = false
+  published             = true
+}
+
 
 # APIs
 
