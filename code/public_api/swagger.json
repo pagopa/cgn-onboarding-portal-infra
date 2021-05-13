@@ -1,0 +1,109 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CGN Onboarding Portal Public API",
+    "description": "Carta Giovani Nazionale Onboarding Portal - Public API",
+    "version": "0.1.0"
+  },
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "help",
+      "description": "Help"
+    }
+  ],
+  "paths": {
+    "/help": {
+      "post": {
+        "tags": [
+          "help"
+        ],
+        "summary": "Send an help request",
+        "operationId": "sendHelpRequest",
+        "parameters": [
+          {
+            "in": "body",
+            "description": "Help request",
+            "name": "helpRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HelpRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Request Received"
+          }
+        }
+      }
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "HelpRequest": {
+      "type": "object",
+      "required": [
+        "legalName",
+        "referentFirstName",
+        "referentLastName",
+        "emailAddress",
+        "category",
+        "message"
+      ],
+      "properties": {
+        "legalName": {
+          "type": "string"
+        },
+        "referentFirstName": {
+          "type": "string"
+        },
+        "referentLastName": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string",
+          "format": "email"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Access",
+            "DataFilling",
+            "Discounts",
+            "Documents",
+            "TechnicalProblem",
+            "CgnOwnerReporting",
+            "Suggestions",
+            "Other"
+          ]
+        },
+        "topic": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 200
+        }
+      }
+    }
+  },
+  "responses": {
+    "InvalidRequest": {
+      "description": "Bad request"
+    },
+    "Forbidden": {
+      "description": "Forbidden"
+    },
+    "NotFound": {
+      "description": "Not found"
+    }
+  }
+}

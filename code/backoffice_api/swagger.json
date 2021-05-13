@@ -523,7 +523,8 @@
       "discriminator": "state",
       "required": [
         "id",
-        "state"
+        "state",
+        "requestDate"
       ],
       "properties": {
         "id": {
@@ -531,6 +532,10 @@
         },
         "state": {
           "$ref": "#/definitions/AgreementState"
+        },
+        "requestDate": {
+          "type": "string",
+          "format": "date"
         },
         "profile": {
           "$ref": "#/definitions/Profile"
