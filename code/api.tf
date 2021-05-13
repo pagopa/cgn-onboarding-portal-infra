@@ -134,8 +134,8 @@ module "spid_login" {
     ORG_ISSUER       = "https://spid.agid.gov.it/cd"
     ORG_URL          = "https://pagopa.gov.it"
     ACS_BASE_URL     = format("https://%s/spid/v1", var.app_gateway_host_name)
-    ORG_DISPLAY_NAME = "Organization display name"
-    ORG_NAME         = "Organization name"
+    ORG_DISPLAY_NAME = "PagoPA S.p.A"
+    ORG_NAME         = "PagoPA"
 
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
 
@@ -149,6 +149,14 @@ module "spid_login" {
     SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
     SPID_TESTENV_URL   = var.enable_spid_test ? format("https://%s", azurerm_container_group.spid_testenv[0].fqdn) : ""
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
+
+    REQUIRED_ATTRIBUTES_SERVICE_NAME = "Carta Giovani Nazionale Onboarding Portal"
+    ENABLE_FULL_OPERATOR_METADATA    = true
+    COMPANY_EMAIL                    = "pagopa@pec.governo.it"
+    COMPANY_FISCAL_CODE              = 15376371009
+    COMPANY_IPA_CODE                 = "PagoPA"
+    COMPANY_NAME                     = "PagoPA S.p.A"
+    COMPANY_VAT_NUMBER               = 15376371009
 
     METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
     METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
