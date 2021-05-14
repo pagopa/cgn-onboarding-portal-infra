@@ -178,6 +178,7 @@ module "spid_login" {
     L2_TOKEN_EXPIRATION  = 3600
 
     # application insights key
+    APPINSIGHTS_DISABLED           = false
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
   }
