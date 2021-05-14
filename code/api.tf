@@ -74,6 +74,9 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_DOCUMENTS_CONTAINER_NAME   = azurerm_storage_container.user_documents.name
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
+    # File Upload
+    SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE = "5MB"
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
