@@ -398,7 +398,7 @@ resource "azurerm_api_management_certificate" "jwt_certificate" {
 # APIs
 
 module "apim_backend_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-backend-api", local.project)
   api_management_name = module.apim.name
@@ -417,7 +417,7 @@ module "apim_backend_api" {
 
 
 module "apim_backoffice_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-backoffice-api", local.project)
   api_management_name = module.apim.name
@@ -438,7 +438,7 @@ module "apim_backoffice_api" {
 }
 
 module "apim_public_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-public-api", local.project)
   api_management_name = module.apim.name
@@ -456,7 +456,7 @@ module "apim_public_api" {
 }
 
 module "apim_spid_login_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-spid-login-api", local.project)
   api_management_name = module.apim.name
@@ -475,7 +475,7 @@ module "apim_spid_login_api" {
 
 module "apim_ade_aa_mock_api" {
   count  = var.enable_spid_test ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=main"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-ade-aa-mock-api", local.project)
   api_management_name = module.apim.name
