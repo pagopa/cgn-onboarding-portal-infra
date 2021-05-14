@@ -73,11 +73,14 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
     # EMAIL
-    MANAGEMENT_HEALTH_MAIL_ENABLED = "false"
-    SPRING_MAIL_HOST               = var.email_host
-    SPRING_MAIL_PORT               = var.email_port
-    SPRING_MAIL_USERNAME           = var.email_username
-    SPRING_MAIL_PASSWORD           = var.email_password
+    MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"
+    SPRING_MAIL_HOST                                   = var.email_host
+    SPRING_MAIL_PORT                                   = var.email_port
+    SPRING_MAIL_USERNAME                               = var.email_username
+    SPRING_MAIL_PASSWORD                               = var.email_password
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT = 10000
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT           = 10000
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT      = 10000
 
     CGN_EMAIL_NOTIFICATION_SENDER = "CGN Portal<no-reply@cgn.pagopa.it>"
     CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
