@@ -361,3 +361,19 @@ variable "email_department_email" {
   type        = string
   description = "Receipent email address of the CGN Onboarding Department"
 }
+
+# API TOKEN
+variable "io_apim_resourcegroup" {
+  type    = string
+  default = null
+}
+
+variable "io_apim_name" {
+  type    = string
+  default = null
+}
+
+variable "io_apim_productid" {
+  type    = string
+  default = null
+}

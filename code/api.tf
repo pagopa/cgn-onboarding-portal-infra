@@ -89,9 +89,9 @@ module "portal_backend_1" {
     CGN_EMAIL_PORTAL_BASE_URL     = format("https://%s/", module.cdn_portal_frontend.hostname)
 
     # APIM API TOKEN
-    CGN_APIM_RESOURCEGROUP = azurerm_resource_group.rg_api.name
-    CGN_APIM_RESOURCE      = module.apim.name
-    CGN_APIM_PRODUCTID     = azurerm_api_management_product.cgn_onbording_portal.id
+    CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
+    CGN_APIM_RESOURCE      = var.io_apim_name != null ? var.io_apim_name : module.apim.name
+    CGN_APIM_PRODUCTID     = var.io_apim_productid != null ? var.io_apim_productid : azurerm_api_management_product.cgn_onbording_portal.id
     AZURE_SUBSCRIPTION_ID  = data.azurerm_subscription.current.subscription_id
     AZURE_TENANT_ID        = data.azurerm_subscription.current.tenant_id
     AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id.value
