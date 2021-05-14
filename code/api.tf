@@ -103,7 +103,7 @@ module "spid_login" {
   plan_name           = format("%s-plan-spid-login", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  app_settings = {
+  app_settings = merge({
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
@@ -181,7 +181,11 @@ module "spid_login" {
     APPINSIGHTS_DISABLED           = false
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
-  }
+    },
+    var.enable_spid_test ? {
+      SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
+    } : {}
+  )
 
   linux_fx_version = "NODE|12-lts"
 
