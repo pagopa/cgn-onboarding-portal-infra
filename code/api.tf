@@ -94,8 +94,8 @@ module "portal_backend_1" {
     CGN_APIM_PRODUCTID     = azurerm_api_management_product.cgn_onbording_portal.id
     AZURE_SUBSCRIPTION_ID  = data.azurerm_subscription.current.subscription_id
     AZURE_TENANT_ID        = data.azurerm_subscription.current.tenant_id
-    AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id
-    AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret
+    AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id.value
+    AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret.value
 
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
