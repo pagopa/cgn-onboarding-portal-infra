@@ -147,7 +147,6 @@ module "spid_login" {
     ENDPOINT_LOGOUT   = "/logout"
 
     SPID_ATTRIBUTES    = "address,email,name,familyName,fiscalNumber,mobilePhone"
-    SPID_TESTENV_URL   = var.enable_spid_test ? format("https://%s", azurerm_container_group.spid_testenv[0].fqdn) : ""
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "Carta Giovani Nazionale Onboarding Portal"
