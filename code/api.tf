@@ -72,6 +72,8 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_DOCUMENTS_CONTAINER_NAME   = azurerm_storage_container.user_documents.name
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
+    # File Upload
+    SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE = "5MB"
     # EMAIL
     MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"
     SPRING_MAIL_HOST                                   = var.email_host
