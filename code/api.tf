@@ -64,8 +64,6 @@ module "portal_backend_1" {
     SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
     JAVA_OPTS                  = "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication"
 
-    MANAGEMENT_HEALTH_MAIL_ENABLED = "false"
-
     # Blob Storage Account
     CGN_PE_STORAGE_AZURE_DEFAULT_ENDPOINTS_PROTOCOL = "https"
     CGN_PE_STORAGE_AZURE_ACCOUNT_NAME               = module.storage_account.name
@@ -73,6 +71,20 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_BLOB_ENDPOINT              = module.storage_account.primary_blob_endpoint
     CGN_PE_STORAGE_AZURE_DOCUMENTS_CONTAINER_NAME   = azurerm_storage_container.user_documents.name
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
+
+    # EMAIL
+    MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"
+    SPRING_MAIL_HOST                                   = var.email_host
+    SPRING_MAIL_PORT                                   = var.email_port
+    SPRING_MAIL_USERNAME                               = var.email_username
+    SPRING_MAIL_PASSWORD                               = var.email_password
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT = 10000
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT           = 10000
+    SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT      = 10000
+
+    CGN_EMAIL_NOTIFICATION_SENDER = "CGN Portal<no-reply@cgn.pagopa.it>"
+    CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
+    CGN_EMAIL_PORTAL_BASE_URL     = format("https://%s/", module.cdn_portal_frontend.hostname)
 
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",

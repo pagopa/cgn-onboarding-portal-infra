@@ -254,3 +254,17 @@ resource "tfe_variable" "dev_adb2c_audience" {
   sensitive    = true
   workspace_id = data.tfe_workspace.dev.id
 }
+
+resource "tfe_variable" "dev_email_username" {
+  key          = "email_username"
+  value        = "s153482_2"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+}
+
+resource "tfe_variable" "dev_email_department_email" {
+  key          = "email_department_email"
+  value        = "matteo.gazzetta@bitrock.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+}
