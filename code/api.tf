@@ -178,13 +178,12 @@ module "spid_login" {
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
     TOKEN_EXPIRATION      = "3600"
-    JWT_TOKEN_EXPIRATION  = "3600" # TODO remove when new version released
     JWT_TOKEN_ISSUER      = "SPID"
     JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
 
     # ADE
     ENABLE_ADE_AA        = "true"
-    ADE_AA_API_ENDPOINT  = format("https://%s/adeaa/v1", var.app_gateway_host_name)
+    ADE_AA_API_ENDPOINT  = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
     ENDPOINT_L1_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
     L1_TOKEN_EXPIRATION  = 120
     L1_TOKEN_HEADER_NAME = "x-cgn-token"
@@ -261,7 +260,7 @@ module "ade_aa_mock" {
 
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_ade_aa_mock[0].name
@@ -488,18 +487,21 @@ module "apim_spid_login_api" {
 }
 
 module "apim_ade_aa_mock_api" {
-  count  = var.enable_spid_test ? 1 : 0
+  count  = var.enable_ade_aa_mock ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
 
   name                = format("%s-ade-aa-mock-api", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  description  = "ADE Attribute Authority Microservice Mock"
-  display_name = "ADEAA"
-  path         = "adeaa/v1"
-  protocols    = ["http", "https"]
-  service_url  = format("https://%s", module.ade_aa_mock[0].default_site_hostname)
+  description           = "ADE Attribute Authority Microservice Mock"
+  display_name          = "ADEAA"
+  path                  = "adeaa/v1"
+  protocols             = ["http", "https"]
+  service_url           = format("https://%s", module.ade_aa_mock[0].default_site_hostname)
+  subscription_required = true
+
+  product_ids = ["cgn-onboarding-portal-api"]
 
   content_value = file("./adeaa_api/swagger.json")
 
