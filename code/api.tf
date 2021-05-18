@@ -136,6 +136,8 @@ module "spid_login" {
   plan_name           = format("%s-plan-spid-login", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
+  health_check_path = "/info"
+
   app_settings = merge({
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -459,7 +461,9 @@ module "apim_backend_api" {
 
   content_value = file("./backend_api/swagger.json")
 
-  xml_content = file("./backend_api/policy.xml")
+  xml_content = templatefile("./backend_api/policy.xml.tpl", {
+    hub_spid_login_url = format("https://%s", module.spid_login.default_site_hostname)
+  })
 }
 
 
