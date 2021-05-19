@@ -255,3 +255,19 @@ resource "tfe_variable" "uat_adb2c_audience" {
   sensitive    = true
   workspace_id = data.tfe_workspace.uat.id
 }
+
+resource "tfe_variable" "uat_agid_spid_pem_name" {
+  key          = "agid_spid_pem_name"
+  value        = "AGID-SPID-CERT-PEM"
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.uat.id
+}
+
+resource "tfe_variable" "uat_agid_spid_key_name" {
+  key          = "agid_spid_key_name"
+  value        = "AGID-SPID-CERT-PEM"
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.uat.id
+}
