@@ -266,7 +266,7 @@ resource "tfe_variable" "uat_agid_spid_pem_name" {
 
 resource "tfe_variable" "uat_agid_spid_key_name" {
   key          = "agid_spid_key_name"
-  value        = "AGID-SPID-CERT-PEM"
+  value        = "AGID-SPID-CERT-KEY"
   category     = "terraform"
   sensitive    = false
   workspace_id = data.tfe_workspace.uat.id
