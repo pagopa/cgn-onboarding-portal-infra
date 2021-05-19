@@ -299,6 +299,12 @@ variable "ad_key_vault_group_object_id" {
   description = "Active directory object id group that can access key vault."
 }
 
+variable "spid_certificate_name" {
+  type = string
+  description = "Spid Login certificate name on key vault"
+  default = null
+}
+
 # Redis Cache
 
 variable "redis_cache_family" {

@@ -192,8 +192,8 @@ module "spid_login" {
     COMPANY_NAME                     = "PagoPA S.p.A"
     COMPANY_VAT_NUMBER               = 15376371009
 
-    METADATA_PUBLIC_CERT  = tls_self_signed_cert.spid_self.cert_pem
-    METADATA_PRIVATE_CERT = tls_private_key.spid.private_key_pem
+    METADATA_PUBLIC_CERT  = var.spid_certificate_name != null ? data.azurerm_key_vault_certificate_data.spid_cert.pem : tls_self_signed_cert.spid_self.cert_pem
+    METADATA_PRIVATE_CERT = var.spid_certificate_name != null ? data.azurerm_key_vault_certificate_data.spid_cert.key : tls_private_key.spid.private_key_pem
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
