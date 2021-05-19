@@ -300,15 +300,15 @@ variable "ad_key_vault_group_object_id" {
 }
 
 variable "agid_spid_pem_name" {
-  type = string
+  type        = string
   description = "Secret name with agid spid pem file content"
-  default = null
+  default     = null
 }
 
 variable "agid_spid_key_name" {
-  type = string
+  type        = string
   description = "Secret name with agid spid key file content"
-  default = null
+  default     = null
 }
 
 # Redis Cache
