@@ -196,9 +196,25 @@ resource "tls_self_signed_cert" "spid_self" {
   }
 }
 
+/*
 data "azurerm_key_vault_certificate_data" "spid_cert" {
   depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
   count        = var.spid_certificate_name != null ? 1 : 0
   name         = var.spid_certificate_name
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+*/
+
+data "azurerm_key_vault_secret" "agid_spid_pem" {
+  depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
+  count        = var.agid_spid_pem_name != null ? 1 : 0
+  name         = var.agid_spid_pem_name
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "agid_spid_key" {
+  depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
+  count        = var.agid_spid_key_name != null ? 1 : 0
+  name         = var.agid_spid_key_name
   key_vault_id = azurerm_key_vault.key_vault.id
 }

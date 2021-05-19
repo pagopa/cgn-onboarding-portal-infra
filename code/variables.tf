@@ -299,9 +299,15 @@ variable "ad_key_vault_group_object_id" {
   description = "Active directory object id group that can access key vault."
 }
 
-variable "spid_certificate_name" {
+variable "agid_spid_pem_name" {
   type = string
-  description = "Spid Login certificate name on key vault"
+  description = "Secret name with agid spid pem file content"
+  default = null
+}
+
+variable "agid_spid_key_name" {
+  type = string
+  description = "Secret name with agid spid key file content"
   default = null
 }
 
