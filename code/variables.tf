@@ -300,9 +300,9 @@ variable "ad_key_vault_group_object_id" {
 }
 
 variable "spid_certificate_name" {
-  type = string
+  type        = string
   description = "Spid Login certificate name on key vault"
-  default = null
+  default     = null
 }
 
 # Redis Cache
