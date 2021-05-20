@@ -123,8 +123,8 @@
 | <a name="input_ad_key_vault_group_object_id"></a> [ad\_key\_vault\_group\_object\_id](#input\_ad\_key\_vault\_group\_object\_id) | Active directory object id group that can access key vault. | `string` | n/a | yes |
 | <a name="input_adb2c_audience"></a> [adb2c\_audience](#input\_adb2c\_audience) | recipients that the JWT is intended for | `string` | n/a | yes |
 | <a name="input_adb2c_openid_config_url"></a> [adb2c\_openid\_config\_url](#input\_adb2c\_openid\_config\_url) | Azure AD B2C OpenID Connect metadata document | `string` | n/a | yes |
-| <a name="input_agid_spid_key_name"></a> [agid\_spid\_key\_name](#input\_agid\_spid\_key\_name) | Secret name with agid spid key file content | `string` | `null` | no |
-| <a name="input_agid_spid_pem_name"></a> [agid\_spid\_pem\_name](#input\_agid\_spid\_pem\_name) | Secret name with agid spid pem file content | `string` | `null` | no |
+| <a name="input_agid_spid_private_key"></a> [agid\_spid\_key\_name](#input\_agid\_spid\_key\_name) | Secret name with agid spid key file content | `string` | `null` | no |
+| <a name="input_agid_spid_public_cert"></a> [agid\_spid\_pem\_name](#input\_agid\_spid\_pem\_name) | Secret name with agid spid pem file content | `string` | `null` | no |
 | <a name="input_apim_name"></a> [apim\_name](#input\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_apim_notification_sender_email"></a> [apim\_notification\_sender\_email](#input\_apim\_notification\_sender\_email) | n/a | `string` | n/a | yes |
 | <a name="input_apim_private_domain"></a> [apim\_private\_domain](#input\_apim\_private\_domain) | n/a | `string` | `"api.cgnonboardingportal.pagopa.it"` | no |
