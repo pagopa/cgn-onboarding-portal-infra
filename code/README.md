@@ -113,6 +113,7 @@
 | [azurerm_key_vault_secret.app_gw_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.backend_geolocation_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/subscription) | data source |
 
 ## Inputs
