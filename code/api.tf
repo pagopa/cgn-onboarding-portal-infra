@@ -166,7 +166,7 @@ module "spid_login" {
     REDIS_PASSWORD = module.redis_cache.primary_access_key
 
     # SPID
-    ORG_ISSUER       = "https://spid.agid.gov.it/cd"
+    ORG_ISSUER       = "https://cgnonboardingportal.pagopa.it/pub-op-full"
     ORG_URL          = "https://pagopa.gov.it"
     ACS_BASE_URL     = format("https://%s/spid/v1", var.app_gateway_host_name)
     ORG_DISPLAY_NAME = "PagoPA S.p.A"
