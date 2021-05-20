@@ -195,3 +195,17 @@ resource "tls_self_signed_cert" "spid_self" {
     country             = "IT"
   }
 }
+
+data "azurerm_key_vault_secret" "agid_spid_cert" {
+  depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
+  count        = var.agid_spid_public_cert != null ? 1 : 0
+  name         = var.agid_spid_public_cert
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "agid_spid_private_key" {
+  depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
+  count        = var.agid_spid_private_key != null ? 1 : 0
+  name         = var.agid_spid_private_key
+  key_vault_id = azurerm_key_vault.key_vault.id
+}

@@ -299,6 +299,18 @@ variable "ad_key_vault_group_object_id" {
   description = "Active directory object id group that can access key vault."
 }
 
+variable "agid_spid_public_cert" {
+  type        = string
+  description = "Secret name with agid spid public cert file content in pem format"
+  default     = null
+}
+
+variable "agid_spid_private_key" {
+  type        = string
+  description = "Secret name with agid spid pricate key file content in pem format"
+  default     = null
+}
+
 # Redis Cache
 
 variable "redis_cache_family" {
