@@ -109,8 +109,8 @@
 | [tls_self_signed_cert.jwt_self](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
 | [tls_self_signed_cert.spid_self](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/client_config) | data source |
-| [azurerm_key_vault_secret.agid_spid_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.agid_spid_pem](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.agid_spid_private_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.agid_spid_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_gw_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
