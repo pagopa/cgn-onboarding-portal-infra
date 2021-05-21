@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -52,7 +53,6 @@
 | [azurerm_application_gateway.api_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/application_gateway) | resource |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/application_insights) | resource |
 | [azurerm_cdn_profile.cdn_profile_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/cdn_profile) | resource |
-| [azurerm_container_group.sonarqube](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/container_group) | resource |
 | [azurerm_container_group.spid_testenv](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/container_group) | resource |
 | [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/container_registry) | resource |
 | [azurerm_dns_a_record.api](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/dns_a_record) | resource |
@@ -67,6 +67,9 @@
 | [azurerm_key_vault_access_policy.terraform_cloud_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.apim_proxy_endpoint_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/key_vault_certificate) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_monitor_action_group.p0action](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_metric_alert.backend_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.postgresql_server](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_network_security_group.db_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/network_security_group) | resource |
 | [azurerm_postgresql_database.postgresql_database](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/postgresql_database) | resource |
 | [azurerm_postgresql_server.postgresql_server](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/postgresql_server) | resource |
@@ -83,18 +86,14 @@
 | [azurerm_resource_group.rg_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_public](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_sec](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.rg_sonarqube](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_spid_testenv](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/resource_group) | resource |
 | [azurerm_storage_account.ade_aa_mock](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
-| [azurerm_storage_account.sonarqube_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_account.spid_testenv_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.ade_aa_config](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.profile_images](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.user_documents](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_share.caddy_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_share) | resource |
-| [azurerm_storage_share.sonarqube_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_share) | resource |
 | [azurerm_storage_share.spid_testenv_caddy_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_share) | resource |
 | [azurerm_storage_share.spid_testenv_storage_share](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/storage_share) | resource |
 | [azurerm_subnet.subnet_apim](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/subnet) | resource |
@@ -109,8 +108,8 @@
 | [tls_self_signed_cert.jwt_self](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
 | [tls_self_signed_cert.spid_self](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/client_config) | data source |
-| [azurerm_key_vault_secret.agid_spid_private_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.agid_spid_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.agid_spid_private_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_gw_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.backend_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/data-sources/key_vault_secret) | data source |
@@ -123,22 +122,10 @@
 | <a name="input_ad_key_vault_group_object_id"></a> [ad\_key\_vault\_group\_object\_id](#input\_ad\_key\_vault\_group\_object\_id) | Active directory object id group that can access key vault. | `string` | n/a | yes |
 | <a name="input_adb2c_audience"></a> [adb2c\_audience](#input\_adb2c\_audience) | recipients that the JWT is intended for | `string` | n/a | yes |
 | <a name="input_adb2c_openid_config_url"></a> [adb2c\_openid\_config\_url](#input\_adb2c\_openid\_config\_url) | Azure AD B2C OpenID Connect metadata document | `string` | n/a | yes |
-| <a name="input_agid_spid_private_key"></a> [agid\_spid\_key\_name](#input\_agid\_spid\_key\_name) | Secret name with agid spid key file content | `string` | `null` | no |
-| <a name="input_agid_spid_public_cert"></a> [agid\_spid\_pem\_name](#input\_agid\_spid\_pem\_name) | Secret name with agid spid pem file content | `string` | `null` | no |
-| <a name="input_apim_name"></a> [apim\_name](#input\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_apim_notification_sender_email"></a> [apim\_notification\_sender\_email](#input\_apim\_notification\_sender\_email) | n/a | `string` | n/a | yes |
-| <a name="input_apim_private_domain"></a> [apim\_private\_domain](#input\_apim\_private\_domain) | n/a | `string` | `"api.cgnonboardingportal.pagopa.it"` | no |
 | <a name="input_apim_publisher_email"></a> [apim\_publisher\_email](#input\_apim\_publisher\_email) | n/a | `string` | n/a | yes |
 | <a name="input_apim_publisher_name"></a> [apim\_publisher\_name](#input\_apim\_publisher\_name) | n/a | `string` | n/a | yes |
-| <a name="input_apim_sku"></a> [apim\_sku](#input\_apim\_sku) | n/a | `string` | `"Developer_1"` | no |
-| <a name="input_app_gateway_certificate_name"></a> [app\_gateway\_certificate\_name](#input\_app\_gateway\_certificate\_name) | Application gateway certificate name on Key Vault | `string` | `null` | no |
 | <a name="input_app_gateway_host_name"></a> [app\_gateway\_host\_name](#input\_app\_gateway\_host\_name) | Application gateway host name | `string` | n/a | yes |
-| <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
-| <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | App Gateway | `number` | `1` | no |
-| <a name="input_azure_client_secret"></a> [azure\_client\_secret](#input\_azure\_client\_secret) | AZURE\_CLIENT\_SECRET | `any` | `null` | no |
-| <a name="input_cert_renew_app_id"></a> [cert\_renew\_app\_id](#input\_cert\_renew\_app\_id) | Application id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
-| <a name="input_cert_renew_app_object_id"></a> [cert\_renew\_app\_object\_id](#input\_cert\_renew\_app\_object\_id) | Object id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
-| <a name="input_cidr_subnet_ade_aa_mock"></a> [cidr\_subnet\_ade\_aa\_mock](#input\_cidr\_subnet\_ade\_aa\_mock) | n/a | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_api"></a> [cidr\_subnet\_api](#input\_cidr\_subnet\_api) | n/a | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_apim"></a> [cidr\_subnet\_apim](#input\_cidr\_subnet\_apim) | n/a | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_db"></a> [cidr\_subnet\_db](#input\_cidr\_subnet\_db) | n/a | `list(string)` | n/a | yes |
@@ -149,29 +136,46 @@
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_db_administrator_login"></a> [db\_administrator\_login](#input\_db\_administrator\_login) | The Administrator Login for the PostgreSQL Server. | `string` | n/a | yes |
 | <a name="input_db_administrator_login_password"></a> [db\_administrator\_login\_password](#input\_db\_administrator\_login\_password) | The Password associated with the administrator\_login. | `string` | n/a | yes |
+| <a name="input_db_sku_name"></a> [db\_sku\_name](#input\_db\_sku\_name) | Specifies the SKU Name for this PostgreSQL Server. | `string` | n/a | yes |
+| <a name="input_db_version"></a> [db\_version](#input\_db\_version) | Specifies the version of PostgreSQL to use. | `string` | n/a | yes |
+| <a name="input_devops_admin_email"></a> [devops\_admin\_email](#input\_devops\_admin\_email) | DevOps email address for alerts notification | `string` | n/a | yes |
+| <a name="input_email_department_email"></a> [email\_department\_email](#input\_email\_department\_email) | Receipent email address of the CGN Onboarding Department | `string` | n/a | yes |
+| <a name="input_email_password"></a> [email\_password](#input\_email\_password) | n/a | `string` | n/a | yes |
+| <a name="input_email_username"></a> [email\_username](#input\_email\_username) | n/a | `string` | n/a | yes |
+| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_recaptcha_secret_key"></a> [recaptcha\_secret\_key](#input\_recaptcha\_secret\_key) | Recaptcha | `string` | n/a | yes |
+| <a name="input_redis_cache_family"></a> [redis\_cache\_family](#input\_redis\_cache\_family) | The SKU family/pricing group to use. | `string` | n/a | yes |
+| <a name="input_redis_cache_sku_name"></a> [redis\_cache\_sku\_name](#input\_redis\_cache\_sku\_name) | The SKU of Redis to use. | `string` | n/a | yes |
+| <a name="input_agid_spid_private_key"></a> [agid\_spid\_private\_key](#input\_agid\_spid\_private\_key) | Secret name with agid spid pricate key file content in pem format | `string` | `null` | no |
+| <a name="input_agid_spid_public_cert"></a> [agid\_spid\_public\_cert](#input\_agid\_spid\_public\_cert) | Secret name with agid spid public cert file content in pem format | `string` | `null` | no |
+| <a name="input_apim_name"></a> [apim\_name](#input\_apim\_name) | n/a | `string` | `null` | no |
+| <a name="input_apim_private_domain"></a> [apim\_private\_domain](#input\_apim\_private\_domain) | n/a | `string` | `"api.cgnonboardingportal.pagopa.it"` | no |
+| <a name="input_apim_sku"></a> [apim\_sku](#input\_apim\_sku) | n/a | `string` | `"Developer_1"` | no |
+| <a name="input_app_gateway_certificate_name"></a> [app\_gateway\_certificate\_name](#input\_app\_gateway\_certificate\_name) | Application gateway certificate name on Key Vault | `string` | `null` | no |
+| <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
+| <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | App Gateway | `number` | `1` | no |
+| <a name="input_azure_client_secret"></a> [azure\_client\_secret](#input\_azure\_client\_secret) | AZURE\_CLIENT\_SECRET | `any` | `null` | no |
+| <a name="input_cert_renew_app_id"></a> [cert\_renew\_app\_id](#input\_cert\_renew\_app\_id) | Application id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
+| <a name="input_cert_renew_app_object_id"></a> [cert\_renew\_app\_object\_id](#input\_cert\_renew\_app\_object\_id) | Object id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
+| <a name="input_cidr_subnet_ade_aa_mock"></a> [cidr\_subnet\_ade\_aa\_mock](#input\_cidr\_subnet\_ade\_aa\_mock) | n/a | `list(string)` | `null` | no |
 | <a name="input_db_auto_grow_enabled"></a> [db\_auto\_grow\_enabled](#input\_db\_auto\_grow\_enabled) | Enable/Disable auto-growing of the storage. Storage auto-grow prevents your server from running out of storage and becoming read-only. If storage auto grow is enabled, the storage automatically grows without impacting the workload. | `bool` | `true` | no |
 | <a name="input_db_backup_retention_days"></a> [db\_backup\_retention\_days](#input\_db\_backup\_retention\_days) | Backup retention days for the server | `number` | `null` | no |
 | <a name="input_db_charset"></a> [db\_charset](#input\_db\_charset) | Specifies the Charset for the PostgreSQL Database | `string` | `"UTF8"` | no |
 | <a name="input_db_collation"></a> [db\_collation](#input\_db\_collation) | Specifies the Collation for the PostgreSQL Database. | `string` | `"Italian_Italy.1252"` | no |
 | <a name="input_db_create_mode"></a> [db\_create\_mode](#input\_db\_create\_mode) | The creation mode. Can be used to restore or replicate existing servers. | `string` | `"Default"` | no |
+| <a name="input_db_monitor_metric_alert_criteria"></a> [db\_monitor\_metric\_alert\_criteria](#input\_db\_monitor\_metric\_alert\_criteria) | Map of name = criteria objects, see these docs for options<br>https://docs.microsoft.com/en-us/azure/azure-monitor/platform/metrics-supported#microsoftdbforpostgresqlservers<br>https://docs.microsoft.com/en-us/azure/postgresql/concepts-limits#maximum-connections | <pre>map(object({<br>    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]<br>    aggregation = string<br>    metric_name = string<br>    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]<br>    operator  = string<br>    threshold = number<br>    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H<br>    frequency = string<br>    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.<br>    window_size = string<br><br>    dimension = map(object({<br>      name     = string<br>      operator = string<br>      values   = list(string)<br>    }))<br>  }))</pre> | `{}` | no |
 | <a name="input_db_public_network_access_enabled"></a> [db\_public\_network\_access\_enabled](#input\_db\_public\_network\_access\_enabled) | Whether or not public network access is allowed for this server. | `bool` | `false` | no |
-| <a name="input_db_sku_name"></a> [db\_sku\_name](#input\_db\_sku\_name) | Specifies the SKU Name for this PostgreSQL Server. | `string` | n/a | yes |
 | <a name="input_db_ssl_enforcement_enabled"></a> [db\_ssl\_enforcement\_enabled](#input\_db\_ssl\_enforcement\_enabled) | Specifies if SSL should be enforced on connections. | `bool` | `true` | no |
 | <a name="input_db_ssl_minimal_tls_version_enforced"></a> [db\_ssl\_minimal\_tls\_version\_enforced](#input\_db\_ssl\_minimal\_tls\_version\_enforced) | The mimimun TLS version to support on the sever. | `string` | `"TLS1_2"` | no |
 | <a name="input_db_storage_mb"></a> [db\_storage\_mb](#input\_db\_storage\_mb) | Max storage allowed for a server. | `number` | `5120` | no |
-| <a name="input_db_version"></a> [db\_version](#input\_db\_version) | Specifies the version of PostgreSQL to use. | `string` | n/a | yes |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | n/a | `string` | `null` | no |
 | <a name="input_dns_zone_prefix_uat"></a> [dns\_zone\_prefix\_uat](#input\_dns\_zone\_prefix\_uat) | TODO these \_uat are a temponary resources | `string` | `null` | no |
-| <a name="input_email_department_email"></a> [email\_department\_email](#input\_email\_department\_email) | Receipent email address of the CGN Onboarding Department | `string` | n/a | yes |
 | <a name="input_email_host"></a> [email\_host](#input\_email\_host) | email server hostname | `string` | `"fast.smtpok.com"` | no |
-| <a name="input_email_password"></a> [email\_password](#input\_email\_password) | n/a | `string` | n/a | yes |
 | <a name="input_email_port"></a> [email\_port](#input\_email\_port) | email server port | `number` | `80` | no |
-| <a name="input_email_username"></a> [email\_username](#input\_email\_username) | n/a | `string` | n/a | yes |
 | <a name="input_enable_ade_aa_mock"></a> [enable\_ade\_aa\_mock](#input\_enable\_ade\_aa\_mock) | ADE | `bool` | `false` | no |
 | <a name="input_enable_custom_dns"></a> [enable\_custom\_dns](#input\_enable\_custom\_dns) | # DNS | `bool` | `false` | no |
 | <a name="input_enable_sonarqube"></a> [enable\_sonarqube](#input\_enable\_sonarqube) | Enable sonarqube resources | `bool` | `false` | no |
 | <a name="input_enable_spid_test"></a> [enable\_spid\_test](#input\_enable\_spid\_test) | Create spid test container group. Default false | `bool` | `false` | no |
-| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_name"></a> [io\_apim\_name](#input\_io\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_productid"></a> [io\_apim\_productid](#input\_io\_apim\_productid) | n/a | `string` | `null` | no |
@@ -181,8 +185,6 @@
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | `"cgnonboardingportal"` | no |
-| <a name="input_redis_cache_family"></a> [redis\_cache\_family](#input\_redis\_cache\_family) | The SKU family/pricing group to use. | `string` | n/a | yes |
-| <a name="input_redis_cache_sku_name"></a> [redis\_cache\_sku\_name](#input\_redis\_cache\_sku\_name) | The SKU of Redis to use. | `string` | n/a | yes |
 | <a name="input_retention_policy_acr"></a> [retention\_policy\_acr](#input\_retention\_policy\_acr) | Container registry retention policy. | <pre>object({<br>    days    = number<br>    enabled = bool<br>  })</pre> | <pre>{<br>  "days": 7,<br>  "enabled": true<br>}</pre> | no |
 | <a name="input_sku_container_registry"></a> [sku\_container\_registry](#input\_sku\_container\_registry) | # Azure container registry | `string` | `"Basic"` | no |
 | <a name="input_storage_account_lock"></a> [storage\_account\_lock](#input\_storage\_account\_lock) | n/a | <pre>object({<br>    lock_level = string<br>    notes      = string<br>    scope      = string<br>  })</pre> | `null` | no |
@@ -203,3 +205,4 @@
 | <a name="output_db_fqdn"></a> [db\_fqdn](#output\_db\_fqdn) | n/a |
 | <a name="output_law_workpace_id"></a> [law\_workpace\_id](#output\_law\_workpace\_id) | monitor |
 | <a name="output_web_app_1_default_host_name"></a> [web\_app\_1\_default\_host\_name](#output\_web\_app\_1\_default\_host\_name) | web app service |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

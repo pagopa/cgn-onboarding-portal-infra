@@ -90,17 +90,6 @@ resource "tfe_variable" "dev_cidr_subnet_spid_login" {
   description  = "cidr virtual spid login. CreatedBy Terraform"
 }
 
-resource "tfe_variable" "dev_cidr_subnet_ade_aa_mock" {
-  key          = "cidr_subnet_ade_aa_mock"
-  value        = <<-EOT
-  ["10.0.7.0/24"]
-  EOT
-  hcl          = true
-  category     = "terraform"
-  workspace_id = data.tfe_workspace.dev.id
-  description  = "cidr virtual ade aa mock. CreatedBy Terraform"
-}
-
 resource "tfe_variable" "dev_cidr_subnet_function" {
   key          = "cidr_subnet_function"
   value        = <<-EOT
@@ -110,6 +99,17 @@ resource "tfe_variable" "dev_cidr_subnet_function" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
   description  = "cidr virtual function. CreatedBy Terraform"
+}
+
+resource "tfe_variable" "dev_cidr_subnet_ade_aa_mock" {
+  key          = "cidr_subnet_ade_aa_mock"
+  value        = <<-EOT
+  ["10.0.7.0/24"]
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "cidr virtual ade aa mock. CreatedBy Terraform"
 }
 
 # DNS
@@ -213,7 +213,6 @@ resource "tfe_variable" "dev_enable_spid_test" {
   description  = "Create spid test container group. Default false.  CreatedBy Terraform"
 }
 
-
 resource "tfe_variable" "dev_app_gateway_host_name" {
   key          = "app_gateway_host_name"
   value        = "api.cgn-dev.caravan-azure.bitrock.it"
@@ -237,8 +236,6 @@ resource "tfe_variable" "dev_enable_ade_aa_mock" {
   workspace_id = data.tfe_workspace.dev.id
 }
 
-
-
 resource "tfe_variable" "dev_adb2c_openid_config_url" {
   key          = "adb2c_openid_config_url"
   value        = "https://testcgnportalbitrock.b2clogin.com/testcgnportalbitrock.onmicrosoft.com/B2C_1_LOGIN/v2.0/.well-known/openid-configuration"
@@ -257,7 +254,7 @@ resource "tfe_variable" "dev_adb2c_audience" {
 
 resource "tfe_variable" "dev_email_username" {
   key          = "email_username"
-  value        = "s153482_2"
+  value        = "matteo.gazzetta@bitrock.it"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
 }
@@ -267,4 +264,59 @@ resource "tfe_variable" "dev_email_department_email" {
   value        = "matteo.gazzetta@bitrock.it"
   category     = "terraform"
   workspace_id = data.tfe_workspace.dev.id
+}
+
+resource "tfe_variable" "dev_devops_admin_email" {
+  key          = "devops_admin_email"
+  value        = "matteo.gazzetta@bitrock.it"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+}
+
+resource "tfe_variable" "dev_db_monitor_metric_alert_criteria" {
+  key          = "db_monitor_metric_alert_criteria"
+  value        = <<-EOT
+{
+  cpu = {
+    aggregation = "Average"
+    metric_name = "cpu_percent"
+    operator = "GreaterThanOrEqual"
+    threshold = 80
+    frequency = "PT5M"
+    window_size = "PT30M"
+    dimension = {}
+  }
+  memory = {
+    aggregation = "Average"
+    metric_name = "memory_percent"
+    operator = "GreaterThanOrEqual"
+    threshold = 80
+    frequency = "PT5M"
+    window_size = "PT30M"
+    dimension = {}
+  }
+  io = {
+    aggregation = "Average"
+    metric_name = "io_consumption_percent"
+    operator = "GreaterThanOrEqual"
+    threshold = 80
+    frequency = "PT5M"
+    window_size = "PT30M"
+    dimension = {}
+  }
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "active_connections"
+    operator = "GreaterThanOrEqual"
+    threshold = 116
+    frequency = "PT5M"
+    window_size = "PT5M"
+    dimension = {}
+  }
+}
+  EOT
+  hcl          = true
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.dev.id
+  description  = "Map of monitor name - criteria objects for DB. CreatedBy Terraform"
 }
