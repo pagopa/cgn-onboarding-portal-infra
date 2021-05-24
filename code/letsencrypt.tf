@@ -6,7 +6,7 @@ provider "acme" {
 module "acme_le" {
   count                 = var.enable_custom_dns ? 1 : 0
   depends_on            = [azurerm_dns_zone.public]
-  source                = "git::https://github.com/bitrockteam/caravan-acme-le?ref=v1.0.2"
+  source                = "git::https://github.com/bitrockteam/caravan-acme-le?ref=main"
   common_name           = azurerm_dns_zone.public[0].name
   dns_provider          = "azure"
   private_key           = tls_private_key.cert_private_key[0].private_key_pem

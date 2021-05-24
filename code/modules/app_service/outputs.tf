@@ -2,6 +2,10 @@ output "name" {
   value = azurerm_app_service.app_service.name
 }
 
+output "id" {
+  value = azurerm_app_service.app_service.id
+}
+
 output "plan_name" {
   value = azurerm_app_service_plan.app_service_plan.name
 }
