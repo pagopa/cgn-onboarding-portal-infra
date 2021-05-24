@@ -97,6 +97,12 @@ module "portal_backend_1" {
     AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id.value
     AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret.value
 
+    # RECAPTCHA
+    CGN_RECAPTCHA_SECRET_KEY = var.recaptcha_secret_key
+
+    # GEOLOCATION
+    CGN_GEOLOCATION_SECRET_TOKEN = data.azurerm_key_vault_secret.backend_geolocation_token.value
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
@@ -123,6 +129,11 @@ data "azurerm_key_vault_secret" "backend_client_id" {
 
 data "azurerm_key_vault_secret" "backend_client_secret" {
   name         = "backend-CLIENT-SECRET"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "backend_geolocation_token" {
+  name         = "backend-GEOLOCATION-TOKEN"
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 
