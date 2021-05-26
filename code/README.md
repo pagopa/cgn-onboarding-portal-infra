@@ -47,6 +47,7 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_api_operation_policy.spid_acs](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_certificate.jwt_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/api_management_certificate) | resource |
 | [azurerm_api_management_custom_domain.api_custom_domain](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/api_management_custom_domain) | resource |
 | [azurerm_api_management_product.cgn_onbording_portal](https://registry.terraform.io/providers/hashicorp/azurerm/2.56.0/docs/resources/api_management_product) | resource |
@@ -143,7 +144,6 @@
 | <a name="input_email_password"></a> [email\_password](#input\_email\_password) | n/a | `string` | n/a | yes |
 | <a name="input_email_username"></a> [email\_username](#input\_email\_username) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_recaptcha_secret_key"></a> [recaptcha\_secret\_key](#input\_recaptcha\_secret\_key) | Recaptcha | `string` | n/a | yes |
 | <a name="input_redis_cache_family"></a> [redis\_cache\_family](#input\_redis\_cache\_family) | The SKU family/pricing group to use. | `string` | n/a | yes |
 | <a name="input_redis_cache_sku_name"></a> [redis\_cache\_sku\_name](#input\_redis\_cache\_sku\_name) | The SKU of Redis to use. | `string` | n/a | yes |
 | <a name="input_agid_spid_private_key"></a> [agid\_spid\_private\_key](#input\_agid\_spid\_private\_key) | Secret name with agid spid pricate key file content in pem format | `string` | `null` | no |

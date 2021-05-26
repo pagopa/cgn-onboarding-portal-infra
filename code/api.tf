@@ -86,7 +86,7 @@ module "portal_backend_1" {
 
     CGN_EMAIL_NOTIFICATION_SENDER = "CGN Portal<no-reply@cgn.pagopa.it>"
     CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
-    CGN_EMAIL_PORTAL_BASE_URL     = format("https://%s/", module.cdn_portal_frontend.hostname)
+    CGN_EMAIL_PORTAL_BASE_URL     = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
 
     # APIM API TOKEN
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
@@ -176,7 +176,7 @@ module "spid_login" {
 
     ENDPOINT_ACS      = "/acs"
     ENDPOINT_ERROR    = "/error"
-    ENDPOINT_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
+    ENDPOINT_SUCCESS  = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
@@ -205,7 +205,7 @@ module "spid_login" {
     # ADE
     ENABLE_ADE_AA        = "true"
     ADE_AA_API_ENDPOINT  = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
-    ENDPOINT_L1_SUCCESS  = format("https://%s/", module.cdn_portal_frontend.hostname)
+    ENDPOINT_L1_SUCCESS  = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
     L1_TOKEN_EXPIRATION  = 120
     L1_TOKEN_HEADER_NAME = "x-cgn-token"
     L2_TOKEN_EXPIRATION  = 3600
@@ -335,9 +335,27 @@ module "operator_search" {
 locals {
   apim_name                     = format("%s-apim", local.project)
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
-  apim_origins = flatten([[var.enable_spid_test ? [format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)] : []],
+  apim_origins = flatten([
+    [var.enable_custom_dns ? [format("https://%s", trim(azurerm_dns_cname_record.frontend[0].fqdn, "."))] : []],
     [format("https://%s/", module.cdn_portal_frontend.hostname)],
   ["http://localhost:3000"]])
+
+  spid_acs_origins = flatten([
+    [var.enable_spid_test ? [format("https://%s", trim(azurerm_container_group.spid_testenv[0].fqdn, "."))] : []],
+    [
+      "https://id.lepida.it",
+      "https://identity.infocert.it",
+      "https://identity.sieltecloud.it",
+      "https://idp.namirialtsp.com",
+      "https://login.id.tim.it",
+      "https://loginspid.aruba.it",
+      "https://posteid.poste.it",
+      "https://spid.intesa.it",
+    "https://spid.register.it"]
+  ])
+
+  cdn_frontend_url        = format("https://%s/", module.cdn_portal_frontend.hostname)
+  custom_dns_frontend_url = format("https://%s/", trim(azurerm_dns_cname_record.frontend[0].fqdn, "."))
 }
 
 module "apim" {
@@ -521,6 +539,17 @@ module "apim_spid_login_api" {
   content_value = file("./spidlogin_api/swagger.json")
 
   xml_content = file("./spidlogin_api/policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "spid_acs" {
+  api_name            = format("%s-spid-login-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "postACS"
+
+  xml_content = templatefile("./spidlogin_api/postacs_policy.xml.tpl", {
+    origins = local.spid_acs_origins
+  })
 }
 
 module "apim_ade_aa_mock_api" {
