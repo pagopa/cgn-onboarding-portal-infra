@@ -7,5 +7,6 @@
         %{ endfor ~}
       </allowed-origins>
     </cors>
+    <base />
   </inbound>
 </policies>

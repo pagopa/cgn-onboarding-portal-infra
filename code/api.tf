@@ -338,7 +338,8 @@ locals {
   apim_origins = flatten([
     [var.enable_custom_dns ? [format("https://%s", trim(azurerm_dns_cname_record.frontend[0].fqdn, "."))] : []],
     [format("https://%s/", module.cdn_portal_frontend.hostname)],
-  ["http://localhost:3000"]])
+    [var.enable_spid_test ? ["http://localhost:3000"] : []]
+  ])
 
   spid_acs_origins = flatten([
     [var.enable_spid_test ? [format("https://%s", trim(azurerm_container_group.spid_testenv[0].fqdn, "."))] : []],
