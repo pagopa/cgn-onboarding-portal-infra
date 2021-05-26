@@ -424,3 +424,9 @@ variable "io_apim_productid" {
   type    = string
   default = null
 }
+
+# Recaptcha
+variable "recaptcha_secret_key" {
+  type      = string
+  sensitive = true
+}

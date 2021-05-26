@@ -38,9 +38,33 @@
     {
       "name": "api-token",
       "description": "API Token"
+    },
+    {
+      "name": "geolocation-token",
+      "description": "API Geolocation Token"
     }
   ],
   "paths": {
+    "/geolocation-token": {
+      "get": {
+        "tags": [
+          "geolocation-token"
+        ],
+        "summary": "Get token for geolocation",
+        "operationId": "getGeolocationToken",
+        "responses": {
+          "200": {
+            "description": "Token for geolocation",
+            "schema": {
+              "$ref": "#/definitions/GeolocationToken"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
     "/agreements": {
       "post": {
         "tags": [
@@ -1319,6 +1343,10 @@
         "creationDate": {
           "type": "string",
           "format": "date"
+        },
+        "suspendedReasonMessage": {
+          "type": "string",
+          "maxLength": 250
         }
       }
     },
@@ -1347,27 +1375,31 @@
     "Address": {
       "type": "object",
       "required": [
-        "street",
-        "zipCode",
-        "city",
-        "district"
+        "fullAddress",
+        "coordinates"
       ],
       "properties": {
-        "street": {
-          "type": "string"
-        },
-        "zipCode": {
+        "fullAddress": {
           "type": "string",
-          "minLength": 5,
-          "maxLength": 5
+          "minLength": 10
         },
-        "city": {
-          "type": "string"
+        "coordinates": {
+          "$ref": "#/definitions/Coordinates"
+        }
+      }
+    },
+    "Coordinates": {
+      "type": "object",
+      "required": [
+        "latitude",
+        "longitude"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "number"
         },
-        "district": {
-          "type": "string",
-          "minLength": 2,
-          "maxLength": 2
+        "longitude": {
+          "type": "number"
         }
       }
     },
@@ -1389,7 +1421,8 @@
       "type": "object",
       "required": [
         "documentType",
-        "documentUrl"
+        "documentUrl",
+        "documentTimestamp"
       ],
       "properties": {
         "documentType": {
@@ -1397,6 +1430,10 @@
         },
         "documentUrl": {
           "type": "string"
+        },
+        "documentTimestamp": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -1441,6 +1478,18 @@
         "message": {
           "type": "string",
           "maxLength": 200
+        }
+      }
+    },
+    "GeolocationToken": {
+      "type": "object",
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }
