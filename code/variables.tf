@@ -310,12 +310,6 @@ variable "storage_account_website_lock" {
   default = null
 }
 
-# Sonarqube
-variable "enable_sonarqube" {
-  default     = false
-  description = "Enable sonarqube resources"
-}
-
 # Key vault
 variable "cert_renew_app_object_id" {
   type        = string
@@ -369,6 +363,47 @@ variable "enable_spid_test" {
 variable "enable_ade_aa_mock" {
   type    = bool
   default = false
+}
+
+variable "ade_aa_mock_sku" {
+  type = object({
+    tier     = string
+    size     = string
+    capacity = number
+  })
+  default = {
+    tier     = "Standard"
+    size     = "S1"
+    capacity = 1
+  }
+}
+
+# BACKEND
+variable "backend_sku" {
+  type = object({
+    tier     = string
+    size     = string
+    capacity = number
+  })
+  default = {
+    tier     = "Standard"
+    size     = "S1"
+    capacity = 1
+  }
+}
+
+# HUB SPID LOGIN
+variable "hub_spid_login_sku" {
+  type = object({
+    tier     = string
+    size     = string
+    capacity = number
+  })
+  default = {
+    tier     = "Standard"
+    size     = "S1"
+    capacity = 1
+  }
 }
 
 ## AD B2C

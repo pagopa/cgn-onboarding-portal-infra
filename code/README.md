@@ -145,8 +145,10 @@
 | <a name="input_email_password"></a> [email\_password](#input\_email\_password) | n/a | `string` | n/a | yes |
 | <a name="input_email_username"></a> [email\_username](#input\_email\_username) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_recaptcha_secret_key"></a> [recaptcha\_secret\_key](#input\_recaptcha\_secret\_key) | Recaptcha | `string` | n/a | yes |
 | <a name="input_redis_cache_family"></a> [redis\_cache\_family](#input\_redis\_cache\_family) | The SKU family/pricing group to use. | `string` | n/a | yes |
 | <a name="input_redis_cache_sku_name"></a> [redis\_cache\_sku\_name](#input\_redis\_cache\_sku\_name) | The SKU of Redis to use. | `string` | n/a | yes |
+| <a name="input_ade_aa_mock_sku"></a> [ade\_aa\_mock\_sku](#input\_ade\_aa\_mock\_sku) | n/a | <pre>object({<br>    tier     = string<br>    size     = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "size": "S1",<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_agid_spid_private_key"></a> [agid\_spid\_private\_key](#input\_agid\_spid\_private\_key) | Secret name with agid spid pricate key file content in pem format | `string` | `null` | no |
 | <a name="input_agid_spid_public_cert"></a> [agid\_spid\_public\_cert](#input\_agid\_spid\_public\_cert) | Secret name with agid spid public cert file content in pem format | `string` | `null` | no |
 | <a name="input_apim_name"></a> [apim\_name](#input\_apim\_name) | n/a | `string` | `null` | no |
@@ -156,6 +158,7 @@
 | <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
 | <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | App Gateway | `number` | `1` | no |
 | <a name="input_azure_client_secret"></a> [azure\_client\_secret](#input\_azure\_client\_secret) | AZURE\_CLIENT\_SECRET | `any` | `null` | no |
+| <a name="input_backend_sku"></a> [backend\_sku](#input\_backend\_sku) | BACKEND | <pre>object({<br>    tier     = string<br>    size     = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "size": "S1",<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_cert_renew_app_id"></a> [cert\_renew\_app\_id](#input\_cert\_renew\_app\_id) | Application id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
 | <a name="input_cert_renew_app_object_id"></a> [cert\_renew\_app\_object\_id](#input\_cert\_renew\_app\_object\_id) | Object id of the azure devops app responsible to create and renew tsl certificates. | `string` | `null` | no |
 | <a name="input_cidr_subnet_ade_aa_mock"></a> [cidr\_subnet\_ade\_aa\_mock](#input\_cidr\_subnet\_ade\_aa\_mock) | n/a | `list(string)` | `null` | no |
@@ -175,9 +178,9 @@
 | <a name="input_email_port"></a> [email\_port](#input\_email\_port) | email server port | `number` | `80` | no |
 | <a name="input_enable_ade_aa_mock"></a> [enable\_ade\_aa\_mock](#input\_enable\_ade\_aa\_mock) | ADE | `bool` | `false` | no |
 | <a name="input_enable_custom_dns"></a> [enable\_custom\_dns](#input\_enable\_custom\_dns) | # DNS | `bool` | `false` | no |
-| <a name="input_enable_sonarqube"></a> [enable\_sonarqube](#input\_enable\_sonarqube) | Enable sonarqube resources | `bool` | `false` | no |
 | <a name="input_enable_spid_test"></a> [enable\_spid\_test](#input\_enable\_spid\_test) | Create spid test container group. Default false | `bool` | `false` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | n/a | `string` | `null` | no |
+| <a name="input_hub_spid_login_sku"></a> [hub\_spid\_login\_sku](#input\_hub\_spid\_login\_sku) | HUB SPID LOGIN | <pre>object({<br>    tier     = string<br>    size     = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "size": "S1",<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_io_apim_name"></a> [io\_apim\_name](#input\_io\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_productid"></a> [io\_apim\_productid](#input\_io\_apim\_productid) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_resourcegroup"></a> [io\_apim\_resourcegroup](#input\_io\_apim\_resourcegroup) | API TOKEN | `string` | `null` | no |

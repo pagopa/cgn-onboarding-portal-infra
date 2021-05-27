@@ -79,18 +79,18 @@ variable "health_check_maxpingfailures" {
   default = 10
 }
 
-variable "sku" {
+variable "plan_info" {
   type = object({
-    tier     = string
-    size     = string
-    capacity = number
+    kind     = string
+    sku_tier = string
+    sku_size = string
   })
-  default = {
-    tier     = "Standard"
-    size     = "S1"
-    capacity = 1
-  }
 
+  default = {
+    kind     = "elastic"
+    sku_tier = "ElasticPremium"
+    sku_size = "EP1"
+  }
 }
 
 variable "tags" {

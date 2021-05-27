@@ -39,6 +39,8 @@ module "portal_backend_1" {
   plan_name           = format("%s-plan-portal-backend1", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
+  sku = var.backend_sku
+
   health_check_path = "/actuator/health"
 
   app_settings = {
@@ -147,7 +149,9 @@ module "spid_login" {
   plan_name           = format("%s-plan-spid-login", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  health_check_path = "/info"
+  sku = var.hub_spid_login_sku
+
+  health_check_path = "/healthcheck"
 
   app_settings = merge({
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -255,6 +259,8 @@ module "ade_aa_mock" {
   name                = format("%s-ade-aa-mock", local.project)
   plan_name           = format("%s-ade-aa-mock-plan", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
+
+  sku = var.ade_aa_mock_sku
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
