@@ -310,11 +310,20 @@ module "ade_aa_mock" {
 
 ## APP FUNCTION CGN SEARCH ##
 #############################
+
+resource "azurerm_resource_group" "os_rg" {
+  name     = format("%s-search-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
+
+
 module "operator_search" {
   source = "./modules/app_function"
 
   name                = format("%s-os", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = azurerm_resource_group.os_rg.name
 
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
