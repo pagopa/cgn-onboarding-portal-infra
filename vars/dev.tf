@@ -156,14 +156,6 @@ resource "tfe_variable" "dev_database_name" {
   description  = "Name of the database. CreatedBy Terraform"
 }
 
-resource "tfe_variable" "dev_enable_sonarqube" {
-  key          = "enable_sonarqube"
-  value        = "false"
-  category     = "terraform"
-  workspace_id = data.tfe_workspace.dev.id
-  description  = "Enable sonarqube resources. CreatedBy Terraform"
-}
-
 resource "tfe_variable" "dev_apim_notification_sender_email" {
   key          = "apim_notification_sender_email"
   value        = "cgn-apim@pagopa.it"

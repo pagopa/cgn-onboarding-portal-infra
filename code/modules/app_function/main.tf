@@ -4,13 +4,12 @@ resource "azurerm_app_service_plan" "this" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  kind     = "Linux"
+  kind     = var.plan_info.kind
   reserved = true
 
   sku {
-    tier     = var.sku.tier
-    size     = var.sku.size
-    capacity = var.sku.capacity
+    tier = var.plan_info.sku_tier
+    size = var.plan_info.sku_size
   }
 
   tags = var.tags
