@@ -42,6 +42,13 @@ resource "azurerm_storage_container" "profile_images" {
   container_access_type = "blob"
 }
 
+resource "azurerm_storage_container" "spid_logs" {
+  depends_on            = [module.storage_account]
+  name                  = "spidlogs"
+  storage_account_name  = module.storage_account.name
+  container_access_type = "blob"
+}
+
 
 module "storage_account_website" {
   source = "./modules/storage_account"
