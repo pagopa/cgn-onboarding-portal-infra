@@ -340,6 +340,12 @@ variable "agid_spid_private_key" {
   default     = null
 }
 
+variable "spid_logs_public_key" {
+  type        = string
+  description = "Public key to perform spid access logs encryption"
+  default     = null
+}
+
 # Redis Cache
 
 variable "redis_cache_family" {

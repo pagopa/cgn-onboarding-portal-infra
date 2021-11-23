@@ -210,8 +210,9 @@ data "azurerm_key_vault_secret" "agid_spid_private_key" {
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 
-# Spid Access Logs encryption
-resource "tls_private_key" "spid_logs_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
+# Spid Access Logs encryption key
+data "azurerm_key_vault_secret" "spid_logs_public_key" {
+  count        = 1
+  name         = var.spid_logs_public_key
+  key_vault_id = azurerm_key_vault.key_vault.id
 }
