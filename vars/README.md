@@ -54,6 +54,7 @@ No modules.
 | [tfe_variable.prod_app_gateway_host_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_enable_spid_test](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_env_short](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.prod_spid_logs_public_key](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.prod_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_adb2c_audience](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_adb2c_openid_config_url](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
@@ -83,6 +84,7 @@ No modules.
 | [tfe_variable.uat_external_domain](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_redis_cache_family](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_redis_cache_sku_name](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
+| [tfe_variable.uat_spid_logs_public_key](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_variable.uat_tags](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/resources/variable) | resource |
 | [tfe_workspace.uat](https://registry.terraform.io/providers/hashicorp/tfe/0.24.0/docs/data-sources/workspace) | data source |
 

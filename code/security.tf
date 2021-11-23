@@ -209,3 +209,10 @@ data "azurerm_key_vault_secret" "agid_spid_private_key" {
   name         = var.agid_spid_private_key
   key_vault_id = azurerm_key_vault.key_vault.id
 }
+
+# Spid Access Logs encryption key
+data "azurerm_key_vault_secret" "spid_logs_public_key" {
+  count        = 1
+  name         = var.spid_logs_public_key
+  key_vault_id = azurerm_key_vault.key_vault.id
+}

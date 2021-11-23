@@ -340,6 +340,12 @@ variable "agid_spid_private_key" {
   default     = null
 }
 
+variable "spid_logs_public_key" {
+  type        = string
+  description = "Public key to perform spid access logs encryption"
+  default     = null
+}
+
 # Redis Cache
 
 variable "redis_cache_family" {
@@ -464,4 +470,11 @@ variable "io_apim_productid" {
 variable "recaptcha_secret_key" {
   type      = string
   sensitive = true
+}
+
+# Spid Access Log vars
+variable "enable_spid_access_logs" {
+  type        = bool
+  description = "Create spid test container group. Default false"
+  default     = true
 }

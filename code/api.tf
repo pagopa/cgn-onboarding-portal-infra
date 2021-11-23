@@ -229,6 +229,11 @@ module "spid_login" {
     APPINSIGHTS_DISABLED           = false
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
+    # Spid logs
+    ENABLE_SPID_ACCESS_LOGS             = var.enable_spid_access_logs
+    SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.storage_account.name};AccountKey=${module.storage_account.primary_access_key};BlobEndpoint=${module.storage_account.primary_blob_endpoint};"
+    SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
+    SPID_LOGS_PUBLIC_KEY                = data.azurerm_key_vault_secret.spid_logs_public_key[0].value
     },
     var.enable_spid_test ? {
       SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)

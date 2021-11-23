@@ -46,3 +46,11 @@ resource "tfe_variable" "prod_app_gateway_certificate_name" {
   workspace_id = data.tfe_workspace.prod.id
   description  = "Application gateway certificate name on Key Vault. CreatedBy Terraform"
 }
+
+resource "tfe_variable" "prod_spid_logs_public_key" {
+  key          = "spid_logs_public_key"
+  value        = "SPID-LOGS-PUBLIC-KEY"
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.prod.id
+}

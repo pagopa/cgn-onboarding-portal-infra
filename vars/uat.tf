@@ -263,3 +263,11 @@ resource "tfe_variable" "uat_agid_spid_private_key" {
   sensitive    = false
   workspace_id = data.tfe_workspace.uat.id
 }
+
+resource "tfe_variable" "uat_spid_logs_public_key" {
+  key          = "spid_logs_public_key"
+  value        = "SPID-LOGS-PUBLIC-KEY"
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.uat.id
+}
