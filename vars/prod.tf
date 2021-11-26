@@ -54,3 +54,11 @@ resource "tfe_variable" "prod_spid_logs_public_key" {
   sensitive    = false
   workspace_id = data.tfe_workspace.prod.id
 }
+
+resource "tfe_variable" "prod_pe_min_csv_rows" {
+  key          = "pe_min_csv_rows"
+  value        = 1000000
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.prod.id
+}

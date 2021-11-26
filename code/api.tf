@@ -74,7 +74,11 @@ module "portal_backend_1" {
     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
 
     # File Upload
-    SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE = "5MB"
+    SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE    = "200MB"
+    SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE = "200MB"
+
+    # Bucket
+    CGN_PE_DISCOUNT_BUCKET_MINCSVROWS = var.pe_min_csv_rows
 
     # EMAIL
     MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"

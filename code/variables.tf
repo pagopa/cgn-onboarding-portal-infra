@@ -478,3 +478,9 @@ variable "enable_spid_access_logs" {
   description = "Create spid test container group. Default false"
   default     = true
 }
+
+# Bucket vars
+variable "pe_min_csv_rows" {
+  type    = number
+  default = 1000000
+}
