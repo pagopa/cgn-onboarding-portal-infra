@@ -40,8 +40,16 @@
       "description": "API Token"
     },
     {
+      "name": "help",
+      "description": "Help"
+    },
+    {
       "name": "geolocation-token",
       "description": "API Geolocation Token"
+    },
+    {
+      "name": "bucket",
+      "description": "Bucket Load"
     }
   ],
   "paths": {
@@ -112,6 +120,9 @@
             "schema": {
               "$ref": "#/definitions/UploadedImage"
             }
+          },
+          "400": {
+            "$ref": "#/definitions/ImageErrorCode"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -320,6 +331,46 @@
         }
       }
     },
+    "/agreements/{agreementId}/discounts/bucket": {
+      "post": {
+        "tags": [
+          "bucket"
+        ],
+        "summary": "uploadBucket",
+        "operationId": "uploadBucket",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "in": "formData",
+            "name": "document",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bucket uploaded",
+            "schema": {
+              "$ref": "#/definitions/BucketLoad"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
     "/agreements/{agreementId}/discounts/{discountId}": {
       "get": {
         "tags": [
@@ -388,6 +439,9 @@
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
           }
         }
       },
@@ -437,6 +491,9 @@
           "204": {
             "description": "Discount published"
           },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
           },
@@ -467,6 +524,9 @@
             "schema": {
               "type": "file"
             }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -536,6 +596,9 @@
               "$ref": "#/definitions/Document"
             }
           },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
           },
@@ -561,6 +624,9 @@
         "responses": {
           "204": {
             "description": "Document deleted"
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -783,7 +849,8 @@
           ],
           "properties": {
             "reasonMessage": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 500
             }
           }
         }
@@ -845,13 +912,16 @@
         },
         "pecAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "legalOffice": {
           "type": "string"
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         },
         "legalRepresentativeFullName": {
@@ -891,13 +961,16 @@
         },
         "pecAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "legalOffice": {
           "type": "string"
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         },
         "legalRepresentativeFullName": {
@@ -953,13 +1026,16 @@
         },
         "pecAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "legalOffice": {
           "type": "string"
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         },
         "legalRepresentativeFullName": {
@@ -992,20 +1068,26 @@
       ],
       "properties": {
         "firstName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "lastName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "role": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "emailAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         }
       }
@@ -1060,10 +1142,13 @@
             },
             "addresses": {
               "type": "array",
-              "minItems": 1,
               "items": {
                 "$ref": "#/definitions/Address"
               }
+            },
+            "allNationalAddresses": {
+              "type": "boolean",
+              "default": false
             }
           }
         }
@@ -1086,10 +1171,13 @@
             },
             "addresses": {
               "type": "array",
-              "minItems": 1,
               "items": {
                 "$ref": "#/definitions/Address"
               }
+            },
+            "allNationalAddresses": {
+              "type": "boolean",
+              "default": false
             },
             "discountCodeType": {
               "$ref": "#/definitions/DiscountCodeType"
@@ -1110,7 +1198,9 @@
       "type": "string",
       "enum": [
         "Static",
-        "API"
+        "API",
+        "LandingPage",
+        "Bucket"
       ]
     },
     "CreateReferent": {
@@ -1124,20 +1214,26 @@
       ],
       "properties": {
         "firstName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "lastName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "role": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "emailAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         }
       }
@@ -1153,20 +1249,26 @@
       ],
       "properties": {
         "firstName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "lastName": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "role": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "emailAddress": {
           "type": "string",
-          "format": "email"
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 100
         },
         "telephoneNumber": {
           "type": "string",
+          "minLength": 4,
           "maxLength": 15
         }
       }
@@ -1177,7 +1279,6 @@
         "name",
         "startDate",
         "endDate",
-        "discount",
         "productCategories"
       ],
       "properties": {
@@ -1200,8 +1301,8 @@
         "discount": {
           "type": "integer",
           "format": "int32",
-          "minimum": 0,
-          "maximum": 100
+          "minimum": 1,
+          "maximum": 99
         },
         "productCategories": {
           "type": "array",
@@ -1215,7 +1316,24 @@
           "maxLength": 200
         },
         "staticCode": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
+        },
+        "visibleOnEyca": {
+          "type": "boolean",
+          "default": false
+        },
+        "landingPageUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "landingPageReferrer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "lastBucketCodeFileUid": {
+          "type": "string",
+          "maxLength": 255
         }
       }
     },
@@ -1226,7 +1344,6 @@
         "description",
         "startDate",
         "endDate",
-        "discount",
         "productCategories",
         "condition"
       ],
@@ -1250,8 +1367,8 @@
         "discount": {
           "type": "integer",
           "format": "int32",
-          "minimum": 0,
-          "maximum": 100
+          "minimum": 1,
+          "maximum": 99
         },
         "productCategories": {
           "type": "array",
@@ -1265,7 +1382,24 @@
           "maxLength": 200
         },
         "staticCode": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
+        },
+        "visibleOnEyca": {
+          "type": "boolean",
+          "default": false
+        },
+        "landingPageUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "landingPageReferrer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "lastBucketCodeFileUid": {
+          "type": "string",
+          "maxLength": 255
         }
       }
     },
@@ -1293,7 +1427,6 @@
         "description",
         "startDate",
         "endDate",
-        "discount",
         "productCategories",
         "condition"
       ],
@@ -1308,7 +1441,8 @@
           "$ref": "#/definitions/DiscountState"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
         },
         "description": {
           "type": "string"
@@ -1324,8 +1458,8 @@
         "discount": {
           "type": "integer",
           "format": "int32",
-          "minimum": 0,
-          "maximum": 100
+          "minimum": 1,
+          "maximum": 99
         },
         "productCategories": {
           "type": "array",
@@ -1338,7 +1472,12 @@
           "type": "string"
         },
         "staticCode": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 100
+        },
+        "visibleOnEyca": {
+          "type": "boolean",
+          "default": false
         },
         "creationDate": {
           "type": "string",
@@ -1347,6 +1486,18 @@
         "suspendedReasonMessage": {
           "type": "string",
           "maxLength": 250
+        },
+        "landingPageUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "landingPageReferrer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "lastBucketCodeFileUid": {
+          "type": "string",
+          "maxLength": 255
         }
       }
     },
@@ -1362,26 +1513,27 @@
     "ProductCategory": {
       "type": "string",
       "enum": [
-        "Entertainments",
-        "Travels",
-        "Transportation",
-        "Connectivity",
-        "Books",
-        "Arts",
+        "Entertainment",
+        "Travelling",
+        "FoodDrink",
+        "Services",
+        "Learning",
+        "Hotels",
         "Sports",
-        "Health"
+        "Health",
+        "Shopping"
       ]
     },
     "Address": {
       "type": "object",
       "required": [
-        "fullAddress",
-        "coordinates"
+        "fullAddress"
       ],
       "properties": {
         "fullAddress": {
           "type": "string",
-          "minLength": 10
+          "minLength": 10,
+          "maxLength": 500
         },
         "coordinates": {
           "$ref": "#/definitions/Coordinates"
@@ -1434,6 +1586,19 @@
         "documentTimestamp": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "BucketLoad": {
+      "type": "object",
+      "required": [
+        "uid"
+      ],
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
         }
       }
     },
@@ -1492,6 +1657,15 @@
           "minLength": 1
         }
       }
+    },
+    "ImageErrorCode": {
+      "type": "string",
+      "enum": [
+        "INVALID_IMAGE_TYPE",
+        "INVALID_DIMENSION",
+        "GENERIC",
+        "IMAGE_SIZE_EXCEEDED"
+      ]
     }
   },
   "responses": {
@@ -1503,6 +1677,9 @@
     },
     "NotFound": {
       "description": "Not found"
+    },
+    "Conflict": {
+      "description": "Conflict"
     }
   },
   "securityDefinitions": {
