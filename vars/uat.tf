@@ -271,3 +271,11 @@ resource "tfe_variable" "uat_spid_logs_public_key" {
   sensitive    = false
   workspace_id = data.tfe_workspace.uat.id
 }
+
+resource "tfe_variable" "uat_pe_min_csv_rows" {
+  key          = "pe_min_csv_rows"
+  value        = 0
+  category     = "terraform"
+  sensitive    = false
+  workspace_id = data.tfe_workspace.uat.id
+}
