@@ -121,9 +121,6 @@
               "$ref": "#/definitions/UploadedImage"
             }
           },
-          "400": {
-            "$ref": "#/definitions/ImageErrorCode"
-          },
           "403": {
             "$ref": "#/responses/Forbidden"
           },
@@ -1657,15 +1654,6 @@
           "minLength": 1
         }
       }
-    },
-    "ImageErrorCode": {
-      "type": "string",
-      "enum": [
-        "INVALID_IMAGE_TYPE",
-        "INVALID_DIMENSION",
-        "GENERIC",
-        "IMAGE_SIZE_EXCEEDED"
-      ]
     }
   },
   "responses": {
