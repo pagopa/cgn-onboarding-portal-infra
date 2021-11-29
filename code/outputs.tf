@@ -25,7 +25,7 @@ output "web_app_1_default_host_name" {
 
 # database postgres
 output "db_administrator_login" {
-  value     = azurerm_postgresql_server.postgresql_server.administrator_login
+  value     = data.azurerm_key_vault_secret.db_administrator_login.value
   sensitive = true
 }
 

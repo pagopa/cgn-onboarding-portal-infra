@@ -212,7 +212,30 @@ data "azurerm_key_vault_secret" "agid_spid_private_key" {
 
 # Spid Access Logs encryption key
 data "azurerm_key_vault_secret" "spid_logs_public_key" {
-  count        = 1
-  name         = var.spid_logs_public_key
+  name         = "SPID-LOGS-PUBLIC-KEY"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+# database.
+data "azurerm_key_vault_secret" "db_administrator_login" {
+  name         = "db-administrator-login"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+data "azurerm_key_vault_secret" "db_administrator_login_password" {
+  name         = "db-administrator-login-password"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "email_username" {
+  name         = "email-username"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+data "azurerm_key_vault_secret" "email_password" {
+  name         = "email-password"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "recaptcha_secret_key" {
+  name         = "recaptcha-secret-key"
   key_vault_id = azurerm_key_vault.key_vault.id
 }
