@@ -58,11 +58,14 @@ module "portal_backend_1" {
     WEBSITE_VNET_ROUTE_ALL = 1
 
     # These are app specific environment variables
-    SPRING_PROFILES_ACTIVE     = "prod"
-    SERVER_PORT                = 8080
-    SPRING_DATASOURCE_URL      = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
-    SPRING_DATASOURCE_USERNAME = format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)
-    SPRING_DATASOURCE_PASSWORD = var.db_administrator_login_password
+    SPRING_PROFILES_ACTIVE = "prod"
+    SERVER_PORT            = 8080
+    SPRING_DATASOURCE_URL  = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
+    SPRING_DATASOURCE_USERNAME = format("%s@%s",
+      data.azurerm_key_vault_secret.db_administrator_login.value,
+      azurerm_postgresql_server.postgresql_server.name
+    )
+    SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_administrator_login_password.value
     JAVA_OPTS                  = "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication"
 
     # Blob Storage Account
@@ -84,8 +87,8 @@ module "portal_backend_1" {
     MANAGEMENT_HEALTH_MAIL_ENABLED                     = "false"
     SPRING_MAIL_HOST                                   = var.email_host
     SPRING_MAIL_PORT                                   = var.email_port
-    SPRING_MAIL_USERNAME                               = var.email_username
-    SPRING_MAIL_PASSWORD                               = var.email_password
+    SPRING_MAIL_USERNAME                               = data.azurerm_key_vault_secret.email_username.value
+    SPRING_MAIL_PASSWORD                               = data.azurerm_key_vault_secret.email_password.value
     SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT = 10000
     SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT           = 10000
     SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT      = 10000
@@ -104,7 +107,7 @@ module "portal_backend_1" {
     AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret.value
 
     # RECAPTCHA
-    CGN_RECAPTCHA_SECRET_KEY = var.recaptcha_secret_key
+    CGN_RECAPTCHA_SECRET_KEY = data.azurerm_key_vault_secret.recaptcha_secret_key.value
 
     # GEOLOCATION
     CGN_GEOLOCATION_SECRET_TOKEN = data.azurerm_key_vault_secret.backend_geolocation_token.value
@@ -237,7 +240,7 @@ module "spid_login" {
     ENABLE_SPID_ACCESS_LOGS             = var.enable_spid_access_logs
     SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.storage_account.name};AccountKey=${module.storage_account.primary_access_key};BlobEndpoint=${module.storage_account.primary_blob_endpoint};"
     SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
-    SPID_LOGS_PUBLIC_KEY                = data.azurerm_key_vault_secret.spid_logs_public_key[0].value
+    SPID_LOGS_PUBLIC_KEY                = data.azurerm_key_vault_secret.spid_logs_public_key.value
     },
     var.enable_spid_test ? {
       SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
@@ -347,9 +350,22 @@ module "operator_search" {
     WEBSITE_VNET_ROUTE_ALL = 1
 
     CGN_POSTGRES_DB_ADMIN_URI = format("postgresql://%s:%s@%s:5432/%s",
-    urlencode(format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)), urlencode(var.db_administrator_login_password), trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."), var.database_name)
+      urlencode(format("%s@%s",
+        data.azurerm_key_vault_secret.db_administrator_login.value,
+      azurerm_postgresql_server.postgresql_server.name)),
+      urlencode(
+      data.azurerm_key_vault_secret.db_administrator_login_password.value),
+      trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."),
+      var.database_name
+    )
     CGN_POSTGRES_DB_RO_URI = format("postgresql://%s:%s@%s:5432/%s",
-    urlencode(format("%s@%s", var.db_administrator_login, azurerm_postgresql_server.postgresql_server.name)), urlencode(var.db_administrator_login_password), trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."), var.database_name)
+      urlencode(format("%s@%s",
+        data.azurerm_key_vault_secret.db_administrator_login.value,
+      azurerm_postgresql_server.postgresql_server.name)),
+      urlencode(
+        data.azurerm_key_vault_secret.db_administrator_login_password.value
+      ),
+    trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."), var.database_name)
     CGN_POSTGRES_DB_SSL_ENABLED = "true"
 
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
