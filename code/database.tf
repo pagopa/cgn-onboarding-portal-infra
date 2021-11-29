@@ -10,8 +10,8 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   location            = azurerm_resource_group.rg_db.location
   resource_group_name = azurerm_resource_group.rg_db.name
 
-  administrator_login          = var.db_administrator_login
-  administrator_login_password = var.db_administrator_login_password
+  administrator_login          = data.azurerm_key_vault_secret.db_administrator_login.value
+  administrator_login_password = data.azurerm_key_vault_secret.db_administrator_login_password.value
 
   sku_name   = var.db_sku_name
   version    = var.db_version

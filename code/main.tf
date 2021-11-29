@@ -17,14 +17,7 @@ terraform {
     }
   }
 
-  # terraform cloud.
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "PagoPa"
-    workspaces {
-      prefix = "cgn-onboarding-portal-"
-    }
-  }
+  backend "azurerm" {}
 }
 provider "azurerm" {
   features {}

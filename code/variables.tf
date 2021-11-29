@@ -174,17 +174,6 @@ variable "devops_admin_email" {
 }
 
 # postgresql
-variable "db_administrator_login" {
-  type        = string
-  description = "The Administrator Login for the PostgreSQL Server."
-  sensitive   = true
-}
-
-variable "db_administrator_login_password" {
-  type        = string
-  description = "The Password associated with the administrator_login."
-  sensitive   = true
-}
 
 variable "db_sku_name" {
   type        = string
@@ -340,12 +329,6 @@ variable "agid_spid_private_key" {
   default     = null
 }
 
-variable "spid_logs_public_key" {
-  type        = string
-  description = "Public key to perform spid access logs encryption"
-  default     = null
-}
-
 # Redis Cache
 
 variable "redis_cache_family" {
@@ -436,15 +419,6 @@ variable "email_port" {
   default     = 80
 }
 
-variable "email_username" {
-  type = string
-}
-
-variable "email_password" {
-  type      = string
-  sensitive = true
-}
-
 variable "email_department_email" {
   type        = string
   description = "Receipent email address of the CGN Onboarding Department"
@@ -464,12 +438,6 @@ variable "io_apim_name" {
 variable "io_apim_productid" {
   type    = string
   default = null
-}
-
-# Recaptcha
-variable "recaptcha_secret_key" {
-  type      = string
-  sensitive = true
 }
 
 # Spid Access Log vars
