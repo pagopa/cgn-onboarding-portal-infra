@@ -38,29 +38,6 @@ resource "azurerm_key_vault" "key_vault" {
 
 }
 
-# terraform cloud policy
-resource "azurerm_key_vault_access_policy" "terraform_cloud_policy" {
-  key_vault_id = azurerm_key_vault.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
-
-  key_permissions = ["Get", "List", "Update", "Create", "Import", "Delete",
-    "Recover", "Backup", "Restore"
-  ]
-
-  secret_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup",
-    "Restore"
-  ]
-
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import",
-    "Delete", "Recover", "Backup", "Restore", "ManageContacts", "ManageIssuers",
-    "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers", "Purge"
-  ]
-
-  storage_permissions = []
-
-}
-
 # api management policy
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
   key_vault_id = azurerm_key_vault.key_vault.id
