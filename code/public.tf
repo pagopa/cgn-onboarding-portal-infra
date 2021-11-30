@@ -35,8 +35,8 @@ module "app_gw" {
   name                = format("%s-api-gateway", local.project)
 
   # SKU
-  sku_name = "WAF_v2"
-  sku_tier = "WAF_v2"
+  sku_name = var.app_gateway_sku_name
+  sku_tier = var.app_gateway_sku_tier
 
   # Networking
   subnet_id    = module.subnet_public.id
@@ -45,11 +45,11 @@ module "app_gw" {
   # Configure backends
   backends = {
     apim = {
-      protocol                    = "Https"
+      protocol                    = "Http"
       host                        = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-      port                        = 443
-      ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_private_dns_a_record.private_dns_a_record_api.fqdn]
+      port                        = 80
+      ip_addresses                = null
+      fqdns                       = [trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 8
@@ -111,13 +111,15 @@ module "app_gw" {
   # TLS
   identity_ids = [azurerm_user_assigned_identity.main.id]
 
+  waf_enabled = var.app_gateway_sku_tier == "WAF_v2" ? true : false
+
   # WAF
-  waf_disabled_rule_group = [
+  waf_disabled_rule_group = var.app_gateway_sku_tier == "WAF_v2" ? [
     {
       rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
       rules           = ["920300", ]
     }
-  ]
+  ] : []
 
   # Scaling
   app_gateway_min_capacity = var.app_gateway_min_capacity
