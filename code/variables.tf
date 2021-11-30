@@ -73,6 +73,18 @@ variable "app_gateway_certificate_name" {
   default     = null
 }
 
+variable "app_gateway_sku_name" {
+  type        = string
+  description = "The Name of the SKU to use for this Application Gateway."
+  default     = "Standard_v2"
+}
+
+variable "app_gateway_sku_tier" {
+  type        = string
+  description = "The Tier of the SKU to use for this Application Gateway. "
+  default     = "Standard_v2"
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)

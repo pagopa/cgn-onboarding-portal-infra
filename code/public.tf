@@ -20,146 +20,114 @@ locals {
   http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
 }
 
-resource "azurerm_application_gateway" "api_gateway" {
-  name                = format("%s-api-gateway", local.project)
+data "azurerm_key_vault_certificate" "app_gw_platform" {
+  name         = var.app_gateway_certificate_name
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+
+
+# Application gateway: Multilistener configuraiton
+module "app_gw" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.2"
+
   resource_group_name = azurerm_resource_group.rg_public.name
   location            = azurerm_resource_group.rg_public.location
+  name                = format("%s-api-gateway", local.project)
 
-  sku {
-    name = "WAF_v2"
-    tier = "WAF_v2"
-  }
+  # SKU
+  sku_name = var.app_gateway_sku_name
+  sku_tier = var.app_gateway_sku_tier
 
-  enable_http2 = true
+  # Networking
+  subnet_id    = module.subnet_public.id
+  public_ip_id = azurerm_public_ip.apigateway_public_ip.id
 
-  ssl_policy {
-    policy_type = "Predefined"
-    policy_name = "AppGwSslPolicy20170401S"
-  }
-
-  gateway_ip_configuration {
-    name      = format("%s-appgw-gw-ip-configuration", local.project)
-    subnet_id = module.subnet_public.id
-  }
-
-  frontend_port {
-    name = local.frontend_http_port_name
-    port = 80
-  }
-
-  frontend_port {
-    name = local.frontend_https_port_name
-    port = 443
-  }
-
-  frontend_ip_configuration {
-    name                 = local.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.apigateway_public_ip.id
-  }
-
-  backend_address_pool {
-    name         = local.backend_address_pool_name
-    fqdns        = [trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")]
-    ip_addresses = []
-  }
-
-  backend_http_settings {
-    name                  = local.http_setting_name
-    host_name             = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    cookie_based_affinity = "Disabled"
-    path                  = ""
-    port                  = 80
-    protocol              = "Http"
-    request_timeout       = 60
-    probe_name            = "probe-apim"
-  }
-
-  probe {
-    host                                      = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    minimum_servers                           = 0
-    name                                      = "probe-apim"
-    path                                      = "/status-0123456789abcdef"
-    pick_host_name_from_backend_http_settings = false
-    protocol                                  = "Http"
-    timeout                                   = 30
-    interval                                  = 30
-    unhealthy_threshold                       = 3
-
-    match {
-      status_code = ["200-399"]
+  # Configure backends
+  backends = {
+    apim = {
+      protocol                    = "Http"
+      host                        = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
+      port                        = 80
+      ip_addresses                = null
+      fqdns                       = [trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
     }
   }
 
-  http_listener {
-    name                           = local.http_listener_name
-    frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_http_port_name
-    protocol                       = "Http"
-  }
-
-  http_listener {
-    name                           = local.https_listener_name
-    frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_https_port_name
-    protocol                       = "Https"
-    ssl_certificate_name           = var.app_gateway_certificate_name
-    require_sni                    = true
-    host_name                      = var.app_gateway_host_name
-  }
-
-  request_routing_rule {
-    name                       = local.http_request_routing_rule_name
-    rule_type                  = "Basic"
-    http_listener_name         = local.http_listener_name
-    backend_address_pool_name  = local.backend_address_pool_name
-    backend_http_settings_name = local.http_setting_name
-  }
-
-  request_routing_rule {
-    name                       = local.https_request_routing_rule_name
-    rule_type                  = "Basic"
-    http_listener_name         = local.https_listener_name
-    backend_address_pool_name  = local.backend_address_pool_name
-    backend_http_settings_name = local.http_setting_name
-  }
-
-  dynamic "ssl_certificate" {
-    for_each = var.enable_custom_dns ? [true] : []
-    content {
-      name                = data.azurerm_key_vault_secret.app_gw_cert[0].name
-      key_vault_secret_id = trimsuffix(data.azurerm_key_vault_secret.app_gw_cert[0].id, data.azurerm_key_vault_secret.app_gw_cert[0].version)
+  ssl_profiles = [{
+    name                             = format("%s-ssl-profile", local.project)
+    trusted_client_certificate_names = null
+    verify_client_cert_issuer_dn     = false
+    ssl_policy = {
+      disabled_protocols = []
+      policy_type        = "Custom"
+      policy_name        = "" # with Custom type set empty policy_name (not required by the provider)
+      cipher_suites = [
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+      ]
+      min_protocol_version = "TLSv1_2"
     }
+  }]
 
+  trusted_client_certificates = []
+
+  # Configure listeners
+  listeners = {
+    api = {
+      protocol           = "Https"
+      host               = var.app_gateway_host_name
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
+        )
+      }
+    }
   }
 
-  redirect_configuration {
-    name                 = local.http_to_https_redirect_rule
-    redirect_type        = "Permanent"
-    target_listener_name = local.https_listener_name
-    include_path         = true
-    include_query_string = true
+  # maps listener to backend
+  routes = {
+    api = {
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = null
+    }
   }
 
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.main.id]
-  }
+  rewrite_rule_sets = []
 
+  # TLS
+  identity_ids = [azurerm_user_assigned_identity.main.id]
 
-  waf_configuration {
-    enabled                  = true
-    firewall_mode            = "Detection"
-    rule_set_type            = "OWASP"
-    rule_set_version         = "3.1"
-    request_body_check       = true
-    file_upload_limit_mb     = 100
-    max_request_body_size_kb = 128
-  }
+  waf_enabled = var.app_gateway_sku_tier == "WAF_v2" ? true : false
 
-  autoscale_configuration {
-    min_capacity = var.app_gateway_min_capacity
-    max_capacity = var.app_gateway_max_capacity
-  }
+  # WAF
+  waf_disabled_rule_group = var.app_gateway_sku_tier == "WAF_v2" ? [
+    {
+      rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
+      rules           = ["920300", ]
+    }
+  ] : []
+
+  # Scaling
+  app_gateway_min_capacity = var.app_gateway_min_capacity
+  app_gateway_max_capacity = var.app_gateway_max_capacity
+
+  # Logs
+  sec_log_analytics_workspace_id = null
+  sec_storage_id                 = null
 
   tags = var.tags
 }
