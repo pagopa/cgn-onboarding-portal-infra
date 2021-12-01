@@ -75,4 +75,3 @@ tags = {
   Source      = "github.com/pagopa/cgn-onboarding-portal-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
-waf_enabled = false

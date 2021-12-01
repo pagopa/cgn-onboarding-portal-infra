@@ -25,7 +25,7 @@ provider "azurerm" {
 
 provider "azurerm" {
   alias           = "Prod-Sec"
-  subscription_id = data.azurerm_key_vault_secret.sec_sub_id.value
+  subscription_id = local.sec_sub_id
   features {}
 }
 
