@@ -22,7 +22,7 @@ locals {
 
 data "azurerm_key_vault_certificate" "app_gw_platform" {
   name         = var.app_gateway_certificate_name
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 
@@ -126,8 +126,8 @@ module "app_gw" {
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   # Logs
-  sec_log_analytics_workspace_id = null
-  sec_storage_id                 = null
+  sec_log_analytics_workspace_id = local.sec_workspace_id
+  sec_storage_id                 = local.sec_storage_id
 
   tags = var.tags
 }

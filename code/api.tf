@@ -133,17 +133,17 @@ module "portal_backend_1" {
 
 data "azurerm_key_vault_secret" "backend_client_id" {
   name         = "backend-CLIENT-ID"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "backend_client_secret" {
   name         = "backend-CLIENT-SECRET"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "backend_geolocation_token" {
   name         = "backend-GEOLOCATION-TOKEN"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 ############################
@@ -428,7 +428,7 @@ module "apim" {
 
 resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
   name         = local.apim_cert_name_proxy_endpoint
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   certificate_policy {
     issuer_parameters {

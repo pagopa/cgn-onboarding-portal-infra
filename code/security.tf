@@ -7,8 +7,6 @@ resource "azurerm_resource_group" "rg_sec" {
 }
 
 # User managed identity
-#
-
 resource "azurerm_user_assigned_identity" "main" {
   resource_group_name = azurerm_resource_group.rg_sec.name
   location            = azurerm_resource_group.rg_sec.location
@@ -19,28 +17,25 @@ resource "azurerm_user_assigned_identity" "main" {
 
 
 # Create Key Vault
-resource "azurerm_key_vault" "key_vault" {
-  name                        = format("%s-kv", local.project)
-  location                    = azurerm_resource_group.rg_sec.location
-  resource_group_name         = azurerm_resource_group.rg_sec.name
-  enabled_for_disk_encryption = false
-  enable_rbac_authorization   = false
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  tags                        = var.tags
-  sku_name                    = "standard"
+module "key_vault" {
+  source                     = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2"
+  name                       = format("%s-kv", local.project)
+  location                   = azurerm_resource_group.rg_sec.location
+  resource_group_name        = azurerm_resource_group.rg_sec.name
+  soft_delete_retention_days = 7
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
 
-  network_acls {
-    bypass         = "AzureServices"
-    default_action = "Allow" #tfsec:ignore:AZU020
-  }
+  # Security logs
+  sec_log_analytics_workspace_id = local.sec_workspace_id
+  sec_storage_id                 = local.sec_storage_id
 
+  tags = var.tags
 }
 
 # api management policy
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim.principal_id
 
@@ -52,7 +47,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy" {
 
 // user assined identity: (application gateway)
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.main.principal_id
@@ -64,7 +59,7 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 
 # ad group policy
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = var.ad_key_vault_group_object_id
@@ -82,7 +77,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 # azure devops
 resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
   count        = var.cert_renew_app_object_id == null ? 0 : 1
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = var.cert_renew_app_object_id
 
@@ -111,7 +106,7 @@ data "azurerm_key_vault_secret" "app_gw_cert" {
   depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
   count        = var.app_gateway_certificate_name != null ? 1 : 0
   name         = var.app_gateway_certificate_name
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "tls_private_key" "jwt" {
@@ -177,42 +172,62 @@ data "azurerm_key_vault_secret" "agid_spid_cert" {
   depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
   count        = var.agid_spid_public_cert != null ? 1 : 0
   name         = var.agid_spid_public_cert
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "agid_spid_private_key" {
   depends_on   = [azurerm_key_vault_access_policy.ad_group_policy]
   count        = var.agid_spid_private_key != null ? 1 : 0
   name         = var.agid_spid_private_key
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 # Spid Access Logs encryption key
 data "azurerm_key_vault_secret" "spid_logs_public_key" {
   name         = "SPID-LOGS-PUBLIC-KEY"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 # database.
 data "azurerm_key_vault_secret" "db_administrator_login" {
   name         = "db-administrator-login"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 data "azurerm_key_vault_secret" "db_administrator_login_password" {
   name         = "db-administrator-login-password"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "email_username" {
   name         = "email-username"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 data "azurerm_key_vault_secret" "email_password" {
   name         = "email-password"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "recaptcha_secret_key" {
   name         = "recaptcha-secret-key"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 }
+
+# Prod-Sec subscription
+data "azurerm_key_vault_secret" "sec_workspace_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-workspace-id"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "sec_sub_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-subscription-id"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "sec_storage_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-storage-id"
+  key_vault_id = module.key_vault.id
+}
+
