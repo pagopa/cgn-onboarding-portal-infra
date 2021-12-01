@@ -129,5 +129,124 @@ module "app_gw" {
   sec_log_analytics_workspace_id = local.sec_workspace_id
   sec_storage_id                 = local.sec_storage_id
 
+  # Alerts app gateway
+  alerts_enabled = var.app_gateway_alerts_enabled
+
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.p0action.id
+      webhook_properties = null
+    },
+  ]
+
+  # metrics docs
+  # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
+  monitor_metric_alert_criteria = {
+
+    compute_units_usage = {
+      description   = "Abnormal compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # todo after api app migration change to High
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+    backend_pools_status = {
+      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 0
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "UnhealthyHostCount"
+          operator    = "GreaterThan"
+          threshold   = 0
+          dimension   = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
+    # response_time = {
+    #   description   = "Backends response time is too high"
+    #   frequency     = "PT5M"
+    #   window_size   = "PT5M"
+    #   severity      = 2
+    #   auto_mitigate = true
+
+    #   criteria = []
+    #   dynamic_criteria = [
+    #     {
+    #       aggregation              = "Average"
+    #       metric_name              = "BackendLastByteResponseTime"
+    #       operator                 = "GreaterThan"
+    #       alert_sensitivity        = "High"
+    #       evaluation_total_count   = 2
+    #       evaluation_failure_count = 2
+    #       dimension                = []
+    #     }
+    #   ]
+    # }
+
+    total_requests = {
+      description   = "Traffic is raising"
+      frequency     = "PT5M"
+      window_size   = "PT15M"
+      severity      = 3
+      auto_mitigate = true
+
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "TotalRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "Medium"
+          evaluation_total_count   = 1
+          evaluation_failure_count = 1
+          dimension                = []
+        }
+      ]
+    }
+
+    failed_requests = {
+      description   = "Abnormal failed requests"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "FailedRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+  }
+
   tags = var.tags
 }
