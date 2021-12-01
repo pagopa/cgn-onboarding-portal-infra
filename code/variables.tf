@@ -85,6 +85,12 @@ variable "app_gateway_sku_tier" {
   default     = "Standard_v2"
 }
 
+variable "app_gateway_alerts_enabled" {
+  type        = bool
+  description = "If true a set of basic alerts will be created for the applications gateway."
+  default     = false
+}
+
 # Network
 variable "cidr_vnet" {
   type = list(string)

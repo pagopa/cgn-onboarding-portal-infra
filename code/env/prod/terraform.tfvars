@@ -7,6 +7,7 @@ apim_notification_sender_email = "io-operations@pagopa.it"
 apim_publisher_email           = "io-operations@pagopa.it"
 apim_publisher_name            = "PagoPa CGN Onboarding Portal"
 app_gateway_certificate_name   = "api-cgnonboardingportal-pagopa-it"
+app_gateway_alerts_enabled     = true
 app_gateway_host_name          = "api.cgnonboardingportal.pagopa.it"
 app_gateway_sku_name           = "WAF_v2"
 app_gateway_sku_tier           = "WAF_v2"

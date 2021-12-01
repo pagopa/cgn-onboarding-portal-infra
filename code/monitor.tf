@@ -33,7 +33,7 @@ resource "azurerm_monitor_action_group" "p0action" {
   short_name          = "p0action"
 
   email_receiver {
-    name                    = "sendtoadmin"
+    name                    = "support"
     email_address           = var.devops_admin_email
     use_common_alert_schema = true
   }
