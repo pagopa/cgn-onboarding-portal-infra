@@ -23,9 +23,19 @@ provider "azurerm" {
   features {}
 }
 
+provider "azurerm" {
+  alias           = "Prod-Sec"
+  subscription_id = data.azurerm_key_vault_secret.sec_sub_id.value
+  features {}
+}
+
 data "azurerm_subscription" "current" {
 }
 
 locals {
   project = format("%s-%s", var.prefix, var.env_short)
+
+  sec_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_sub_id       = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_sub_id[0].value : null
+  sec_storage_id   = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 }
