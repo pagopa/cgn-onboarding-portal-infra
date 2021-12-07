@@ -126,6 +126,14 @@ variable "cidr_subnet_function" {
 
 }
 
+variable "cidr_subnet_vpn" {
+  type = list(string)
+}
+
+variable "cidr_subnet_dns_forwarder" {
+  type = list(string)
+}
+
 ## DNS
 variable "enable_custom_dns" {
   type    = bool
@@ -469,4 +477,10 @@ variable "enable_spid_access_logs" {
 variable "pe_min_csv_rows" {
   type    = number
   default = 1000000
+}
+
+variable "vpn_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable vpn gateway"
 }
