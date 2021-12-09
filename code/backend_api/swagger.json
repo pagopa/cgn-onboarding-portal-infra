@@ -368,6 +368,38 @@
         }
       }
     },
+
+    "/agreements/{agreementId}/discounts/{discountId}/bucket-loading-progress":{
+      "get":{
+        "tags":[
+          "discount-bucket-loading-progress"
+        ],
+        "summary": "Get the loading progress for the last bucket of codes of a discount",
+        "operationId": "getDiscountBucketCodeLoadingProgess",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Number of codes loaded for running bucket",
+            "schema": {
+              "$ref": "#/definitions/DiscountBucketCodeLoadingProgess"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
     "/agreements/{agreementId}/discounts/{discountId}": {
       "get": {
         "tags": [
@@ -1190,6 +1222,24 @@
         "OfflineChannel",
         "BothChannels"
       ]
+    },
+
+    "DiscountBucketCodeLoadingProgess":{
+      "type": "object",
+      "required": [
+        "loaded",
+        "percent"
+      ],
+      "properties": {
+        "loaded": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "percent": {
+          "type": "number",
+          "format": "float"
+        }
+      }
     },
     "DiscountCodeType": {
       "type": "string",
