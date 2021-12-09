@@ -1,6 +1,6 @@
 ## VPN subnet
 module "vpn_snet" {
-  count                                          = var.vpn_enabled ? 1 : 0
+  count                                          = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
   name                                           = "GatewaySubnet"
   address_prefixes                               = var.cidr_subnet_vpn
@@ -11,12 +11,12 @@ module "vpn_snet" {
 }
 
 data "azuread_application" "vpn_app" {
-  count        = var.vpn_enabled ? 1 : 0
+  count        = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
   display_name = format("%s-app-vpn", local.project)
 }
 
 module "vpn" {
-  count  = var.vpn_enabled ? 1 : 0
+  count  = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.0.7"
 
   name                = format("%s-vpn", local.project)
@@ -45,7 +45,7 @@ module "vpn" {
 
 ## DNS Forwarder
 module "dns_forwarder_snet" {
-  count                                          = var.vpn_enabled ? 1 : 0
+  count                                          = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
   name                                           = format("%s-dns-forwarder-snet", local.project)
   address_prefixes                               = var.cidr_subnet_dns_forwarder
@@ -67,7 +67,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  count               = var.vpn_enabled ? 1 : 0
+  count               = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
   source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.8"
   name                = format("%s-dns-forwarder", local.project)
   location            = azurerm_resource_group.rg_vnet.location
