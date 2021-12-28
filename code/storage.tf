@@ -83,6 +83,16 @@ resource "azurerm_storage_account" "ade_aa_mock" {
 
   account_replication_type = "LRS"
 
+  blob_properties {
+    versioning_enabled = true
+    delete_retention_policy {
+      days = 30
+    }
+    container_delete_retention_policy {
+      days = 30
+    }
+  }
+
   tags = var.tags
 }
 
