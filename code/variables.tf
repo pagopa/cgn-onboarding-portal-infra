@@ -480,3 +480,10 @@ variable "pe_min_csv_rows" {
   type    = number
   default = 1000000
 }
+
+# operator_search vars
+variable "operator_search_external_allowed_ips" {
+  type    = list(string)
+  description = "External ips allowed to call operator search function"
+  default = []
+}
