@@ -40,9 +40,10 @@ env_short                 = "p"
 external_domain           = "pagopa.it"
 redis_cache_family        = "C"
 redis_cache_sku_name      = "Standard"
-operator_search_external_allowed_ips = [
-  "20.67.51.184/32", # io-backend
-  "20.67.51.210/32", # io-backend
+operator_search_external_allowed_subnets = [
+  # io-backend
+  "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl1",
+  "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl2",
 ]
 tags = {
   CreatedBy   = "Terraform"

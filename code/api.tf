@@ -371,9 +371,9 @@ module "operator_search" {
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
   }
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id]
-  allowed_ips     = concat(
-    var.operator_search_external_allowed_ips,
+  allowed_subnets = concat(
+    [azurerm_subnet.subnet_apim.id,],
+    var.operator_search_external_allowed_subnets,
   )
 
   subnet_name = module.subnet_function.name
