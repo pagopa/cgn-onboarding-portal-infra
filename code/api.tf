@@ -214,15 +214,15 @@ module "spid_login" {
     COMPANY_NAME                     = "PagoPA S.p.A"
     COMPANY_VAT_NUMBER               = 15376371009
 
-    METADATA_PUBLIC_CERT  = var.agid_spid_public_cert != null ? data.azurerm_key_vault_secret.agid_spid_cert[0].value : tls_self_signed_cert.spid_self.cert_pem
-    METADATA_PRIVATE_CERT = var.agid_spid_private_key != null ? data.azurerm_key_vault_secret.agid_spid_private_key[0].value : tls_private_key.spid.private_key_pem
+    METADATA_PUBLIC_CERT  = var.agid_spid_public_cert != null ? trimspace(data.azurerm_key_vault_secret.agid_spid_cert[0].value) : trimspace(tls_self_signed_cert.spid_self.cert_pem)
+    METADATA_PRIVATE_CERT = var.agid_spid_private_key != null ? trimspace(data.azurerm_key_vault_secret.agid_spid_private_key[0].value) : trimspace(tls_private_key.spid.private_key_pem)
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
     TOKEN_EXPIRATION      = "3600"
     JWT_TOKEN_ISSUER      = "SPID"
-    JWT_TOKEN_PRIVATE_KEY = tls_private_key.jwt.private_key_pem
+    JWT_TOKEN_PRIVATE_KEY = trimspace(tls_private_key.jwt.private_key_pem)
 
     # ADE
     ENABLE_ADE_AA        = "true"
@@ -240,7 +240,7 @@ module "spid_login" {
     ENABLE_SPID_ACCESS_LOGS             = var.enable_spid_access_logs
     SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.storage_account.name};AccountKey=${module.storage_account.primary_access_key};BlobEndpoint=${module.storage_account.primary_blob_endpoint};"
     SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
-    SPID_LOGS_PUBLIC_KEY                = data.azurerm_key_vault_secret.spid_logs_public_key.value
+    SPID_LOGS_PUBLIC_KEY                = trimspace(data.azurerm_key_vault_secret.spid_logs_public_key.value)
     },
     var.enable_spid_test ? {
       SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
@@ -372,7 +372,9 @@ module "operator_search" {
   }
 
   allowed_subnets = [azurerm_subnet.subnet_apim.id]
-  allowed_ips     = []
+  allowed_ips     = concat(
+    var.operator_search_external_allowed_ips,
+  )
 
   subnet_name = module.subnet_function.name
   subnet_id   = module.subnet_function.id
