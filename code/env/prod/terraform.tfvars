@@ -41,8 +41,8 @@ external_domain           = "pagopa.it"
 redis_cache_family        = "C"
 redis_cache_sku_name      = "Standard"
 operator_search_external_allowed_ips = [
-  "20.67.51.184", # io-backend
-  "20.67.51.210", # io-backend
+  "20.67.51.184/32", # io-backend
+  "20.67.51.210/32", # io-backend
 ]
 tags = {
   CreatedBy   = "Terraform"
