@@ -482,8 +482,8 @@ variable "pe_min_csv_rows" {
 }
 
 # operator_search vars
-variable "operator_search_external_allowed_ips" {
+variable "operator_search_external_allowed_subnets" {
   type    = list(string)
-  description = "External ips allowed to call operator search function"
+  description = "External subnets allowed to call operator search function"
   default = []
 }
