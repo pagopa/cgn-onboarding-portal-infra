@@ -372,7 +372,7 @@ module "operator_search" {
   }
 
   allowed_subnets = concat(
-    [azurerm_subnet.subnet_apim.id,],
+    [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
   )
 
