@@ -372,7 +372,7 @@ module "operator_search" {
   }
 
   allowed_subnets = concat(
-    [azurerm_subnet.subnet_apim.id,],
+    [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
   )
 
@@ -380,6 +380,69 @@ module "operator_search" {
   subnet_id   = module.subnet_function.id
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_autoscale_setting" "os_function" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s-autoscale", local.project, module.operator_search.name)
+  resource_group_name = azurerm_resource_group.os_rg.name
+  location            = var.location
+  target_resource_id  = module.operator_search.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 2
+      minimum = 1
+      maximum = 20
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.operator_search.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 4000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.operator_search.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
 }
 
 ############
