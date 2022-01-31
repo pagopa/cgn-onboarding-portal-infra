@@ -468,6 +468,12 @@ variable "io_apim_productid" {
   default = null
 }
 
+variable "io_apim_subscription_id" {
+  type        = string
+  description = "IO apim subscription id. If null the current subscription will be used."
+  default     = null
+}
+
 # Spid Access Log vars
 variable "enable_spid_access_logs" {
   type        = bool

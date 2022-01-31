@@ -101,10 +101,11 @@ module "portal_backend_1" {
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
     CGN_APIM_RESOURCE      = var.io_apim_name != null ? var.io_apim_name : module.apim.name
     CGN_APIM_PRODUCTID     = var.io_apim_productid != null ? var.io_apim_productid : azurerm_api_management_product.cgn_onbording_portal.id
-    AZURE_SUBSCRIPTION_ID  = data.azurerm_subscription.current.subscription_id
+    AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
     AZURE_TENANT_ID        = data.azurerm_subscription.current.tenant_id
-    AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id.value
-    AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret.value
+    # client id app authorized to write subscription into APIM.
+    AZURE_CLIENT_ID     = data.azurerm_key_vault_secret.backend_client_id.value
+    AZURE_CLIENT_SECRET = data.azurerm_key_vault_secret.backend_client_secret.value
 
     # RECAPTCHA
     CGN_RECAPTCHA_SECRET_KEY = data.azurerm_key_vault_secret.recaptcha_secret_key.value

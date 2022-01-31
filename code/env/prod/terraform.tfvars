@@ -41,6 +41,7 @@ external_domain           = "pagopa.it"
 io_apim_resourcegroup     = "io-p-rg-internal"
 io_apim_name              = "io-p-apim-api"
 io_apim_productid         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.ApiManagement/service/io-p-apim-api/products/cgnmerchant"
+io_apim_subscription_id   = "ec285037-c673-4f58-b594-d7c480da4e8b"
 redis_cache_family        = "C"
 redis_cache_sku_name      = "Standard"
 operator_search_external_allowed_subnets = [
