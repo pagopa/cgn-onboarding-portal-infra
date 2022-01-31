@@ -58,6 +58,7 @@ db_monitor_metric_alert_criteria = {
 db_sku_name                      = "GP_Gen5_2"
 db_version                       = 11
 db_public_network_access_enabled = true
+db_storage_mb                    = 10240
 devops_admin_email               = "io-operations@pagopa.it"
 dns_zone_prefix_uat              = "cgnonboardingportal-uat"
 email_department_email           = "prod-carta-giovani@pagopa.it"
