@@ -484,7 +484,7 @@ variable "enable_spid_access_logs" {
 # Bucket vars
 variable "pe_min_csv_rows" {
   type    = number
-  default = 1000000
+  default = 10000
 }
 
 # operator_search vars
