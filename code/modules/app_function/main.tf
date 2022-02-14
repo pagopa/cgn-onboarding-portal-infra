@@ -49,6 +49,7 @@ resource "azurerm_function_app" "this" {
     min_tls_version           = "1.2"
     ftps_state                = "Disabled"
     pre_warmed_instance_count = var.pre_warmed_instance_count
+    vnet_route_all_enabled    = var.subnet_id == null ? false : true
 
     dynamic "ip_restriction" {
       for_each = local.ip_restrictions
@@ -106,6 +107,7 @@ resource "azurerm_function_app_slot" "slot" {
   resource_group_name        = var.resource_group_name
   location                   = var.location
   version                    = var.runtime_version
+  os_type                    = var.os_type
   function_app_name          = azurerm_function_app.this.name
   app_service_plan_id        = azurerm_app_service_plan.this.id
   storage_account_name       = azurerm_storage_account.this.name
@@ -118,6 +120,7 @@ resource "azurerm_function_app_slot" "slot" {
     min_tls_version           = "1.2"
     ftps_state                = "Disabled"
     pre_warmed_instance_count = var.pre_warmed_instance_count
+    vnet_route_all_enabled    = var.subnet_id == null ? false : true
 
     dynamic "ip_restriction" {
       for_each = local.ip_restrictions

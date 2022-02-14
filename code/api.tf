@@ -32,18 +32,8 @@ resource "azurerm_container_registry" "container_registry" {
 //  skip_service_principal_aad_check = true
 //}
 
-module "portal_backend_1" {
-  source = "./modules/app_service"
-
-  name                = format("%s-portal-backend1", local.project)
-  plan_name           = format("%s-plan-portal-backend1", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  sku = var.backend_sku
-
-  health_check_path = "/actuator/health"
-
-  app_settings = {
+locals {
+  portal_backend_1_app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
     WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
@@ -111,8 +101,24 @@ module "portal_backend_1" {
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
-
   }
+}
+
+module "portal_backend_1" {
+  source = "./modules/app_service"
+
+  name                = format("%s-portal-backend1", local.project)
+  plan_name           = format("%s-plan-portal-backend1", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  sku = var.backend_sku
+
+  health_check_path = "/actuator/health"
+
+  app_settings = local.portal_backend_1_app_settings
+
+  slot_name         = "staging"
+  app_settings_slot = local.portal_backend_1_app_settings
 
   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
