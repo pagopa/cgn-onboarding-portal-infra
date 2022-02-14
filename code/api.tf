@@ -368,7 +368,7 @@ module "operator_search" {
   name                = format("%s-os", local.project)
   resource_group_name = azurerm_resource_group.os_rg.name
 
-  slot_name = "slot"
+  slot_name = "staging"
 
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
