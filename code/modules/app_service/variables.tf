@@ -1,6 +1,12 @@
 variable "name" {
   type        = string
-  description = "App service instance name"
+  description = "App service instance name."
+}
+
+variable "slot_name" {
+  type        = string
+  description = "App service slot name."
+  default     = null
 }
 
 variable "plan_name" {
@@ -18,6 +24,11 @@ variable "resource_group_name" {
 }
 
 variable "app_settings" {
+  type    = map(string)
+  default = {}
+}
+
+variable "app_settings_slot" {
   type    = map(string)
   default = {}
 }
