@@ -151,18 +151,9 @@ data "azurerm_key_vault_secret" "backend_geolocation_token" {
 ############################
 ## App service spid login ##
 ############################
-module "spid_login" {
-  source = "./modules/app_service"
 
-  name                = format("%s-spid-login", local.project)
-  plan_name           = format("%s-plan-spid-login", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  sku = var.hub_spid_login_sku
-
-  health_check_path = "/healthcheck"
-
-  app_settings = merge({
+locals {
+  spid_login_appsettings = merge({
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
@@ -248,6 +239,23 @@ module "spid_login" {
       SPID_TESTENV_URL = format("https://%s", azurerm_container_group.spid_testenv[0].fqdn)
     } : {}
   )
+}
+
+module "spid_login" {
+  source = "./modules/app_service"
+
+  name                = format("%s-spid-login", local.project)
+  plan_name           = format("%s-plan-spid-login", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  sku = var.hub_spid_login_sku
+
+  health_check_path = "/healthcheck"
+
+  slot_name         = "staging"
+  app_settings      = local.spid_login_appsettings
+  app_settings_slot = local.spid_login_appsettings
+
 
   linux_fx_version = "NODE|12-lts"
 
