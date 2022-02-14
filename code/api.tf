@@ -326,16 +326,8 @@ resource "azurerm_resource_group" "os_rg" {
   tags = var.tags
 }
 
-
-module "operator_search" {
-  source = "./modules/app_function"
-
-  name                = format("%s-os", local.project)
-  resource_group_name = azurerm_resource_group.os_rg.name
-
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-
-  app_settings = {
+locals {
+  operator_search_app_settings = {
     FUNCTIONS_WORKER_RUNTIME     = "node"
     WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
@@ -365,7 +357,30 @@ module "operator_search" {
     CGN_POSTGRES_DB_SSL_ENABLED = "true"
 
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
+
   }
+}
+
+
+module "operator_search" {
+  source = "./modules/app_function"
+
+  name                = format("%s-os", local.project)
+  resource_group_name = azurerm_resource_group.os_rg.name
+
+  slot_name = "slot"
+
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = merge(local.operator_search_app_settings, {
+    SLOT_TASK_HUBNAME = "ProductionTaskHub"
+  })
+
+  app_settings_slot = merge(local.operator_search_app_settings, {
+    SLOT_TASK_HUBNAME = "SlotTaskHub"
+  })
+
+
 
   allowed_subnets = concat(
     [azurerm_subnet.subnet_apim.id, ],

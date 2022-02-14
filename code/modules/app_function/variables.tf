@@ -3,6 +3,12 @@ variable "name" {
   type        = string
 }
 
+variable "slot_name" {
+  type        = string
+  default     = null
+  description = "Function slot name. If null the slot wouldn't be created."
+}
+
 variable "location" {
   type    = string
   default = "westeurope"
@@ -33,9 +39,15 @@ variable "application_insights_instrumentation_key" {
 }
 
 variable "app_settings" {
-  type = map(any)
+  type        = map(any)
+  description = "App settings."
+  default     = {}
+}
 
-  default = {}
+variable "app_settings_slot" {
+  type        = map(any)
+  description = "App settings for the slot function."
+  default     = {}
 }
 
 variable "allowed_ips" {
