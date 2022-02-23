@@ -7,9 +7,11 @@ resource "azurerm_app_service_plan" "this" {
   kind     = var.plan_info.kind
   reserved = true
 
+  maximum_elastic_worker_count = var.maximum_elastic_worker_count
   sku {
-    tier = var.plan_info.sku_tier
-    size = var.plan_info.sku_size
+    tier     = var.plan_info.sku_tier
+    size     = var.plan_info.sku_size
+    capacity = var.plan_info.capacity
   }
 
   tags = var.tags
@@ -50,6 +52,7 @@ resource "azurerm_function_app" "this" {
     ftps_state                = "Disabled"
     pre_warmed_instance_count = var.pre_warmed_instance_count
     vnet_route_all_enabled    = var.subnet_id == null ? false : true
+    elastic_instance_minimum  = var.elastic_instance_minimum
 
     dynamic "ip_restriction" {
       for_each = local.ip_restrictions
