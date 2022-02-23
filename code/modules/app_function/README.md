@@ -35,11 +35,13 @@ No modules.
 | <a name="input_app_settings"></a> [app\_settings](#input\_app\_settings) | App settings. | `map(any)` | `{}` | no |
 | <a name="input_app_settings_slot"></a> [app\_settings\_slot](#input\_app\_settings\_slot) | App settings for the slot function. | `map(any)` | `{}` | no |
 | <a name="input_cors"></a> [cors](#input\_cors) | n/a | <pre>object({<br>    allowed_origins = list(string)<br>  })</pre> | `null` | no |
+| <a name="input_elastic_instance_minimum"></a> [elastic\_instance\_minimum](#input\_elastic\_instance\_minimum) | The number of minimum instances for this function app. Only affects apps on the Premium plan. | `number` | `1` | no |
 | <a name="input_health_check_maxpingfailures"></a> [health\_check\_maxpingfailures](#input\_health\_check\_maxpingfailures) | n/a | `number` | `10` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | n/a | `string` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
+| <a name="input_maximum_elastic_worker_count"></a> [maximum\_elastic\_worker\_count](#input\_maximum\_elastic\_worker\_count) | The maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. | `number` | `1` | no |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | n/a | `string` | `"linux"` | no |
-| <a name="input_plan_info"></a> [plan\_info](#input\_plan\_info) | n/a | <pre>object({<br>    kind     = string<br>    sku_tier = string<br>    sku_size = string<br>  })</pre> | <pre>{<br>  "kind": "elastic",<br>  "sku_size": "EP1",<br>  "sku_tier": "ElasticPremium"<br>}</pre> | no |
+| <a name="input_plan_info"></a> [plan\_info](#input\_plan\_info) | n/a | <pre>object({<br>    kind     = string<br>    sku_tier = string<br>    sku_size = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "kind": "elastic",<br>  "sku_size": "EP1",<br>  "sku_tier": "ElasticPremium"<br>}</pre> | no |
 | <a name="input_pre_warmed_instance_count"></a> [pre\_warmed\_instance\_count](#input\_pre\_warmed\_instance\_count) | n/a | `number` | `1` | no |
 | <a name="input_runtime_version"></a> [runtime\_version](#input\_runtime\_version) | n/a | `string` | `"~3"` | no |
 | <a name="input_slot_name"></a> [slot\_name](#input\_slot\_name) | Function slot name. If null the slot wouldn't be created. | `string` | `null` | no |

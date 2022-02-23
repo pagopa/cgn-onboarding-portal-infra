@@ -91,18 +91,33 @@ variable "health_check_maxpingfailures" {
   default = 10
 }
 
+variable "maximum_elastic_worker_count" {
+  type        = number
+  default     = 1
+  description = "The maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan."
+
+}
+
 variable "plan_info" {
   type = object({
     kind     = string
     sku_tier = string
     sku_size = string
+    capacity = number
   })
 
   default = {
     kind     = "elastic"
     sku_tier = "ElasticPremium"
     sku_size = "EP1"
+    capacity = 1
   }
+}
+
+variable "elastic_instance_minimum" {
+  type        = number
+  description = "The number of minimum instances for this function app. Only affects apps on the Premium plan."
+  default     = 1
 }
 
 variable "tags" {

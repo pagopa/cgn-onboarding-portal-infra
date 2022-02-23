@@ -45,6 +45,7 @@ io_apim_productid         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b
 io_apim_subscription_id   = "ec285037-c673-4f58-b594-d7c480da4e8b"
 redis_cache_family        = "C"
 redis_cache_sku_name      = "Standard"
+operator_search_capacity  = 10
 operator_search_external_allowed_subnets = [
   # io-backend
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl1",
@@ -52,6 +53,9 @@ operator_search_external_allowed_subnets = [
   # io apim
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/apimapi",
 ]
+opertor_search_elastic_instance_minimum      = 10
+operator_search_maximum_elastic_worker_count = 30
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"

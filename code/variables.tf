@@ -488,8 +488,27 @@ variable "pe_min_csv_rows" {
 }
 
 # operator_search vars
+
+variable "operator_search_maximum_elastic_worker_count" {
+  type        = number
+  description = "The maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan."
+  default     = 1
+}
+variable "operator_search_capacity" {
+  type        = number
+  description = "Operator search plan capacity."
+  default     = 1
+}
+
 variable "operator_search_external_allowed_subnets" {
   type        = list(string)
   description = "External subnets allowed to call operator search function"
   default     = []
+}
+
+variable "opertor_search_elastic_instance_minimum" {
+  type        = number
+  description = "The number of minimum instances for this function app. Only affects apps on the Premium plan."
+  default     = 1
+
 }
