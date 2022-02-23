@@ -201,10 +201,12 @@
 | <a name="input_io_apim_name"></a> [io\_apim\_name](#input\_io\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_productid"></a> [io\_apim\_productid](#input\_io\_apim\_productid) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_resourcegroup"></a> [io\_apim\_resourcegroup](#input\_io\_apim\_resourcegroup) | API TOKEN | `string` | `null` | no |
+| <a name="input_io_apim_subscription_id"></a> [io\_apim\_subscription\_id](#input\_io\_apim\_subscription\_id) | IO apim subscription id. If null the current subscription will be used. | `string` | `null` | no |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
 | <a name="input_law_retention_in_days"></a> [law\_retention\_in\_days](#input\_law\_retention\_in\_days) | The workspace data retention in days | `number` | `30` | no |
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
+| <a name="input_operator_search_external_allowed_subnets"></a> [operator\_search\_external\_allowed\_subnets](#input\_operator\_search\_external\_allowed\_subnets) | External subnets allowed to call operator search function | `list(string)` | `[]` | no |
 | <a name="input_pe_min_csv_rows"></a> [pe\_min\_csv\_rows](#input\_pe\_min\_csv\_rows) | Bucket vars | `number` | `1000000` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | `"cgnonboardingportal"` | no |
 | <a name="input_retention_policy_acr"></a> [retention\_policy\_acr](#input\_retention\_policy\_acr) | Container registry retention policy. | <pre>object({<br>    days    = number<br>    enabled = bool<br>  })</pre> | <pre>{<br>  "days": 7,<br>  "enabled": true<br>}</pre> | no |

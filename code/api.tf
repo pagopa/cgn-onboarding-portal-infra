@@ -32,18 +32,8 @@ resource "azurerm_container_registry" "container_registry" {
 //  skip_service_principal_aad_check = true
 //}
 
-module "portal_backend_1" {
-  source = "./modules/app_service"
-
-  name                = format("%s-portal-backend1", local.project)
-  plan_name           = format("%s-plan-portal-backend1", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  sku = var.backend_sku
-
-  health_check_path = "/actuator/health"
-
-  app_settings = {
+locals {
+  portal_backend_1_app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
     WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
@@ -101,11 +91,7 @@ module "portal_backend_1" {
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
     CGN_APIM_RESOURCE      = var.io_apim_name != null ? var.io_apim_name : module.apim.name
     CGN_APIM_PRODUCTID     = var.io_apim_productid != null ? var.io_apim_productid : azurerm_api_management_product.cgn_onbording_portal.id
-    AZURE_SUBSCRIPTION_ID  = data.azurerm_subscription.current.subscription_id
-    AZURE_TENANT_ID        = data.azurerm_subscription.current.tenant_id
-    AZURE_CLIENT_ID        = data.azurerm_key_vault_secret.backend_client_id.value
-    AZURE_CLIENT_SECRET    = data.azurerm_key_vault_secret.backend_client_secret.value
-
+    AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
     # RECAPTCHA
     CGN_RECAPTCHA_SECRET_KEY = data.azurerm_key_vault_secret.recaptcha_secret_key.value
 
@@ -115,8 +101,24 @@ module "portal_backend_1" {
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
-
   }
+}
+
+module "portal_backend_1" {
+  source = "./modules/app_service"
+
+  name                = format("%s-portal-backend1", local.project)
+  plan_name           = format("%s-plan-portal-backend1", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  sku = var.backend_sku
+
+  health_check_path = "/actuator/health"
+
+  app_settings = local.portal_backend_1_app_settings
+
+  slot_name         = "staging"
+  app_settings_slot = local.portal_backend_1_app_settings
 
   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
@@ -330,16 +332,8 @@ resource "azurerm_resource_group" "os_rg" {
   tags = var.tags
 }
 
-
-module "operator_search" {
-  source = "./modules/app_function"
-
-  name                = format("%s-os", local.project)
-  resource_group_name = azurerm_resource_group.os_rg.name
-
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-
-  app_settings = {
+locals {
+  operator_search_app_settings = {
     FUNCTIONS_WORKER_RUNTIME     = "node"
     WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
@@ -369,7 +363,30 @@ module "operator_search" {
     CGN_POSTGRES_DB_SSL_ENABLED = "true"
 
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
+
   }
+}
+
+
+module "operator_search" {
+  source = "./modules/app_function"
+
+  name                = format("%s-os", local.project)
+  resource_group_name = azurerm_resource_group.os_rg.name
+
+  slot_name = "staging"
+
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = merge(local.operator_search_app_settings, {
+    SLOT_TASK_HUBNAME = "ProductionTaskHub"
+  })
+
+  app_settings_slot = merge(local.operator_search_app_settings, {
+    SLOT_TASK_HUBNAME = "SlotTaskHub"
+  })
+
+
 
   allowed_subnets = concat(
     [azurerm_subnet.subnet_apim.id, ],

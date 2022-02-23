@@ -16,7 +16,7 @@ cidr_subnet_function           = ["10.0.6.0/24"]
 cidr_subnet_public             = ["10.0.3.0/24"]
 cidr_subnet_spid_login         = ["10.0.5.0/24"]
 cidr_vnet                      = ["10.0.0.0/16"]
-database_name                  = "cgnonboardingportal"
+database_name                  = "cgnonboardingportal-prod-like"
 db_monitor_metric_alert_criteria = {
   cpu = {
     aggregation = "Average"
@@ -58,6 +58,7 @@ db_monitor_metric_alert_criteria = {
 db_sku_name                      = "GP_Gen5_2"
 db_version                       = 11
 db_public_network_access_enabled = true
+db_storage_mb                    = 10240
 devops_admin_email               = "io-operations@pagopa.it"
 dns_zone_prefix_uat              = "cgnonboardingportal-uat"
 email_department_email           = "prod-carta-giovani@pagopa.it"
@@ -73,6 +74,7 @@ operator_search_external_allowed_subnets = [
   # io-backend
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl1",
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl2",
+  "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/apimapi",
 ]
 tags = {
   CreatedBy   = "Terraform"
