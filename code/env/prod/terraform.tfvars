@@ -16,6 +16,7 @@ backend_sku = {
   size     = "P1v3"
   capacity = 1
 }
+db_storage_mb             = 102400 # 100 GB => ~ 300 IOPS
 cert_renew_app_object_id  = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
 cidr_subnet_ade_aa_mock   = ["10.0.7.0/24"]
 cidr_subnet_api           = ["10.0.2.0/24"]
@@ -28,7 +29,7 @@ cidr_subnet_vpn           = ["10.0.133.0/24"]
 cidr_subnet_dns_forwarder = ["10.0.134.0/29"]
 cidr_vnet                 = ["10.0.0.0/16"]
 database_name             = "cgnonboardingportal"
-db_sku_name               = "GP_Gen5_2"
+db_sku_name               = "GP_Gen5_4"
 db_version                = 11
 devops_admin_email        = "io-operations@pagopa.it"
 dns_zone_prefix           = "cgnonboardingportal"
