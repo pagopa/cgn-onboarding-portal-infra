@@ -378,8 +378,9 @@ module "operator_search" {
 
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
-  elastic_instance_minimum     = var.opertor_search_elastic_instance_minimum
+  elastic_instance_minimum     = var.operator_search_elastic_instance_minimum
   maximum_elastic_worker_count = var.operator_search_maximum_elastic_worker_count
+  
 
   app_settings = merge(local.operator_search_app_settings, {
     SLOT_TASK_HUBNAME = "ProductionTaskHub"

@@ -506,7 +506,7 @@ variable "operator_search_external_allowed_subnets" {
   default     = []
 }
 
-variable "opertor_search_elastic_instance_minimum" {
+variable "operator_search_elastic_instance_minimum" {
   type        = number
   description = "The number of minimum instances for this function app. Only affects apps on the Premium plan."
   default     = 1
