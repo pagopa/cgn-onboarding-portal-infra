@@ -380,7 +380,7 @@ module "operator_search" {
 
   elastic_instance_minimum     = var.operator_search_elastic_instance_minimum
   maximum_elastic_worker_count = var.operator_search_maximum_elastic_worker_count
-  
+
 
   app_settings = merge(local.operator_search_app_settings, {
     SLOT_TASK_HUBNAME = "ProductionTaskHub"

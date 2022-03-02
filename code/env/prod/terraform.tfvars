@@ -29,7 +29,7 @@ cidr_subnet_vpn           = ["10.0.133.0/24"]
 cidr_subnet_dns_forwarder = ["10.0.134.0/29"]
 cidr_vnet                 = ["10.0.0.0/16"]
 database_name             = "cgnonboardingportal"
-db_sku_name               = "GP_Gen5_4"
+db_sku_name               = "GP_Gen5_8"
 db_version                = 11
 devops_admin_email        = "io-operations@pagopa.it"
 dns_zone_prefix           = "cgnonboardingportal"
@@ -45,7 +45,7 @@ io_apim_productid         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b
 io_apim_subscription_id   = "ec285037-c673-4f58-b594-d7c480da4e8b"
 redis_cache_family        = "C"
 redis_cache_sku_name      = "Standard"
-operator_search_capacity  = 10
+operator_search_capacity  = 5
 operator_search_external_allowed_subnets = [
   # io-backend
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl1",
@@ -53,7 +53,7 @@ operator_search_external_allowed_subnets = [
   # io apim
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/apimapi",
 ]
-operator_search_elastic_instance_minimum      = 10
+operator_search_elastic_instance_minimum     = 5
 operator_search_maximum_elastic_worker_count = 30
 
 tags = {
