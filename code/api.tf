@@ -364,6 +364,8 @@ locals {
 
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
 
+    CGN_BUCKET_CODE_LOCK_LIMIT = "101"
+
     # REDIS
     REDIS_URL      = module.redis_cache.hostname
     REDIS_PORT     = module.redis_cache.ssl_port
