@@ -364,6 +364,11 @@ locals {
 
     CDN_MERCHANT_IMAGES_BASE_URL = format("https://%s", module.cdn_portal_storage.hostname)
 
+    # REDIS
+    REDIS_URL      = module.redis_cache.hostname
+    REDIS_PORT     = module.redis_cache.ssl_port
+    REDIS_PASSWORD = module.redis_cache.primary_access_key
+
   }
 }
 
