@@ -16,7 +16,7 @@ backend_sku = {
   size     = "P1v3"
   capacity = 1
 }
-db_storage_mb             = 102400 # 100 GB => ~ 300 IOPS
+db_storage_mb             = 204800 # 100 GB => ~ 300 IOPS
 cert_renew_app_object_id  = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
 cidr_subnet_ade_aa_mock   = ["10.0.7.0/24"]
 cidr_subnet_api           = ["10.0.2.0/24"]
