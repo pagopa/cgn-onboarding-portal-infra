@@ -1,5 +1,5 @@
 module "redis_cache" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.2"
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
   name                  = format("%s-apim", local.project)
   resource_group_name   = azurerm_resource_group.rg_db.name
   location              = azurerm_resource_group.rg_db.location
@@ -8,6 +8,13 @@ module "redis_cache" {
   family                = var.redis_cache_family
   sku_name              = var.redis_cache_sku_name
   enable_authentication = true
+
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = azurerm_virtual_network.vnet.id
+    subnet_id            = module.subnet_redis.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
+  }
 
   patch_schedules = [{
     day_of_week    = "Sunday"

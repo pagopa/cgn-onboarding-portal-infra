@@ -100,6 +100,10 @@ variable "cidr_subnet_db" {
   type = list(string)
 }
 
+variable "cidr_subnet_redis" {
+  type = list(string)
+}
+
 variable "cidr_subnet_api" {
   type = list(string)
 }

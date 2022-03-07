@@ -50,6 +50,15 @@ module "subnet_db" {
   enforce_private_link_endpoint_network_policies = true
 }
 
+module "subnet_redis" {
+  source                                         = "./modules/subnet"
+  name                                           = format("%s-redis-subnet", local.project)
+  address_prefixes                               = var.cidr_subnet_redis
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = azurerm_virtual_network.vnet.name
+  enforce_private_link_endpoint_network_policies = true
+}
+
 module "subnet_api" {
   source               = "./modules/subnet"
   name                 = format("%s-api-subnet", local.project)
@@ -85,12 +94,28 @@ module "subnet_public" {
 resource "azurerm_private_dns_zone" "private_dns_zone_postgres" {
   name                = "privatelink.postgres.database.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_virtual_network_link" {
   name                  = format("%s-private-dns-zone-link", local.project)
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.private_dns_zone_postgres.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+}
+
+resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cache_windows_net_vnet" {
+  name                  = azurerm_virtual_network.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
 }
 
