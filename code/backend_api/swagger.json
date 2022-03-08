@@ -122,7 +122,10 @@
             }
           },
           "400": {
-            "$ref": "#/definitions/ImageErrorCode"
+            "description": "Image error code",
+            "schema": {
+              "$ref": "#/definitions/ImageErrorCode"
+            }
           },
           "403": {
             "$ref": "#/responses/Forbidden"
