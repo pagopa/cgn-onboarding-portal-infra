@@ -121,6 +121,9 @@
               "$ref": "#/definitions/UploadedImage"
             }
           },
+          "400": {
+            "$ref": "#/definitions/ImageErrorCode"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
           },
@@ -368,10 +371,9 @@
         }
       }
     },
-
-    "/agreements/{agreementId}/discounts/{discountId}/bucket-loading-progress":{
-      "get":{
-        "tags":[
+    "/agreements/{agreementId}/discounts/{discountId}/bucket-loading-progress": {
+      "get": {
+        "tags": [
           "discount-bucket-loading-progress"
         ],
         "summary": "Get the loading progress for the last bucket of codes of a discount",
@@ -519,6 +521,37 @@
         "responses": {
           "204": {
             "description": "Discount published"
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/agreements/{agreementId}/discounts/{discountId}/suspension": {
+      "post": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Suspend a discount",
+        "operationId": "suspendDiscount",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Discount suspended"
           },
           "400": {
             "$ref": "#/responses/InvalidRequest"
@@ -936,7 +969,7 @@
         },
         "taxCodeOrVat": {
           "type": "string",
-          "minLength": 11,
+          "minLength": 8,
           "maxLength": 16
         },
         "pecAddress": {
@@ -958,8 +991,8 @@
         },
         "legalRepresentativeTaxCode": {
           "type": "string",
-          "minLength": 16,
-          "maxLength": 16
+          "minLength": 4,
+          "maxLength": 20
         },
         "referent": {
           "$ref": "#/definitions/CreateReferent"
@@ -1007,8 +1040,8 @@
         },
         "legalRepresentativeTaxCode": {
           "type": "string",
-          "minLength": 16,
-          "maxLength": 16
+          "minLength": 4,
+          "maxLength": 20
         },
         "referent": {
           "$ref": "#/definitions/UpdateReferent"
@@ -1072,8 +1105,8 @@
         },
         "legalRepresentativeTaxCode": {
           "type": "string",
-          "minLength": 16,
-          "maxLength": 16
+          "minLength": 4,
+          "maxLength": 20
         },
         "referent": {
           "$ref": "#/definitions/Referent"
@@ -1223,8 +1256,7 @@
         "BothChannels"
       ]
     },
-
-    "DiscountBucketCodeLoadingProgess":{
+    "DiscountBucketCodeLoadingProgess": {
       "type": "object",
       "required": [
         "loaded",
@@ -1349,7 +1381,7 @@
           "type": "integer",
           "format": "int32",
           "minimum": 1,
-          "maximum": 99
+          "maximum": 100
         },
         "productCategories": {
           "type": "array",
@@ -1378,9 +1410,17 @@
           "type": "string",
           "maxLength": 100
         },
-        "lastBucketCodeFileUid": {
+        "lastBucketCodeLoadUid": {
           "type": "string",
           "maxLength": 255
+        },
+        "lastBucketCodeLoadFileName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "discountUrl": {
+          "type": "string",
+          "maxLength": 500
         }
       }
     },
@@ -1415,7 +1455,7 @@
           "type": "integer",
           "format": "int32",
           "minimum": 1,
-          "maximum": 99
+          "maximum": 100
         },
         "productCategories": {
           "type": "array",
@@ -1444,9 +1484,17 @@
           "type": "string",
           "maxLength": 100
         },
-        "lastBucketCodeFileUid": {
+        "lastBucketCodeLoadUid": {
           "type": "string",
           "maxLength": 255
+        },
+        "lastBucketCodeLoadFileName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "discountUrl": {
+          "type": "string",
+          "maxLength": 500
         }
       }
     },
@@ -1506,7 +1554,7 @@
           "type": "integer",
           "format": "int32",
           "minimum": 1,
-          "maximum": 99
+          "maximum": 100
         },
         "productCategories": {
           "type": "array",
@@ -1542,11 +1590,31 @@
           "type": "string",
           "maxLength": 100
         },
-        "lastBucketCodeFileUid": {
+        "lastBucketCodeLoadUid": {
           "type": "string",
           "maxLength": 255
+        },
+        "lastBucketCodeLoadFileName": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "lastBucketCodeLoadStatus": {
+          "$ref": "#/definitions/BucketCodeLoadStatus"
+        },
+        "discountUrl": {
+          "type": "string",
+          "maxLength": 500
         }
       }
+    },
+    "BucketCodeLoadStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "finished",
+        "failed"
+      ]
     },
     "DiscountState": {
       "type": "string",
@@ -1560,15 +1628,16 @@
     "ProductCategory": {
       "type": "string",
       "enum": [
-        "Entertainment",
-        "Travelling",
-        "FoodDrink",
-        "Services",
-        "Learning",
-        "Hotels",
-        "Sports",
+        "BankingServices",
+        "CultureAndEntertainment",
         "Health",
-        "Shopping"
+        "Home",
+        "JobOffers",
+        "Learning",
+        "Sports",
+        "SustainableMobility",
+        "TelephonyAndInternet",
+        "Travelling"
       ]
     },
     "Address": {
@@ -1704,6 +1773,15 @@
           "minLength": 1
         }
       }
+    },
+    "ImageErrorCode": {
+      "type": "string",
+      "enum": [
+        "INVALID_IMAGE_TYPE",
+        "INVALID_DIMENSION",
+        "GENERIC",
+        "IMAGE_SIZE_EXCEEDED"
+      ]
     }
   },
   "responses": {
