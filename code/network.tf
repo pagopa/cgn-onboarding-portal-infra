@@ -77,7 +77,8 @@ module "subnet_api" {
 
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.Storage"
+    "Microsoft.Storage",
+    "Microsoft.Sql",
   ]
 
 }
@@ -148,6 +149,7 @@ module "subnet_spid_login" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.Storage",
+    "Microsoft.Sql",
   ]
 }
 
@@ -171,6 +173,7 @@ module "subnet_ade_aa_mock" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.Storage",
+    "Microsoft.Sql",
   ]
 
 }
@@ -196,6 +199,7 @@ module "subnet_function" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.Storage",
+    "Microsoft.Sql",
   ]
 }
 
