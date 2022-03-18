@@ -102,3 +102,13 @@ resource "azurerm_storage_container" "ade_aa_config" {
   storage_account_name  = azurerm_storage_account.ade_aa_mock[0].name
   container_access_type = "private"
 }
+
+resource "azurerm_storage_table" "ade_aa_organizations" {
+  name                 = "Organizations"
+  storage_account_name = azurerm_storage_account.ade_aa_mock[0].name
+}
+
+resource "azurerm_storage_table" "ade_aa_referents" {
+  name                 = "Referents"
+  storage_account_name = azurerm_storage_account.ade_aa_mock[0].name
+}
