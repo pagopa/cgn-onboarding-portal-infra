@@ -321,7 +321,7 @@ module "ade_aa_mock" {
         data.azurerm_key_vault_secret.db_administrator_login_password.value
       ),
       trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."),
-      var.activations_database_name
+      var.attribute_authority_database_name
     )
 
     # application insights key

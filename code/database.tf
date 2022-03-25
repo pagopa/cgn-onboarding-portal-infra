@@ -47,8 +47,8 @@ resource "azurerm_postgresql_database" "postgresql_database" {
   collation           = var.db_collation
 }
 
-resource "azurerm_postgresql_database" "postgresql_activations_database" {
-  name                = var.activations_database_name
+resource "azurerm_postgresql_database" "postgresql_attribute_authority_database" {
+  name                = var.attribute_authority_database_name
   resource_group_name = azurerm_resource_group.rg_db.name
   server_name         = azurerm_postgresql_server.postgresql_server.name
   charset             = var.db_charset
