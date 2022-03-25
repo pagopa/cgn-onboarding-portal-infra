@@ -19,6 +19,7 @@ cidr_subnet_ade_aa_mock        = ["10.0.7.0/24"]
 cidr_subnet_redis              = ["10.0.8.0/24"]
 cidr_subnet_dns_forwarder      = ["10.0.134.0/29"]
 database_name                  = "cgnonboardingportal-prod-like"
+activations_database_name      = "cgnonboardingportal-activations"
 db_monitor_metric_alert_criteria = {
   cpu = {
     aggregation = "Average"

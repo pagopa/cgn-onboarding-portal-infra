@@ -306,8 +306,23 @@ module "ade_aa_mock" {
     CONTAINER_NAME            = azurerm_storage_container.ade_aa_config[0].name
     BLOB_NAME                 = "userCompanies.json"
     STORAGE_CONNECTION_STRING = azurerm_storage_account.ade_aa_mock[0].primary_blob_connection_string
-    ORGANIZAZIONS_TABLE_NAME  = azurerm_storage_table.ade_aa_organizations.name
-    REFERENTS_TABLE_NAME  = azurerm_storage_table.ade_aa_referents.name
+
+    # Postgres
+    ATTRIBUTE_AUTHORITY_POSTGRES_DB_SSL_ENABLED = true
+    ATTRIBUTE_AUTHORITY_POSTGRES_DB_URI = format("postgresql://%s:%s@%s:5432/%s",
+      urlencode(
+        format(
+          "%s@%s",
+          data.azurerm_key_vault_secret.db_administrator_login.value,
+          azurerm_postgresql_server.postgresql_server.name
+        )
+      ),
+      urlencode(
+        data.azurerm_key_vault_secret.db_administrator_login_password.value
+      ),
+      trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."),
+      var.activations_database_name
+    )
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
