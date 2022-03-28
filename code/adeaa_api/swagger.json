@@ -210,7 +210,7 @@
             "$ref": "#/parameters/KeyOrganizationFiscalCode"
           },
           {
-            "$ref": "#/parameters/ReferentFiscalCode"
+            "$ref": "#/parameters/ReferentFiscalCodeBody"
           }
         ],
         "responses": {
@@ -227,7 +227,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/organization/{keyOrganizationFiscalCode}/referents/{referentFiscalCode}": {
       "delete": {
         "operationId": "deleteReferent",
         "summary": "Delete referent.",
@@ -292,6 +294,14 @@
       "maxLength": 16
     },
     "ReferentFiscalCode": {
+      "in": "path",
+      "name": "referentFiscalCode",
+      "description": "Referent fiscal code",
+      "required": true,
+      "type": "string",
+      "pattern": "^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$"
+    },
+    "ReferentFiscalCodeBody": {
       "in": "body",
       "name": "body",
       "required": true,
@@ -466,9 +476,17 @@
       ]
     },
     "Organizations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/OrganizationWithReferents"
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrganizationWithReferents"
+          }
+        },
+        "count": {
+          "type": "integer"
+        }
       }
     },
     "GetCompaniesBody": {
