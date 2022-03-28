@@ -537,13 +537,13 @@
         }
       }
     },
-    "/agreements/{agreementId}/discounts/{discountId}/suspension": {
+    "/agreements/{agreementId}/discounts/{discountId}/unpublishing": {
       "post": {
         "tags": [
           "discount"
         ],
-        "summary": "Suspend a discount",
-        "operationId": "suspendDiscount",
+        "summary": "Unpublish a discount making it a draft",
+        "operationId": "unpublishDiscount",
         "parameters": [
           {
             "$ref": "#/parameters/AgreementId"
