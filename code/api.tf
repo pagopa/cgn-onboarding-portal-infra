@@ -98,6 +98,9 @@ locals {
     # GEOLOCATION
     CGN_GEOLOCATION_SECRET_TOKEN = data.azurerm_key_vault_secret.backend_geolocation_token.value
 
+    # ATTRIBUTE AUTHORITY
+    CGN_ATTRIBUTE_AUTHORITY_BASE_URL = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
@@ -333,7 +336,7 @@ module "ade_aa_mock" {
 
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id]
+  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id, module.subnet_api.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_ade_aa_mock[0].name
