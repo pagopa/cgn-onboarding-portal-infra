@@ -286,10 +286,10 @@ module "ade_aa_mock" {
     WEBSITES_PORT                       = 8080
     SERVER_PORT                         = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
-    WEBSITE_DNS_SERVER           = "168.63.129.16"
+    WEBSITE_RUN_FROM_PACKAGE                        = "1"
+    WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER                              = "168.63.129.16"
+    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = 1
 
     // ENVIRONMENT
     NODE_ENV = "production"
@@ -332,7 +332,7 @@ module "ade_aa_mock" {
 
   }
 
-  linux_fx_version = "NODE|12-lts"
+  linux_fx_version = "NODE|14-lts"
 
   always_on = "true"
 
