@@ -289,7 +289,7 @@ module "ade_aa_mock" {
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
     WEBSITE_VNET_ROUTE_ALL                          = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = 1
+    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
 
     // ENVIRONMENT
     NODE_ENV = "production"
