@@ -286,7 +286,7 @@ module "ade_aa_mock" {
     WEBSITES_PORT                       = 8080
     SERVER_PORT                         = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
+    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
