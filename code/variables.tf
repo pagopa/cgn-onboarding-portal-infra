@@ -264,6 +264,11 @@ variable "database_name" {
   description = "Name of the database."
 }
 
+variable "attribute_authority_database_name" {
+  type        = string
+  description = "Name of the activations database."
+}
+
 variable "db_charset" {
   type        = string
   description = "Specifies the Charset for the PostgreSQL Database"

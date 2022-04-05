@@ -47,6 +47,14 @@ resource "azurerm_postgresql_database" "postgresql_database" {
   collation           = var.db_collation
 }
 
+resource "azurerm_postgresql_database" "postgresql_attribute_authority_database" {
+  name                = var.attribute_authority_database_name
+  resource_group_name = azurerm_resource_group.rg_db.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  charset             = var.db_charset
+  collation           = var.db_collation
+}
+
 resource "azurerm_private_endpoint" "postgresql_private_endpoint" {
   name                = format("%s-db-private-endpoint", local.project)
   location            = azurerm_resource_group.rg_db.location

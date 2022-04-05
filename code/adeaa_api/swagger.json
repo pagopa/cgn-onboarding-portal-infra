@@ -48,23 +48,224 @@
         }
       }
     },
-    "/user": {
+    "/organizations": {
+      "get": {
+        "operationId": "getOrganizations",
+        "summary": "Get organizations",
+        "description": "Get all organizations",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SearchQuery"
+          },
+          {
+            "$ref": "#/parameters/PageNumber"
+          },
+          {
+            "$ref": "#/parameters/PageSize"
+          },
+          {
+            "$ref": "#/parameters/SortBy"
+          },
+          {
+            "$ref": "#/parameters/SortDirection"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of organizations.",
+            "schema": {
+              "$ref": "#/definitions/Organizations"
+            }
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
       "post": {
-        "operationId": "upsertUser",
-        "summary": "Upsert a User\n",
-        "description": "Upsert a user with his related companies\n",
+        "operationId": "upsertOrganization",
+        "summary": "Upsert organization.",
+        "description": "Update or insert an organization.",
         "parameters": [
           {
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/GetCompaniesBody"
+              "$ref": "#/definitions/OrganizationWithReferents"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Upserted."
+            "description": "Upserted organization.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationWithReferents"
+            }
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/organization/{keyOrganizationFiscalCode}": {
+      "get": {
+        "operationId": "getOrganization",
+        "summary": "Get organization",
+        "description": "Get an organization by fiscal code",
+        "parameters": [
+          {
+            "$ref": "#/parameters/KeyOrganizationFiscalCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An organization with referents.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationWithReferents"
+            }
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteOrganization",
+        "summary": "Delete organization.",
+        "description": "Delete an organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/KeyOrganizationFiscalCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted."
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/organization/{keyOrganizationFiscalCode}/referents": {
+      "get": {
+        "operationId": "getReferents",
+        "summary": "Get referents",
+        "description": "Get all referents for a organization",
+        "parameters": [
+          {
+            "$ref": "#/parameters/KeyOrganizationFiscalCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of referents.",
+            "schema": {
+              "$ref": "#/definitions/Referents"
+            }
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "insertReferent",
+        "summary": "Insert referent.",
+        "description": "Insert a referent fiscalcode.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/KeyOrganizationFiscalCode"
+          },
+          {
+            "$ref": "#/parameters/ReferentFiscalCodeBody"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inserted referent."
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/organization/{keyOrganizationFiscalCode}/referents/{referentFiscalCode}": {
+      "delete": {
+        "operationId": "deleteReferent",
+        "summary": "Delete referent.",
+        "description": "Delete a referent",
+        "parameters": [
+          {
+            "$ref": "#/parameters/KeyOrganizationFiscalCode"
+          },
+          {
+            "$ref": "#/parameters/ReferentFiscalCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted."
+          },
+          "404": {
+            "description": "Not found."
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "operationId": "ping",
+        "summary": "Ping\n",
+        "description": "ping ade service\n",
+        "responses": {
+          "200": {
+            "description": "OK."
           },
           "500": {
             "description": "Service unavailable.",
@@ -82,38 +283,211 @@
   "produces": [
     "application/json"
   ],
+  "parameters": {
+    "KeyOrganizationFiscalCode": {
+      "in": "path",
+      "name": "keyOrganizationFiscalCode",
+      "description": "Organization fiscal code",
+      "required": true,
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 16
+    },
+    "ReferentFiscalCode": {
+      "in": "path",
+      "name": "referentFiscalCode",
+      "description": "Referent fiscal code",
+      "required": true,
+      "type": "string",
+      "pattern": "^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$"
+    },
+    "ReferentFiscalCodeBody": {
+      "in": "body",
+      "name": "body",
+      "required": true,
+      "schema": {
+        "$ref": "#/definitions/ReferentFiscalCode"
+      }
+    },
+    "SearchQuery": {
+      "in": "query",
+      "name": "searchQuery",
+      "description": "String to search in organization name o fiscal code",
+      "required": false,
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "PageSize": {
+      "name": "pageSize",
+      "in": "query",
+      "description": "Page size",
+      "required": false,
+      "type": "integer",
+      "default": 20
+    },
+    "PageNumber": {
+      "name": "page",
+      "in": "query",
+      "description": "Page number",
+      "required": false,
+      "type": "integer",
+      "default": 0
+    },
+    "SortBy": {
+      "name": "sortBy",
+      "in": "query",
+      "description": "The field to sort by",
+      "required": false,
+      "type": "string",
+      "enum": [
+        "fiscalCode",
+        "name",
+        "pec",
+        "insertedAt"
+      ]
+    },
+    "SortDirection": {
+      "name": "sortDirection",
+      "in": "query",
+      "description": "The direction of the sort",
+      "required": false,
+      "type": "string",
+      "default": "ASC",
+      "enum": [
+        "ASC",
+        "DESC"
+      ]
+    }
+  },
   "definitions": {
     "FiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/FiscalCode"
-    },
-    "OrganizationFiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/OrganizationFiscalCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.7.0/openapi/definitions.yaml#/FiscalCode"
     },
     "ProblemJson": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/ProblemJson"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.7.0/openapi/definitions.yaml#/ProblemJson"
     },
     "EmailAddress": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/EmailAddress"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.7.0/openapi/definitions.yaml#/EmailAddress"
     },
-    "Company": {
+    "Timestamp": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.7.0/openapi/definitions.yaml#/Timestamp"
+    },
+    "KeyOrganizationFiscalCode": {
       "type": "object",
       "properties": {
-        "fiscalCode": {
-          "$ref": "#/definitions/OrganizationFiscalCode"
-        },
-        "organizationName": {
+        "keyOrganizationFiscalCode": {
           "type": "string",
-          "minLength": 1
-        },
-        "pec": {
-          "$ref": "#/definitions/EmailAddress"
+          "minLength": 8,
+          "maxLength": 16
         }
       },
       "required": [
-        "fiscalCode",
-        "organizationName",
-        "pec"
+        "keyOrganizationFiscalCode"
       ]
+    },
+    "OrganizationFiscalCode": {
+      "type": "object",
+      "properties": {
+        "organizationFiscalCode": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 16
+        }
+      },
+      "required": [
+        "organizationFiscalCode"
+      ]
+    },
+    "OrganizationName": {
+      "type": "object",
+      "properties": {
+        "organizationName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "organizationName"
+      ]
+    },
+    "ReferentFiscalCode": {
+      "type": "object",
+      "properties": {
+        "referentFiscalCode": {
+          "$ref": "#/definitions/FiscalCode"
+        }
+      },
+      "required": [
+        "referentFiscalCode"
+      ]
+    },
+    "Organization": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrganizationFiscalCode"
+        },
+        {
+          "$ref": "#/definitions/OrganizationName"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "pec": {
+              "$ref": "#/definitions/EmailAddress"
+            },
+            "insertedAt": {
+              "$ref": "#/definitions/Timestamp"
+            }
+          },
+          "required": [
+            "pec",
+            "insertedAt"
+          ]
+        }
+      ]
+    },
+    "Referents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/FiscalCode"
+      }
+    },
+    "OrganizationWithReferents": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/KeyOrganizationFiscalCode"
+        },
+        {
+          "$ref": "#/definitions/Organization"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "referents": {
+              "$ref": "#/definitions/Referents"
+            }
+          },
+          "required": [
+            "referents"
+          ]
+        }
+      ]
+    },
+    "Organizations": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrganizationWithReferents"
+          }
+        },
+        "count": {
+          "type": "integer"
+        }
+      }
     },
     "GetCompaniesBody": {
       "type": "object",
@@ -124,6 +498,29 @@
       },
       "required": [
         "fiscalCode"
+      ]
+    },
+    "Company": {
+      "type": "object",
+      "properties": {
+        "fiscalCode": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 16
+        },
+        "organizationName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "pec": {
+          "$ref": "#/definitions/EmailAddress"
+        }
+      },
+      "required": [
+        "fiscalCode",
+        "organizationName",
+        "pec"
       ]
     },
     "Companies": {

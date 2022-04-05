@@ -98,6 +98,9 @@ locals {
     # GEOLOCATION
     CGN_GEOLOCATION_SECRET_TOKEN = data.azurerm_key_vault_secret.backend_geolocation_token.value
 
+    # ATTRIBUTE AUTHORITY
+    CGN_ATTRIBUTE_AUTHORITY_BASE_URL = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
@@ -283,10 +286,10 @@ module "ade_aa_mock" {
     WEBSITES_PORT                       = 8080
     SERVER_PORT                         = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
-    WEBSITE_DNS_SERVER           = "168.63.129.16"
+    WEBSITE_RUN_FROM_PACKAGE                        = "1"
+    WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER                              = "168.63.129.16"
+    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
 
     // ENVIRONMENT
     NODE_ENV = "production"
@@ -306,19 +309,34 @@ module "ade_aa_mock" {
     CONTAINER_NAME            = azurerm_storage_container.ade_aa_config[0].name
     BLOB_NAME                 = "userCompanies.json"
     STORAGE_CONNECTION_STRING = azurerm_storage_account.ade_aa_mock[0].primary_blob_connection_string
-    ORGANIZAZIONS_TABLE_NAME  = azurerm_storage_table.ade_aa_organizations.name
-    REFERENTS_TABLE_NAME  = azurerm_storage_table.ade_aa_referents.name
+
+    # Postgres
+    ATTRIBUTE_AUTHORITY_POSTGRES_DB_SSL_ENABLED = true
+    ATTRIBUTE_AUTHORITY_POSTGRES_DB_URI = format("postgresql://%s:%s@%s:5432/%s",
+      urlencode(
+        format(
+          "%s@%s",
+          data.azurerm_key_vault_secret.db_administrator_login.value,
+          azurerm_postgresql_server.postgresql_server.name
+        )
+      ),
+      urlencode(
+        data.azurerm_key_vault_secret.db_administrator_login_password.value
+      ),
+      trimsuffix(azurerm_postgresql_server.postgresql_server.fqdn, "."),
+      var.attribute_authority_database_name
+    )
 
     # application insights key
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
   }
 
-  linux_fx_version = "NODE|12-lts"
+  linux_fx_version = "NODE|14-lts"
 
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id]
+  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id, module.subnet_api.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_ade_aa_mock[0].name
