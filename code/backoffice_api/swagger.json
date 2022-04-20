@@ -466,7 +466,7 @@
     "/organizations": {
       "get": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "getOrganizations",
         "summary": "Get organizations",
@@ -505,7 +505,7 @@
       },
       "post": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "upsertOrganization",
         "summary": "Upsert organization.",
@@ -538,7 +538,7 @@
     "/organization/{keyOrganizationFiscalCode}": {
       "get": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "getOrganization",
         "summary": "Get organization",
@@ -552,7 +552,7 @@
           "200": {
             "description": "An organization with referents.",
             "schema": {
-              "$ref": "#/definitions/OrganizationWithReferents"
+              "$ref": "#/definitions/OrganizationWithReferentsAndStatus"
             }
           },
           "403": {
@@ -565,7 +565,7 @@
       },
       "delete": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "deleteOrganization",
         "summary": "Delete organization.",
@@ -591,7 +591,7 @@
     "/organization/{keyOrganizationFiscalCode}/referents": {
       "get": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "getReferents",
         "summary": "Get referents",
@@ -618,7 +618,7 @@
       },
       "post": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "insertReferent",
         "summary": "Insert referent.",
@@ -647,7 +647,7 @@
     "/organization/{keyOrganizationFiscalCode}/referents/{referentFiscalCode}": {
       "delete": {
         "tags": [
-          "activations"
+          "attributeauthority"
         ],
         "operationId": "deleteReferent",
         "summary": "Delete referent.",
@@ -663,6 +663,32 @@
         "responses": {
           "200": {
             "description": "Deleted."
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/export/agreements": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Download an export of agreements in CSV format",
+        "operationId": "exportAgreements",
+        "responses": {
+          "200": {
+            "description": "CSV export of all agreements",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -1478,8 +1504,7 @@
             }
           },
           "required": [
-            "pec",
-            "insertedAt"
+            "pec"
           ]
         }
       ]
@@ -1491,6 +1516,15 @@
         "minLength": 16,
         "maxLength": 16
       }
+    },
+    "OrganizationStatus": {
+      "type": "string",
+      "enum": [
+        "Enabled",
+        "Draft",
+        "Pending",
+        "Active"
+      ]
     },
     "OrganizationWithReferents": {
       "allOf": [
@@ -1513,13 +1547,31 @@
         }
       ]
     },
+    "OrganizationWithReferentsAndStatus": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/OrganizationWithReferents"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "$ref": "#/definitions/OrganizationStatus"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        }
+      ]
+    },
     "Organizations": {
       "type": "object",
       "properties": {
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/OrganizationWithReferents"
+            "$ref": "#/definitions/OrganizationWithReferentsAndStatus"
           }
         },
         "count": {
