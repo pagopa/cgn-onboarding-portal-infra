@@ -521,3 +521,9 @@ variable "operator_search_elastic_instance_minimum" {
   default     = 1
 
 }
+
+variable "operator_search_allowed_ips" {
+  type        = list(string)
+  description = "External ips allowed to call operator search function"
+  default     = []
+}
