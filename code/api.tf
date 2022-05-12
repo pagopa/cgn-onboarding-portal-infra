@@ -44,8 +44,9 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.container_registry.admin_password
 
     # DNS configuration to use private endpoint
-    WEBSITE_DNS_SERVER     = "168.63.129.16"
-    WEBSITE_VNET_ROUTE_ALL = 1
+    WEBSITE_DNS_SERVER                  = "168.63.129.16"
+    WEBSITE_VNET_ROUTE_ALL              = 1
+    WEBSITES_CONTAINER_START_TIME_LIMIT = 600
 
     # These are app specific environment variables
     SPRING_PROFILES_ACTIVE = "prod"
@@ -434,6 +435,8 @@ module "operator_search" {
     [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
   )
+
+  allowed_ips = var.operator_search_allowed_ips
 
   subnet_name = module.subnet_function.name
   subnet_id   = module.subnet_function.id
