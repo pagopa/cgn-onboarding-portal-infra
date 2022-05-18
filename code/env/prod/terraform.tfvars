@@ -32,7 +32,7 @@ cidr_subnet_dns_forwarder = ["10.0.134.0/29"]
 
 database_name                     = "cgnonboardingportal"
 attribute_authority_database_name = "cgnonboardingportal-attribute-authority"
-db_sku_name                       = "GP_Gen5_8"
+db_sku_name                       = "GP_Gen5_4"
 db_version                        = 11
 devops_admin_email                = "io-operations@pagopa.it"
 dns_zone_prefix                   = "cgnonboardingportal"
