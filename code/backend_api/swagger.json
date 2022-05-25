@@ -506,6 +506,37 @@
         }
       }
     },
+    "/agreements/{agreementId}/discounts/{discountId}/testing": {
+      "post": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Set a discount ready to be tested",
+        "operationId": "testDiscount",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Discount ready to test"
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
     "/agreements/{agreementId}/discounts/{discountId}/publishing": {
       "post": {
         "tags": [
@@ -1625,7 +1656,10 @@
         "draft",
         "published",
         "suspended",
-        "expired"
+        "expired",
+        "to_test",
+        "test_ok",
+        "test_ko"
       ]
     },
     "ProductCategory": {
