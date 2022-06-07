@@ -84,6 +84,9 @@ locals {
     SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT           = 10000
     SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT      = 10000
 
+    # QUARTZ SCHEDULER
+    SPRING_QUARTZ_AUTOSTARTUP = "true"
+
     CGN_EMAIL_NOTIFICATION_SENDER = "CGN Portal<no-reply@cgn.pagopa.it>"
     CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
     CGN_EMAIL_PORTAL_BASE_URL     = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
@@ -106,6 +109,11 @@ locals {
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
   }
+
+  portal_backend_1_app_settings_staging = {
+    # QUARTZ SCHEDULER
+    SPRING_QUARTZ_AUTOSTARTUP = "false"
+  }
 }
 
 module "portal_backend_1" {
@@ -122,7 +130,7 @@ module "portal_backend_1" {
   app_settings = local.portal_backend_1_app_settings
 
   slot_name         = "staging"
-  app_settings_slot = local.portal_backend_1_app_settings
+  app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)
 
   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
