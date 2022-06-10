@@ -203,6 +203,29 @@ module "subnet_function" {
   ]
 }
 
+module "subnet_function_operator_search" {
+  source               = "./modules/subnet"
+  name                 = format("%s-function-operator-search", local.project)
+  address_prefixes     = var.cidr_subnet_function_operator_search
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+
+  delegation = {
+    name = "default"
+
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.Storage",
+    "Microsoft.Sql",
+  ]
+}
+
 # APIM subnet
 
 resource "azurerm_subnet" "subnet_apim" {
