@@ -407,50 +407,185 @@ locals {
   }
 }
 
+module "app_operator_search" {
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
+  name      = format("%s-op", local.project)
+  subnet_id = module.subnet_function_operator_search.id
 
-module "operator_search" {
-  source = "./modules/app_function"
-
-  name                = format("%s-os", local.project)
+  location            = var.location
   resource_group_name = azurerm_resource_group.os_rg.name
 
-  slot_name = "staging"
-
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-
-  elastic_instance_minimum     = var.operator_search_elastic_instance_minimum
-  maximum_elastic_worker_count = var.operator_search_maximum_elastic_worker_count
-
-
-  app_settings = merge(local.operator_search_app_settings, {
-    SLOT_TASK_HUBNAME = "ProductionTaskHub"
-  })
-
-  app_settings_slot = merge(local.operator_search_app_settings, {
-    SLOT_TASK_HUBNAME = "SlotTaskHub"
-  })
-
-  plan_info = {
-    kind     = "elastic"
-    sku_tier = "ElasticPremium"
-    sku_size = "EP1"
-    capacity = var.operator_search_capacity
+  app_service_plan_info = {
+    kind                         = "Linux"
+    sku_tier                     = var.operator_search_sku_tier
+    sku_size                     = var.operator_search_sku_size
+    maximum_elastic_worker_count = 1
   }
 
+  os_type                                  = "linux"
+  always_on                                = true
+  linux_fx_version                         = "NODE|12"
+  health_check_path                        = "api/v1/cgn/operator-search/info"
+  runtime_version                          = "~3"
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
+  internal_storage = {
+    enable                     = false,
+    private_endpoint_subnet_id = null,
+    private_dns_zone_blob_ids  = []
+    private_dns_zone_queue_ids = []
+    private_dns_zone_table_ids = []
+    queues                     = []
+    containers                 = []
+    blobs_retention_days       = 1
+  }
+
+  app_settings = local.operator_search_app_settings
 
   allowed_subnets = concat(
     [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
   )
 
-  allowed_ips = var.operator_search_allowed_ips
-
-  subnet_name = module.subnet_function.name
-  subnet_id   = module.subnet_function.id
-
   tags = var.tags
 }
+
+# Disabled because the staging slot use connection to postgresql
+# module "app_operator_search_staging_slot" {
+#   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.18.2"
+
+#   name                = "staging"
+#   location            = var.location
+#   resource_group_name = azurerm_resource_group.os_rg.name
+#   function_app_name   = module.app_operator_search.name
+#   function_app_id     = module.app_operator_search.id
+#   app_service_plan_id = module.app_operator_search.app_service_plan_id
+#   health_check_path   = "api/v1/cgn/operator-search/info"
+
+#   storage_account_name       = module.app_operator_search.storage_account.name
+#   storage_account_access_key = module.app_operator_search.storage_account.primary_access_key
+
+#   os_type                                  = "linux"
+#   always_on                                = true
+#   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+#   app_settings = local.operator_search_app_settings
+
+#   subnet_id = module.subnet_function_operator_search.id
+
+#   allowed_subnets = concat(
+#     [azurerm_subnet.subnet_apim.id, ],
+#     var.operator_search_external_allowed_subnets,
+#   )
+
+#   tags = var.tags
+# }
+
+resource "azurerm_monitor_autoscale_setting" "app_operator_search" {
+  name                = format("%s-autoscale", module.app_operator_search.name)
+  resource_group_name = azurerm_resource_group.os_rg.name
+  location            = var.location
+  target_resource_id  = module.app_operator_search.app_service_plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 3
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_operator_search.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_operator_search.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_operator_search.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_operator_search.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
+}
+
 
 ############
 ### APIM ###

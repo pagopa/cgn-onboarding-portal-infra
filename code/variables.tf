@@ -130,6 +130,11 @@ variable "cidr_subnet_function" {
 
 }
 
+variable "cidr_subnet_function_operator_search" {
+  type = list(string)
+
+}
+
 variable "cidr_subnet_vpn" {
   type    = list(string)
   default = []
@@ -507,6 +512,18 @@ variable "operator_search_capacity" {
   type        = number
   description = "Operator search plan capacity."
   default     = 1
+}
+
+variable "operator_search_sku_tier" {
+  type        = string
+  description = "Operator search plan capacity."
+  default     = "Standard"
+}
+
+variable "operator_search_sku_size" {
+  type        = string
+  description = "Operator search plan capacity."
+  default     = "S1"
 }
 
 variable "operator_search_external_allowed_subnets" {

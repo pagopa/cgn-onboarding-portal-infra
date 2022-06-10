@@ -16,23 +16,24 @@ backend_sku = {
   size     = "P1v3"
   capacity = 1
 }
-db_storage_mb             = 204800 # 100 GB => ~ 300 IOPS
-cert_renew_app_object_id  = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
-cidr_vnet                 = ["10.0.0.0/16"]
-cidr_subnet_db            = ["10.0.1.0/24"]
-cidr_subnet_api           = ["10.0.2.0/24"]
-cidr_subnet_public        = ["10.0.3.0/24"]
-cidr_subnet_apim          = ["10.0.4.0/24"]
-cidr_subnet_spid_login    = ["10.0.5.0/24"]
-cidr_subnet_function      = ["10.0.6.0/24"]
-cidr_subnet_ade_aa_mock   = ["10.0.7.0/24"]
-cidr_subnet_redis         = ["10.0.8.0/24"]
-cidr_subnet_vpn           = ["10.0.133.0/24"]
-cidr_subnet_dns_forwarder = ["10.0.134.0/29"]
+db_storage_mb                        = 204800 # 100 GB => ~ 300 IOPS
+cert_renew_app_object_id             = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
+cidr_vnet                            = ["10.0.0.0/16"]
+cidr_subnet_db                       = ["10.0.1.0/24"]
+cidr_subnet_api                      = ["10.0.2.0/24"]
+cidr_subnet_public                   = ["10.0.3.0/24"]
+cidr_subnet_apim                     = ["10.0.4.0/24"]
+cidr_subnet_spid_login               = ["10.0.5.0/24"]
+cidr_subnet_function                 = ["10.0.6.0/24"]
+cidr_subnet_ade_aa_mock              = ["10.0.7.0/24"]
+cidr_subnet_redis                    = ["10.0.8.0/24"]
+cidr_subnet_function_operator_search = ["10.0.9.0/24"]
+cidr_subnet_vpn                      = ["10.0.133.0/24"]
+cidr_subnet_dns_forwarder            = ["10.0.134.0/29"]
 
 database_name                     = "cgnonboardingportal"
 attribute_authority_database_name = "cgnonboardingportal-attribute-authority"
-db_sku_name                       = "GP_Gen5_4"
+db_sku_name                       = "GP_Gen5_8"
 db_version                        = 11
 devops_admin_email                = "io-operations@pagopa.it"
 dns_zone_prefix                   = "cgnonboardingportal"
@@ -58,6 +59,8 @@ operator_search_external_allowed_subnets = [
 ]
 operator_search_elastic_instance_minimum     = 1
 operator_search_maximum_elastic_worker_count = 30
+operator_search_sku_tier                     = "PremiumV3"
+operator_search_sku_size                     = "P1v3"
 
 tags = {
   CreatedBy   = "Terraform"
