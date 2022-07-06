@@ -378,6 +378,120 @@
         }
       }
     },
+    "/agreement-requests/{agreementId}/discounts/{discountId}/bucket-code": {
+      "get": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Get a bucket code for discount",
+        "operationId": "getDiscountBucketCode",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A bucket code",
+            "schema": {
+              "$ref": "#/definitions/BucketCode"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/discounts/{discountId}/test-passed": {
+      "post": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Mark as test passed",
+        "operationId": "setDiscountTestPassed",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Test passed"
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/agreement-requests/{agreementId}/discounts/{discountId}/test-failed": {
+      "post": {
+        "tags": [
+          "discount"
+        ],
+        "summary": "Mark as test failed with a reason",
+        "operationId": "setDiscountTestFailed",
+        "parameters": [
+          {
+            "$ref": "#/parameters/AgreementId"
+          },
+          {
+            "$ref": "#/parameters/DiscountId"
+          },
+          {
+            "in": "body",
+            "description": "Failure reason",
+            "name": "failure",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FailureReason"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Test failed"
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          }
+        }
+      }
+    },
     "/approved-agreements": {
       "get": {
         "tags": [
@@ -934,7 +1048,8 @@
         "fullName",
         "agreementStartDate",
         "agreementLastUpdateDate",
-        "publishedDiscounts"
+        "publishedDiscounts",
+        "testPending"
       ],
       "properties": {
         "agreementId": {
@@ -954,6 +1069,10 @@
         "publishedDiscounts": {
           "type": "integer",
           "format": "int64"
+        },
+        "testPending": {
+          "type": "boolean",
+          "default": false
         }
       }
     },
@@ -1259,6 +1378,22 @@
         "discountUrl": {
           "type": "string",
           "maxLength": 500
+        },
+        "staticCode": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "landingPageUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "landingPageReferrer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "testFailureReason": {
+          "type": "string",
+          "maxLength": 500
         }
       }
     },
@@ -1268,7 +1403,10 @@
         "draft",
         "published",
         "suspended",
-        "expired"
+        "expired",
+        "test_pending",
+        "test_passed",
+        "test_failed"
       ]
     },
     "ProductCategory": {
@@ -1419,6 +1557,29 @@
       ]
     },
     "SuspendDiscount": {
+      "type": "object",
+      "required": [
+        "reasonMessage"
+      ],
+      "properties": {
+        "reasonMessage": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "BucketCode": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "FailureReason": {
       "type": "object",
       "required": [
         "reasonMessage"
