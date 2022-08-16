@@ -812,6 +812,32 @@
           }
         }
       }
+    },
+    "/export/eyca-discounts": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Download an export of eyca discounts in CSV format",
+        "operationId": "exportEycaDiscounts",
+        "responses": {
+          "200": {
+            "description": "CSV export of all agreements",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/InvalidRequest"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "consumes": [
@@ -1154,10 +1180,20 @@
         }
       }
     },
+    "SupportType": {
+      "type": "string",
+      "enum": [
+        "EmailAddress",
+        "Website",
+        "PhoneNumber"
+      ]
+    },
     "ApprovedAgreementProfile": {
       "type": "object",
       "required": [
         "description",
+        "description_en",
+        "description_de",
         "salesChannel",
         "lastUpateDate",
         "fullName",
@@ -1167,13 +1203,27 @@
         "telephoneNumber",
         "legalRepresentativeFullName",
         "legalRepresentativeTaxCode",
-        "referent"
+        "referent",
+        "supportType",
+        "supportValue"
       ],
       "properties": {
         "name": {
           "type": "string"
         },
+        "name_en": {
+          "type": "string"
+        },
+        "name_de": {
+          "type": "string"
+        },
         "description": {
+          "type": "string"
+        },
+        "description_en": {
+          "type": "string"
+        },
+        "description_de": {
           "type": "string"
         },
         "salesChannel": {
@@ -1219,6 +1269,14 @@
         },
         "referent": {
           "$ref": "#/definitions/ApprovedAgreementReferent"
+        },
+        "supportType": {
+          "$ref": "#/definitions/SupportType"
+        },
+        "supportValue": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 500
         }
       }
     },
@@ -1317,6 +1375,14 @@
         "name": {
           "type": "string",
           "maxLength": 100
+        },
+        "name_en": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "name_de": {
+          "type": "string",
+          "maxLength": 100
         }
       }
     },
@@ -1331,7 +1397,8 @@
         "productCategories",
         "condition",
         "lastUpateDate",
-        "state"
+        "state",
+        "visibleOnEyca"
       ],
       "properties": {
         "id": {
@@ -1341,7 +1408,21 @@
           "type": "string",
           "maxLength": 100
         },
+        "name_en": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "name_de": {
+          "type": "string",
+          "maxLength": 100
+        },
         "description": {
+          "type": "string"
+        },
+        "description_en": {
+          "type": "string"
+        },
+        "description_de": {
           "type": "string"
         },
         "startDate": {
@@ -1366,6 +1447,12 @@
           "minItems": 1
         },
         "condition": {
+          "type": "string"
+        },
+        "condition_en": {
+          "type": "string"
+        },
+        "condition_de": {
           "type": "string"
         },
         "lastUpateDate": {
@@ -1394,6 +1481,10 @@
         "testFailureReason": {
           "type": "string",
           "maxLength": 500
+        },
+        "visibleOnEyca": {
+          "type": "boolean",
+          "default": false
         }
       }
     },
@@ -1444,11 +1535,15 @@
         {
           "type": "object",
           "required": [
-            "websiteUrl"
+            "websiteUrl",
+            "discountCodeType"
           ],
           "properties": {
             "websiteUrl": {
               "type": "string"
+            },
+            "discountCodeType": {
+              "$ref": "#/definitions/DiscountCodeType"
             }
           }
         }
@@ -1510,6 +1605,9 @@
             "allNationalAddresses": {
               "type": "boolean",
               "default": false
+            },
+            "discountCodeType": {
+              "$ref": "#/definitions/DiscountCodeType"
             }
           }
         }
@@ -1521,6 +1619,15 @@
         "OnlineChannel",
         "OfflineChannel",
         "BothChannels"
+      ]
+    },
+    "DiscountCodeType": {
+      "type": "string",
+      "enum": [
+        "Static",
+        "API",
+        "LandingPage",
+        "Bucket"
       ]
     },
     "Documents": {
