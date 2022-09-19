@@ -46,7 +46,7 @@ resource "azurerm_storage_container" "spid_logs" {
   depends_on            = [module.storage_account]
   name                  = "spidlogs"
   storage_account_name  = module.storage_account.name
-  container_access_type = "blob"
+  container_access_type = "private"
 }
 
 
