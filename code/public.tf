@@ -125,10 +125,6 @@ module "app_gw" {
   app_gateway_min_capacity = var.app_gateway_min_capacity
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
-  # Logs
-  sec_log_analytics_workspace_id = local.sec_workspace_id
-  sec_storage_id                 = local.sec_storage_id
-
   # Alerts app gateway
   alerts_enabled = var.app_gateway_alerts_enabled
 
