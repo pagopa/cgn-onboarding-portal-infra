@@ -26,10 +26,6 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "standard"
 
-  # Security logs
-  sec_log_analytics_workspace_id = local.sec_workspace_id
-  sec_storage_id                 = local.sec_storage_id
-
   tags = var.tags
 }
 
@@ -209,25 +205,6 @@ data "azurerm_key_vault_secret" "email_password" {
 
 data "azurerm_key_vault_secret" "recaptcha_secret_key" {
   name         = "recaptcha-secret-key"
-  key_vault_id = module.key_vault.id
-}
-
-# Prod-Sec subscription
-data "azurerm_key_vault_secret" "sec_workspace_id" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "sec-workspace-id"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "sec_sub_id" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "sec-subscription-id"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "sec_storage_id" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "sec-storage-id"
   key_vault_id = module.key_vault.id
 }
 
