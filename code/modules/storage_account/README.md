@@ -4,12 +4,6 @@
 
 No requirements.
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.30.0 |
-
 ## Modules
 
 No modules.
@@ -28,27 +22,27 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_tier"></a> [access\_tier](#input\_access\_tier) | n/a | `string` | n/a | yes |
+| <a name="input_account_kind"></a> [account\_kind](#input\_account\_kind) | n/a | `string` | `"StorageV2"` | no |
 | <a name="input_account_replication_type"></a> [account\_replication\_type](#input\_account\_replication\_type) | n/a | `string` | n/a | yes |
 | <a name="input_account_tier"></a> [account\_tier](#input\_account\_tier) | n/a | `string` | n/a | yes |
-| <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
-| <a name="input_lock_name"></a> [lock\_name](#input\_lock\_name) | The name of the storage account lock resource | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | The name of the storage account resource | `string` | n/a | yes |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | n/a | yes |
-| <a name="input_versioning_name"></a> [versioning\_name](#input\_versioning\_name) | The name of the storage account versioning resource | `string` | n/a | yes |
-| <a name="input_account_kind"></a> [account\_kind](#input\_account\_kind) | n/a | `string` | `"StorageV2"` | no |
 | <a name="input_allow_blob_public_access"></a> [allow\_blob\_public\_access](#input\_allow\_blob\_public\_access) | Allow or disallow public access to all blobs or containers in the storage account. | `bool` | `false` | no |
 | <a name="input_cors_rule"></a> [cors\_rule](#input\_cors\_rule) | CORS rules for storage account. | <pre>list(object({<br>    allowed_origins    = list(string)<br>    allowed_methods    = list(string)<br>    allowed_headers    = list(string)<br>    exposed_headers    = list(string)<br>    max_age_in_seconds = number<br>  }))</pre> | `[]` | no |
 | <a name="input_custom_404_path"></a> [custom\_404\_path](#input\_custom\_404\_path) | path from your repo root to your custom 404 page | `string` | `"index.html"` | no |
 | <a name="input_enable_static_website"></a> [enable\_static\_website](#input\_enable\_static\_website) | Controls if static website to be enabled on the storage account. Possible values are `true` or `false` | `bool` | `false` | no |
 | <a name="input_enable_versioning"></a> [enable\_versioning](#input\_enable\_versioning) | Enable versioning in the blob storage account. | `bool` | `true` | no |
 | <a name="input_index_path"></a> [index\_path](#input\_index\_path) | path from your repo root to index.html | `string` | `"index.html"` | no |
+| <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_lock"></a> [lock](#input\_lock) | Lock the storage account | `bool` | `false` | no |
 | <a name="input_lock_level"></a> [lock\_level](#input\_lock\_level) | Specifies the scope at which the Management Lock should be created. | `string` | `"CanNotDelete"` | no |
+| <a name="input_lock_name"></a> [lock\_name](#input\_lock\_name) | The name of the storage account lock resource | `string` | n/a | yes |
 | <a name="input_lock_notes"></a> [lock\_notes](#input\_lock\_notes) | Specifies some notes about the lock. Maximum of 512 characters | `string` | `null` | no |
 | <a name="input_lock_scope"></a> [lock\_scope](#input\_lock\_scope) | Specifies the scope at which the Management Lock should be created. Usually this is the resource id. | `string` | `null` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the storage account resource | `string` | n/a | yes |
 | <a name="input_network_rules"></a> [network\_rules](#input\_network\_rules) | n/a | <pre>object({<br>    default_action             = string # Valid option Deny Allow<br>    bypass                     = set(string)<br>    ip_rules                   = list(string)<br>    virtual_network_subnet_ids = list(string)<br>  })</pre> | `null` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | n/a | `string` | n/a | yes |
 | <a name="input_soft_delete_retention"></a> [soft\_delete\_retention](#input\_soft\_delete\_retention) | Number of retention days for soft delete. If set to null it will disable soft delete all together. | `number` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | n/a | yes |
+| <a name="input_versioning_name"></a> [versioning\_name](#input\_versioning\_name) | The name of the storage account versioning resource | `string` | n/a | yes |
 
 ## Outputs
 
