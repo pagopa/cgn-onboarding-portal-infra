@@ -208,3 +208,15 @@ data "azurerm_key_vault_secret" "recaptcha_secret_key" {
   key_vault_id = module.key_vault.id
 }
 
+#
+# Alerts
+#
+data "azurerm_key_vault_secret" "alert_error_notification_email" {
+  name         = "alert-error-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "alert_error_notification_slack" {
+  name         = "alert-error-notification-slack"
+  key_vault_id = module.key_vault.id
+}
