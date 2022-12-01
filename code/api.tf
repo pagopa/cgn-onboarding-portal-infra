@@ -424,9 +424,9 @@ module "app_operator_search" {
 
   os_type                                  = "linux"
   always_on                                = true
-  linux_fx_version                         = "NODE|12"
+  linux_fx_version                         = "NODE|14"
   health_check_path                        = "api/v1/cgn/operator-search/info"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   internal_storage = {
