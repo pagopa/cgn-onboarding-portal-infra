@@ -2,9 +2,7 @@
   <inbound>
     <cors>
       <allowed-origins>
-        %{ for origin in origins ~}
-        <origin>${origin}</origin>
-        %{ endfor ~}
+        <origin>*</origin>
       </allowed-origins>
     </cors>
     <base />
