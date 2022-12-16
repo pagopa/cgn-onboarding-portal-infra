@@ -16,8 +16,12 @@ backend_sku = {
   size     = "P1v3"
   capacity = 1
 }
-db_storage_mb                        = 204800 # 100 GB => ~ 300 IOPS
-cert_renew_app_object_id             = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
+db_storage_mb            = 204800 # 100 GB => ~ 300 IOPS
+cert_renew_app_object_id = "89d45b50-21e3-4cf0-b39f-9394022a44a6"
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
 cidr_vnet                            = ["10.0.0.0/16"]
 cidr_subnet_db                       = ["10.0.1.0/24"]
 cidr_subnet_api                      = ["10.0.2.0/24"]
