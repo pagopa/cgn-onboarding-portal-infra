@@ -92,6 +92,15 @@ variable "app_gateway_alerts_enabled" {
 }
 
 # Network
+
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
 variable "cidr_vnet" {
   type = list(string)
 }

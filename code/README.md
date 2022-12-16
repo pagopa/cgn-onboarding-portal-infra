@@ -402,7 +402,7 @@
 | <a name="input_cidr_subnet_redis"></a> [cidr\_subnet\_redis](#input\_cidr\_subnet\_redis) | n/a | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_spid_login"></a> [cidr\_subnet\_spid\_login](#input\_cidr\_subnet\_spid\_login) | n/a | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | n/a | `list(string)` | `[]` | no |
-| <a name="input_cidr_vnet"></a> [cidr\_vnet](#input\_cidr\_vnet) | Network | `list(string)` | n/a | yes |
+| <a name="input_cidr_vnet"></a> [cidr\_vnet](#input\_cidr\_vnet) | n/a | `list(string)` | n/a | yes |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_db_auto_grow_enabled"></a> [db\_auto\_grow\_enabled](#input\_db\_auto\_grow\_enabled) | Enable/Disable auto-growing of the storage. Storage auto-grow prevents your server from running out of storage and becoming read-only. If storage auto grow is enabled, the storage automatically grows without impacting the workload. | `bool` | `true` | no |
 | <a name="input_db_backup_retention_days"></a> [db\_backup\_retention\_days](#input\_db\_backup\_retention\_days) | Backup retention days for the server | `number` | `null` | no |
@@ -416,6 +416,7 @@
 | <a name="input_db_ssl_minimal_tls_version_enforced"></a> [db\_ssl\_minimal\_tls\_version\_enforced](#input\_db\_ssl\_minimal\_tls\_version\_enforced) | The mimimun TLS version to support on the sever. | `string` | `"TLS1_2"` | no |
 | <a name="input_db_storage_mb"></a> [db\_storage\_mb](#input\_db\_storage\_mb) | Max storage allowed for a server. | `number` | `5120` | no |
 | <a name="input_db_version"></a> [db\_version](#input\_db\_version) | Specifies the version of PostgreSQL to use. | `string` | n/a | yes |
+| <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | n/a | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
 | <a name="input_devops_admin_email"></a> [devops\_admin\_email](#input\_devops\_admin\_email) | DevOps email address for alerts notification | `string` | n/a | yes |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | n/a | `string` | `null` | no |
 | <a name="input_dns_zone_prefix_uat"></a> [dns\_zone\_prefix\_uat](#input\_dns\_zone\_prefix\_uat) | TODO these \_uat are a temponary resources | `string` | `null` | no |
