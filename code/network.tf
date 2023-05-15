@@ -31,10 +31,10 @@ resource "azurerm_network_security_group" "db_nsg" {
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                 = format("%s-vnet", local.project)
-  location             = azurerm_resource_group.rg_vnet.location
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  address_space        = var.cidr_vnet
+  name                = format("%s-vnet", local.project)
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  address_space       = var.cidr_vnet
 
   dynamic "ddos_protection_plan" {
     for_each = var.ddos_protection_plan == null ? [] : ["dummy"]
