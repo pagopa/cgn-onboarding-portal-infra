@@ -178,7 +178,7 @@ module "spid_login" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
+    WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
@@ -263,7 +263,7 @@ module "spid_login" {
     } : {}
   )
 
-  linux_fx_version = "NODE|12-lts"
+  linux_fx_version = "NODE|18"
 
   always_on = "true"
 
