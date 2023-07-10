@@ -125,10 +125,6 @@ variable "cidr_subnet_apim" {
   type = list(string)
 }
 
-variable "cidr_subnet_apim_v2" {
-  type = list(string)
-}
-
 variable "cidr_subnet_spid_login" {
   type = list(string)
 }

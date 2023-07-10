@@ -443,7 +443,7 @@ module "app_operator_search" {
   app_settings = local.operator_search_app_settings
 
   allowed_subnets = concat(
-    [azurerm_subnet.subnet_apim.id, azurerm_subnet.subnet_apim_v2.id, ],
+    [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
   )
 
