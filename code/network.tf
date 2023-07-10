@@ -248,6 +248,17 @@ resource "azurerm_subnet" "subnet_apim" {
   enforce_private_link_endpoint_network_policies = true
 }
 
+resource "azurerm_subnet" "subnet_apim_v2" {
+  name                 = format("%s-apim-v2-subnet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.cidr_subnet_apim_v2
+
+  service_endpoints = ["Microsoft.Web"]
+
+  enforce_private_link_endpoint_network_policies = true
+}
+
 resource "azurerm_private_dns_zone" "api_private_dns_zone" {
   name                = var.apim_private_domain
   resource_group_name = azurerm_resource_group.rg_vnet.name

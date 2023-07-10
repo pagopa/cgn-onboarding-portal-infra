@@ -27,6 +27,7 @@ cidr_subnet_db                       = ["10.0.1.0/24"]
 cidr_subnet_api                      = ["10.0.2.0/24"]
 cidr_subnet_public                   = ["10.0.3.0/24"]
 cidr_subnet_apim                     = ["10.0.4.0/24"]
+cidr_subnet_apim_v2                  = ["10.0.10.0/24"]
 cidr_subnet_spid_login               = ["10.0.5.0/24"]
 cidr_subnet_function                 = ["10.0.6.0/24"]
 cidr_subnet_ade_aa_mock              = ["10.0.7.0/24"]
@@ -60,6 +61,7 @@ operator_search_external_allowed_subnets = [
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl2",
   # io apim
   "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/apimapi",
+  "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/apimv2api",
 ]
 operator_search_elastic_instance_minimum     = 1
 operator_search_maximum_elastic_worker_count = 30
