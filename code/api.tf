@@ -93,8 +93,8 @@ locals {
 
     # APIM API TOKEN
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
-    CGN_APIM_RESOURCE      = var.io_apim_name != null ? var.io_apim_name : module.apim.name
-    CGN_APIM_PRODUCTID     = var.io_apim_productid != null ? var.io_apim_productid : azurerm_api_management_product.cgn_onbording_portal.id
+    CGN_APIM_RESOURCE      = var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
+    CGN_APIM_PRODUCTID     = var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
     AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
     # RECAPTCHA
     CGN_RECAPTCHA_SECRET_KEY = data.azurerm_key_vault_secret.recaptcha_secret_key.value

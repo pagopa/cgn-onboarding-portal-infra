@@ -434,6 +434,8 @@
 | <a name="input_io_apim_productid"></a> [io\_apim\_productid](#input\_io\_apim\_productid) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_resourcegroup"></a> [io\_apim\_resourcegroup](#input\_io\_apim\_resourcegroup) | API TOKEN | `string` | `null` | no |
 | <a name="input_io_apim_subscription_id"></a> [io\_apim\_subscription\_id](#input\_io\_apim\_subscription\_id) | IO apim subscription id. If null the current subscription will be used. | `string` | `null` | no |
+| <a name="input_io_apim_v2_name"></a> [io\_apim\_v2\_name](#input\_io\_apim\_v2\_name) | n/a | `string` | `null` | no |
+| <a name="input_io_apim_v2_productid"></a> [io\_apim\_v2\_productid](#input\_io\_apim\_v2\_productid) | n/a | `string` | `null` | no |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
 | <a name="input_law_retention_in_days"></a> [law\_retention\_in\_days](#input\_law\_retention\_in\_days) | The workspace data retention in days | `number` | `30` | no |
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
