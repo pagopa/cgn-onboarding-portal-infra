@@ -208,6 +208,15 @@ data "azurerm_key_vault_secret" "recaptcha_secret_key" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "eyca_export_username" {
+  name         = "eyca-export-username"
+  key_vault_id = module.key_vault.id
+}
+data "azurerm_key_vault_secret" "eyca_export_password" {
+  name         = "eyca-export-password"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Alerts
 #
