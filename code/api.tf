@@ -296,6 +296,7 @@ module "ade_aa_mock" {
   sku = var.ade_aa_mock_sku
 
   app_settings = {
+    WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
     SERVER_PORT                         = 8080
@@ -346,7 +347,7 @@ module "ade_aa_mock" {
 
   }
 
-  linux_fx_version = "NODE|14-lts"
+  linux_fx_version = "NODE|18-lts"
 
   always_on = "true"
 
@@ -372,10 +373,10 @@ resource "azurerm_resource_group" "os_rg" {
 
 locals {
   operator_search_app_settings = {
-    FUNCTIONS_WORKER_RUNTIME     = "node"
-    WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
-    NODE_ENV                     = "production"
+    FUNCTIONS_WORKER_RUNTIME = "node"
+    WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
+    NODE_ENV                 = "production"
 
     # DNS configuration to use private endpoint
     WEBSITE_DNS_SERVER     = "168.63.129.16"
