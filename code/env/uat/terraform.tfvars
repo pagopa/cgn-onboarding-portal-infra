@@ -84,6 +84,9 @@ operator_search_external_allowed_subnets = [
 operator_search_allowed_ips = [
   "0.0.0.0/0"
 ]
+
+eyca_export_enabled = false
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Uat"

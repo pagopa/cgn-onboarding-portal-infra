@@ -91,7 +91,8 @@ locals {
     CGN_EMAIL_DEPARTMENT_EMAIL    = var.email_department_email
     CGN_EMAIL_PORTAL_BASE_URL     = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
 
-    # EYCA ACCOUNT
+    # EYCA EXPORT
+    EYCA_EXPORT_ENABLED  = var.eyca_export_enabled
     EYCA_EXPORT_USERNAME = data.azurerm_key_vault_secret.eyca_export_username.value
     EYCA_EXPORT_PASSWORD = data.azurerm_key_vault_secret.eyca_export_password.value
 
@@ -114,6 +115,9 @@ locals {
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
   }
+  portal_backend_1_app_settings_prod = {
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
+  }
 
   portal_backend_1_app_settings_staging = {
     # QUARTZ SCHEDULER
@@ -132,7 +136,7 @@ module "portal_backend_1" {
 
   health_check_path = "/actuator/health"
 
-  app_settings = local.portal_backend_1_app_settings
+  app_settings = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_prod)
 
   slot_name         = "staging"
   app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)

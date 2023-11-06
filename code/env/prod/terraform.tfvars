@@ -69,6 +69,8 @@ operator_search_maximum_elastic_worker_count = 30
 operator_search_sku_tier                     = "PremiumV3"
 operator_search_sku_size                     = "P1v3"
 
+eyca_export_enabled = true
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"

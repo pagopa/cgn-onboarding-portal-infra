@@ -563,3 +563,9 @@ variable "operator_search_allowed_ips" {
   description = "External ips allowed to call operator search function"
   default     = []
 }
+
+variable "eyca_export_enabled" {
+  type        = bool
+  description = "Is eyca export enabled? Default false"
+  default     = false
+}
