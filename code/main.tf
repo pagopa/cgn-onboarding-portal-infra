@@ -13,7 +13,7 @@ terraform {
 
     pkcs12 = {
       source  = "chilicat/pkcs12"
-      version = "0.0.6"
+      version = "0.0.7"
     }
   }
 

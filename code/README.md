@@ -239,7 +239,7 @@
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 1.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 2.87.0, < 3.0.0 |
-| <a name="requirement_pkcs12"></a> [pkcs12](#requirement\_pkcs12) | 0.0.6 |
+| <a name="requirement_pkcs12"></a> [pkcs12](#requirement\_pkcs12) | 0.0.7 |
 
 ## Modules
 
@@ -296,6 +296,7 @@
 | [azurerm_key_vault_access_policy.app_gateway_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.cert_renew_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.apim_proxy_endpoint_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
+| [azurerm_key_vault_secret.jwt_pkcs12_pem](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.p0action](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
@@ -339,7 +340,7 @@
 | [local_file.spid_testenv_config](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [null_resource.cdn_custom_domain](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.upload_config_spid_testenv](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [pkcs12_from_pem.jwt_pkcs12](https://registry.terraform.io/providers/chilicat/pkcs12/0.0.6/docs/resources/from_pem) | resource |
+| [pkcs12_from_pem.jwt_pkcs12](https://registry.terraform.io/providers/chilicat/pkcs12/0.0.7/docs/resources/from_pem) | resource |
 | [tls_private_key.jwt](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [tls_private_key.spid](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [tls_self_signed_cert.jwt_self](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
@@ -431,6 +432,7 @@
 | <a name="input_enable_spid_test"></a> [enable\_spid\_test](#input\_enable\_spid\_test) | Create spid test container group. Default false | `bool` | `false` | no |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | n/a | `string` | `null` | no |
+| <a name="input_eyca_export_enabled"></a> [eyca\_export\_enabled](#input\_eyca\_export\_enabled) | Is eyca export enabled? Default false | `bool` | `false` | no |
 | <a name="input_hub_spid_login_sku"></a> [hub\_spid\_login\_sku](#input\_hub\_spid\_login\_sku) | HUB SPID LOGIN | <pre>object({<br>    tier     = string<br>    size     = string<br>    capacity = number<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "size": "S1",<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_io_apim_name"></a> [io\_apim\_name](#input\_io\_apim\_name) | n/a | `string` | `null` | no |
 | <a name="input_io_apim_productid"></a> [io\_apim\_productid](#input\_io\_apim\_productid) | n/a | `string` | `null` | no |

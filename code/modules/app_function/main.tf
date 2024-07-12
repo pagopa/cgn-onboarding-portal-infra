@@ -93,6 +93,10 @@ resource "azurerm_function_app" "this" {
   lifecycle {
     ignore_changes = [
       app_settings["WEBSITE_CONTENTSHARE"],
+      app_settings["WEBSITE_HEALTHCHECK_MAXPINGFAILURES"],
+      tags["hidden-link: /app-insights-conn-string"],
+      tags["hidden-link: /app-insights-instrumentation-key"],
+      tags["hidden-link: /app-insights-resource-id"]
     ]
   }
 }
@@ -164,6 +168,10 @@ resource "azurerm_function_app_slot" "slot" {
   lifecycle {
     ignore_changes = [
       app_settings["WEBSITE_CONTENTSHARE"],
+      app_settings["WEBSITE_HEALTHCHECK_MAXPINGFAILURES"],
+      tags["hidden-link: /app-insights-conn-string"],
+      tags["hidden-link: /app-insights-instrumentation-key"],
+      tags["hidden-link: /app-insights-resource-id"]
     ]
   }
 }
