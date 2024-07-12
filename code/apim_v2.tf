@@ -156,7 +156,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
 # API file
 resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert_v2" {
   name         = local.apim_cert_name_proxy_endpoint
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   certificate_policy {
     issuer_parameters {
@@ -210,7 +210,7 @@ resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert_v2" {
 # Security
 
 resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim_v2.principal_id
 
