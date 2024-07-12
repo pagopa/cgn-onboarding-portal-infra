@@ -3,7 +3,7 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain_v2" {
 
   gateway {
     host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, ".")
-    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.secret_id
+    key_vault_id = data.azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
   }
 }
 
@@ -143,72 +143,72 @@ module "apim_ade_aa_mock_api_v2" {
 #---------------------------------------------
 # NETWORK
 
-resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
-  name                = "${local.apim_name}-v2"
-  zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-  ttl                 = 300
-  records             = module.apim_v2.*.private_ip_addresses[0]
-}
+# resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
+#   name                = "${local.apim_name}-v2"
+#   zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
+#   resource_group_name = data.azurerm_resource_group.rg_vnet.name
+#   ttl                 = 300
+#   records             = module.apim_v2.*.private_ip_addresses[0]
+# }
 
 # API file
-resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert_v2" {
-  name         = local.apim_cert_name_proxy_endpoint
-  key_vault_id = module.key_vault.id
+# resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert_v2" {
+#   name         = local.apim_cert_name_proxy_endpoint
+#   key_vault_id = module.key_vault.id
 
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
+#   certificate_policy {
+#     issuer_parameters {
+#       name = "Self"
+#     }
 
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = true
-    }
+#     key_properties {
+#       exportable = true
+#       key_size   = 2048
+#       key_type   = "RSA"
+#       reuse_key  = true
+#     }
 
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
+#     lifetime_action {
+#       action {
+#         action_type = "AutoRenew"
+#       }
 
-      trigger {
-        days_before_expiry = 30
-      }
-    }
+#       trigger {
+#         days_before_expiry = 30
+#       }
+#     }
 
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
+#     secret_properties {
+#       content_type = "application/x-pkcs12"
+#     }
 
-    x509_certificate_properties {
-      key_usage = [
-        "cRLSign",
-        "dataEncipherment",
-        "digitalSignature",
-        "keyAgreement",
-        "keyCertSign",
-        "keyEncipherment",
-      ]
+#     x509_certificate_properties {
+#       key_usage = [
+#         "cRLSign",
+#         "dataEncipherment",
+#         "digitalSignature",
+#         "keyAgreement",
+#         "keyCertSign",
+#         "keyEncipherment",
+#       ]
 
-      subject            = format("CN=%s", trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, "."))
-      validity_in_months = 12
+#       subject            = format("CN=%s", trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, "."))
+#       validity_in_months = 12
 
-      subject_alternative_names {
-        dns_names = [
-          trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, "."),
-        ]
-      }
-    }
-  }
-}
+#       subject_alternative_names {
+#         dns_names = [
+#           trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, "."),
+#         ]
+#       }
+#     }
+#   }
+# }
 
 #---------------------------------------------
 # Security
 
 resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim_v2.principal_id
 
@@ -265,34 +265,34 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
 #---------------------------------------------
 # APP SERVICE
 
-module "portal_backend_1_v2" {
-  source = "../../modules/app_service" # "./modules/app_service"
+# module "portal_backend_1_v2" {
+#   source = "../../modules/app_service" # "./modules/app_service"
 
-  name                = format("%s-portal-backend1", local.project)
-  plan_name           = format("%s-plan-portal-backend1", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+#   name                = format("%s-portal-backend1", local.project)
+#   plan_name           = format("%s-plan-portal-backend1", local.project)
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
 
-  sku = var.backend_sku
+#   sku = var.backend_sku
 
-  health_check_path = "/actuator/health"
+#   health_check_path = "/actuator/health"
 
-  app_settings = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_prod)
+#   app_settings = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_prod)
 
-  slot_name         = "staging"
-  app_settings_slot = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_staging)
+#   slot_name         = "staging"
+#   app_settings_slot = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_staging)
 
-  linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
-  data.azurerm_container_registry.container_registry.login_server, "latest")
-  always_on = "true"
+#   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
+#   data.azurerm_container_registry.container_registry.login_server, "latest")
+#   always_on = "true"
 
-  allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
-  allowed_ips     = []
+#   allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
+#   allowed_ips     = []
 
-  subnet_name = data.azurerm_subnet.subnet_api.name
-  subnet_id   = data.azurerm_subnet.subnet_api.id
+#   subnet_name = data.azurerm_subnet.subnet_api.name
+#   subnet_id   = data.azurerm_subnet.subnet_api.id
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
 # monitor file
 resource "azurerm_monitor_metric_alert" "backend_5xx_v2" {

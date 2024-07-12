@@ -113,3 +113,8 @@ data "pkcs12_from_pem" "jwt_pkcs12" {
   cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
   private_key_pem = tls_private_key.jwt.private_key_pem
 }
+
+data "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
+  name         = local.apim_cert_name_proxy_endpoint
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
