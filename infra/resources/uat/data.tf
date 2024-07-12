@@ -24,15 +24,15 @@ data "azurerm_resource_group" "rg_vnet" {
 # }
 
 data "azurerm_resource_group" "rg_spid_testenv" {
-  name     = format("%s-spid-testenv-rg", local.project)
+  name = format("%s-spid-testenv-rg", local.project)
 }
 
 data "azurerm_resource_group" "rg_sec" {
-  name     = format("%s-sec-rg", local.project)
+  name = format("%s-sec-rg", local.project)
 }
 
 data "azurerm_resource_group" "rg_public" {
-  name     = format("%s-public-rg", local.project)
+  name = format("%s-public-rg", local.project)
 }
 
 # Networking
@@ -106,7 +106,7 @@ data "azurerm_linux_web_app" "spid_login" {
 }
 
 data "azurerm_linux_web_app" "ade_aa_mock" {
-  count  = var.enable_ade_aa_mock ? 1 : 0
+  count               = var.enable_ade_aa_mock ? 1 : 0
   name                = format("%s-ade-aa-mock", local.project)
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
@@ -118,8 +118,8 @@ data "azurerm_linux_web_app" "portal_backend_1" {
 
 # Security
 data "azurerm_key_vault" "key_vault" {
-  name                       = format("%s-kv", local.project)
-  resource_group_name        = data.azurerm_resource_group.rg_sec.name
+  name                = format("%s-kv", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_sec.name
 }
 
 # pkcs12

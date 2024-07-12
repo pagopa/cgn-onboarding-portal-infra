@@ -14,6 +14,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_api_management.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management) | resource |
+| [azurerm_api_management_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy) | resource |
 
 ## Inputs
 

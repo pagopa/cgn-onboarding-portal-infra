@@ -1,6 +1,6 @@
 locals {
   project = format("%s-%s", var.prefix, var.env_short)
-  
+
   apim_name                     = format("%s-apim", local.project)
   apim_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", local.project)
   apim_origins = flatten([
