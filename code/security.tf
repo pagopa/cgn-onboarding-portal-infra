@@ -217,6 +217,12 @@ data "azurerm_key_vault_secret" "eyca_export_password" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "jwt_pkcs12_pem" {
+  name         = "jwt-pkcs12-pem"
+  value        = pkcs12_from_pem.jwt_pkcs12.result
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Alerts
 #
