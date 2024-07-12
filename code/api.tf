@@ -114,6 +114,19 @@ locals {
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
+
+    # FROM AZURE
+    APPINSIGHTS_INSTRUMENTATIONKEY                     = "128e624d-140e-4daa-888c-382c6bfd7fc0"
+    APPINSIGHTS_PROFILERFEATURE_VERSION                = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION                = "1.0.0"
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT          = ""
+    ApplicationInsightsAgent_EXTENSION_VERSION         = "~3"
+    DiagnosticServices_EXTENSION_VERSION               = "~3"
+    InstrumentationEngine_EXTENSION_VERSION           = "disabled"
+    SnapshotDebugger_EXTENSION_VERSION                 = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions    = "disabled"
+    XDT_MicrosoftApplicationInsights_Mode              = "recommended"
+    XDT_MicrosoftApplicationInsights_PreemptSdk        = "disabled"
   }
   portal_backend_1_app_settings_prod = {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
@@ -123,6 +136,21 @@ locals {
     # QUARTZ SCHEDULER
     SPRING_QUARTZ_AUTOSTARTUP = "false"
   }
+
+  portal_backend_1_app_settings_removed = {
+    APPINSIGHTS_INSTRUMENTATIONKEY                     = null
+    APPINSIGHTS_PROFILERFEATURE_VERSION                = null
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION                = null
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT          = null
+    ApplicationInsightsAgent_EXTENSION_VERSION         = null
+    DiagnosticServices_EXTENSION_VERSION               = null
+    InstrumentationEngine_EXTENSION_VERSION           = null
+    SnapshotDebugger_EXTENSION_VERSION                 = null
+    XDT_MicrosoftApplicationInsights_BaseExtensions    = null
+    XDT_MicrosoftApplicationInsights_Mode              = null
+    XDT_MicrosoftApplicationInsights_PreemptSdk        = null
+  }
+
 }
 
 module "portal_backend_1" {
@@ -139,8 +167,8 @@ module "portal_backend_1" {
   app_settings = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_prod)
 
   slot_name         = "staging"
-  app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)
-
+  app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging, local.portal_backend_1_app_settings_removed)
+  
   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
   always_on = "true"
