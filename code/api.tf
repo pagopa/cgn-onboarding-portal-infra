@@ -700,7 +700,7 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
   proxy {
     host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.secret_id
+    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
   }
 
   # developer_portal {

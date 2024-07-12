@@ -1,0 +1,215 @@
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on apim.tf line 14, in resource "azurerm_api_management_certificate" "jwt_certificate_v2":
+│   14:   data                = pkcs12_from_pem.jwt_pkcs12.result
+│ 
+│ A managed resource "pkcs12_from_pem" "jwt_pkcs12" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on apim.tf line 148, in resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2":
+│  148:   zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
+│ 
+│ A managed resource "azurerm_private_dns_zone" "api_private_dns_zone" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on apim.tf line 211, in resource "azurerm_key_vault_access_policy" "api_management_policy_v2":
+│  211:   key_vault_id = module.key_vault.id
+│ 
+│ No module call named "key_vault" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 35, in locals:
+│   35:     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.container_registry.login_server}"
+│ 
+│ A managed resource "azurerm_container_registry" "container_registry" has not been declared in the root module.
+│ 
+│ Did you mean the data resource data.azurerm_container_registry.container_registry?
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 36, in locals:
+│   36:     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.container_registry.admin_username
+│ 
+│ A managed resource "azurerm_container_registry" "container_registry" has not been declared in the root module.
+│ 
+│ Did you mean the data resource data.azurerm_container_registry.container_registry?
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 37, in locals:
+│   37:     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.container_registry.admin_password
+│ 
+│ A managed resource "azurerm_container_registry" "container_registry" has not been declared in the root module.
+│ 
+│ Did you mean the data resource data.azurerm_container_registry.container_registry?
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 47, in locals:
+│   47:     SPRING_DATASOURCE_URL  = format("jdbc:postgresql://%s:5432/%s?%s", trimsuffix(azurerm_private_dns_a_record.private_dns_a_record_postgresql.fqdn, "."), var.database_name, "sslmode=require")
+│ 
+│ A managed resource "azurerm_private_dns_a_record" "private_dns_a_record_postgresql" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 49, in locals:
+│   49:       data.azurerm_key_vault_secret.db_administrator_login.value,
+│ 
+│ A data resource "azurerm_key_vault_secret" "db_administrator_login" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 50, in locals:
+│   50:       azurerm_postgresql_server.postgresql_server.name
+│ 
+│ A managed resource "azurerm_postgresql_server" "postgresql_server" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 52, in locals:
+│   52:     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_administrator_login_password.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "db_administrator_login_password" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on locals.tf line 57, in locals:
+│   57:     CGN_PE_STORAGE_AZURE_ACCOUNT_NAME               = module.storage_account.name
+│ 
+│ No module call named "storage_account" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on locals.tf line 58, in locals:
+│   58:     CGN_PE_STORAGE_AZURE_ACCOUNT_KEY                = module.storage_account.primary_access_key
+│ 
+│ No module call named "storage_account" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on locals.tf line 59, in locals:
+│   59:     CGN_PE_STORAGE_AZURE_BLOB_ENDPOINT              = module.storage_account.primary_blob_endpoint
+│ 
+│ No module call named "storage_account" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 60, in locals:
+│   60:     CGN_PE_STORAGE_AZURE_DOCUMENTS_CONTAINER_NAME   = azurerm_storage_container.user_documents.name
+│ 
+│ A managed resource "azurerm_storage_container" "user_documents" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 61, in locals:
+│   61:     CGN_PE_STORAGE_AZURE_IMAGED_CONTAINER_NAME      = azurerm_storage_container.profile_images.name
+│ 
+│ A managed resource "azurerm_storage_container" "profile_images" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 74, in locals:
+│   74:     SPRING_MAIL_USERNAME                               = data.azurerm_key_vault_secret.email_username.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "email_username" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 75, in locals:
+│   75:     SPRING_MAIL_PASSWORD                               = data.azurerm_key_vault_secret.email_password.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "email_password" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 89, in locals:
+│   89:     EYCA_EXPORT_USERNAME = data.azurerm_key_vault_secret.eyca_export_username.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "eyca_export_username" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 90, in locals:
+│   90:     EYCA_EXPORT_PASSWORD = data.azurerm_key_vault_secret.eyca_export_password.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "eyca_export_password" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 93, in locals:
+│   93:     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
+│ 
+│ A managed resource "azurerm_resource_group" "rg_api" has not been declared in the root module.
+│ 
+│ Did you mean the data resource data.azurerm_resource_group.rg_api?
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on locals.tf line 94, in locals:
+│   94:     CGN_APIM_RESOURCE      = var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
+│ 
+│ No module call named "apim" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 95, in locals:
+│   95:     CGN_APIM_PRODUCTID     = var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
+│ 
+│ A managed resource "azurerm_api_management_product" "cgn_onbording_portal" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 96, in locals:
+│   96:     AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
+│ 
+│ A data resource "azurerm_subscription" "current" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 99, in locals:
+│   99:     CGN_RECAPTCHA_SECRET_KEY = data.azurerm_key_vault_secret.recaptcha_secret_key.value
+│ 
+│ A data resource "azurerm_key_vault_secret" "recaptcha_secret_key" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared module
+│ 
+│   on locals.tf line 105, in locals:
+│  105:     CGN_ATTRIBUTE_AUTHORITY_BASE_URL = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
+│ 
+│ No module call named "ade_aa_mock" is declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on locals.tf line 109, in locals:
+│  109:     azurerm_application_insights.application_insights.instrumentation_key)
+│ 
+│ A managed resource "azurerm_application_insights" "application_insights" has not been declared in the root module.
