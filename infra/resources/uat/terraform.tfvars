@@ -3,17 +3,17 @@ adb2c_openid_config_url              = "https://cgnonboardingportaluat.b2clogin.
 apim_notification_sender_email       = "io-operations@pagopa.it"
 apim_publisher_email                 = "io-operations@pagopa.it"
 apim_publisher_name                  = "PagoPa CGN Onboarding Portal"
-database_name                        = "cgnonboardingportal-prod-like"
-email_department_email           = "prod-carta-giovani@pagopa.it"
+# database_name                        = "cgnonboardingportal-prod-like"
+# email_department_email           = "prod-carta-giovani@pagopa.it"
 enable_ade_aa_mock               = true
 enable_custom_dns                = true
 enable_spid_test                 = true
 env_short                        = "u"
 external_domain                  = "pagopa.it"
-pe_min_csv_rows                  = 0
+# pe_min_csv_rows                  = 0
 dns_zone_prefix_uat              = "cgnonboardingportal-uat"
 
-eyca_export_enabled = false
+# eyca_export_enabled = false
 
 tags = {
   CreatedBy   = "Terraform"

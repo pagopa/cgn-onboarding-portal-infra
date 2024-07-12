@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.0" 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -7,7 +8,7 @@ terraform {
 
     pkcs12 = {
       source  = "chilicat/pkcs12"
-      version = ">= 0.2.5" #"0.0.7"
+      version = ">= 0.2.5"
     }
   }
 

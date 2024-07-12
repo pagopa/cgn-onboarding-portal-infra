@@ -23,8 +23,8 @@ locals {
     "https://spid.register.it"]
   ])
 
-  cdn_frontend_url        = format("https://%s/", "${format("%s-cdnendpoint-frontend", local.project)}.azureedge.net")
-  custom_dns_frontend_url = format("https://%s/", trim(data.azurerm_dns_cname_record.frontend[0].fqdn, "."))
+  # cdn_frontend_url        = format("https://%s/", "${format("%s-cdnendpoint-frontend", local.project)}.azureedge.net")
+  # custom_dns_frontend_url = format("https://%s/", trim(data.azurerm_dns_cname_record.frontend[0].fqdn, "."))
 
   # portal_backend_1_app_settings = {
   #   WEBSITES_ENABLE_APP_SERVICE_STORAGE = false

@@ -4,10 +4,10 @@ data "azurerm_client_config" "current" {}
 
 # API
 
-data "azurerm_key_vault_secret" "backend_geolocation_token" {
-  name         = "backend-GEOLOCATION-TOKEN"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
+# data "azurerm_key_vault_secret" "backend_geolocation_token" {
+#   name         = "backend-GEOLOCATION-TOKEN"
+#   key_vault_id = data.azurerm_key_vault.key_vault.id
+# }
 
 # Resource Groups
 
@@ -49,10 +49,10 @@ data "azurerm_virtual_network" "vnet" {
 }
 
 # Registry
-data "azurerm_container_registry" "container_registry" {
-  name                = join("", [replace(var.prefix, "-", ""), var.env_short, "arc"])
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
+# data "azurerm_container_registry" "container_registry" {
+#   name                = join("", [replace(var.prefix, "-", ""), var.env_short, "arc"])
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+# }
 
 # For locals
 data "azurerm_container_group" "spid_testenv" {
@@ -75,11 +75,11 @@ data "azurerm_linux_web_app" "ade_aa_mock" {
 }
 
 # Azure Subnets
-data "azurerm_subnet" "subnet_api" {
-  name                 = format("%s-api-subnet", local.project)
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-}
+# data "azurerm_subnet" "subnet_api" {
+#   name                 = format("%s-api-subnet", local.project)
+#   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+#   virtual_network_name = data.azurerm_virtual_network.vnet.name
+# }
 
 # Key Vault
 data "azurerm_key_vault" "key_vault" {
@@ -96,7 +96,7 @@ data "azurerm_dns_cname_record" "frontend" {
 }
 
 data "azurerm_private_dns_a_record" "private_dns_a_record_api" {
-  name                = "${local.apim_name}"
+  name                = local.apim_name
   zone_name           = data.azurerm_private_dns_zone.api_private_dns_zone.name
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }

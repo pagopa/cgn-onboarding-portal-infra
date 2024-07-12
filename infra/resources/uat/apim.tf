@@ -13,12 +13,12 @@ resource "azurerm_api_management_certificate" "jwt_certificate_v2" {
   name                = "jwt-spid-crt-v2"
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
-  data                = data.azurerm_key_vault_secret.jwt_pkcs12_pem #pkcs12_from_pem.jwt_pkcs12.result
+  data                = data.azurerm_key_vault_secret.jwt_pkcs12_pem.value #pkcs12_from_pem.jwt_pkcs12.result
 }
 
 #-------------------- A P I -------------------------
 
-resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # In the app service
+resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # Change product ID?
   product_id            = "cgn-onboarding-portal-api"
   resource_group_name   = data.azurerm_resource_group.rg_api.name
   api_management_name   = module.apim_v2.name
@@ -32,7 +32,7 @@ resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # In the a
 module "apim_backend_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
-  name                = format("%s-backend-api", local.project)
+  name                = format("%s-backend-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
@@ -53,7 +53,7 @@ module "apim_backend_api_v2" {
 module "apim_backoffice_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
-  name                = format("%s-backoffice-api", local.project)
+  name                = format("%s-backoffice-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
@@ -74,7 +74,7 @@ module "apim_backoffice_api_v2" {
 module "apim_public_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
-  name                = format("%s-public-api", local.project)
+  name                = format("%s-public-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
@@ -92,7 +92,7 @@ module "apim_public_api_v2" {
 module "apim_spid_login_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
-  name                = format("%s-spid-login-api", local.project)
+  name                = format("%s-spid-login-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
@@ -108,7 +108,7 @@ module "apim_spid_login_api_v2" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "spid_acs_v2" {
-  api_name            = format("%s-spid-login-api", local.project)
+  api_name            = format("%s-spid-login-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "postACS"
@@ -122,7 +122,7 @@ module "apim_ade_aa_mock_api_v2" {
   count  = var.enable_ade_aa_mock ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
-  name                = format("%s-ade-aa-mock-api", local.project)
+  name                = format("%s-ade-aa-mock-api-v2", local.project)
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
@@ -236,7 +236,7 @@ module "apim_v2" {
 }
 
 resource "azurerm_network_security_group" "nsg_apim_v2" {
-  name                = format("%s-apim-v2-nsg", local.project)
+  name                = format("%s-apim-nsg-v2", local.project)
   resource_group_name = format("%s-vnet-rg", local.project)
   location            = var.location
 
@@ -262,7 +262,9 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
 
 #-------------------- A P P S E R V I C E -------------------------
 
-# module "portal_backend_1_v2" {
+## Will be edited directly the original resource
+
+# module "portal_backend_1" {
 #   source = "../../modules/app_service" # "./modules/app_service"
 
 #   name                = format("%s-portal-backend1", local.project)
@@ -273,10 +275,10 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
 
 #   health_check_path = "/actuator/health"
 
-#   app_settings = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_prod)
+#   app_settings = merge(local.portal_backend_1_app_settings_, local.portal_backend_1_app_settings_prod)
 
 #   slot_name         = "staging"
-#   app_settings_slot = merge(local.portal_backend_1_app_settings_v2, local.portal_backend_1_app_settings_staging)
+#   app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)
 
 #   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
 #   data.azurerm_container_registry.container_registry.login_server, "latest")
@@ -293,7 +295,7 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
 
 #-------------------- M O N I T O R I N G -------------------------
 resource "azurerm_monitor_metric_alert" "backend_5xx_v2" {
-  name                = format("%s-%s", format("%s-portal-backend1", local.project), "5xx") #format("%s-%s", module.portal_backend_1_v2.name, "5xx")
+  name                = format("%s-%s", format("%s-portal-backend1", local.project), "5xx") #format("%s-%s", module.portal_backend_1.name, "5xx")
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [data.azurerm_linux_web_app.portal_backend_1_v2.id]
   severity            = 1

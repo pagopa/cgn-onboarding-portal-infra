@@ -59,10 +59,10 @@ variable "external_domain" {
 
 # postgresql
 
-variable "database_name" {
-  type        = string
-  description = "Name of the database."
-}
+# variable "database_name" {
+#   type        = string
+#   description = "Name of the database."
+# }
 
 ## Spit test
 variable "enable_spid_test" {
@@ -78,18 +78,18 @@ variable "enable_ade_aa_mock" {
 }
 
 # BACKEND
-variable "backend_sku" {
-  type = object({
-    tier     = string
-    size     = string
-    capacity = number
-  })
-  default = {
-    tier     = "Standard"
-    size     = "S1"
-    capacity = 1
-  }
-}
+# variable "backend_sku" {
+#   type = object({
+#     tier     = string
+#     size     = string
+#     capacity = number
+#   })
+#   default = {
+#     tier     = "Standard"
+#     size     = "S1"
+#     capacity = 1
+#   }
+# }
 
 ## AD B2C
 variable "adb2c_openid_config_url" {
@@ -103,55 +103,55 @@ variable "adb2c_audience" {
 }
 
 ## Email
-variable "email_host" {
-  type        = string
-  description = "email server hostname"
-  default     = "fast.smtpok.com"
-}
+# variable "email_host" {
+#   type        = string
+#   description = "email server hostname"
+#   default     = "fast.smtpok.com"
+# }
 
-variable "email_port" {
-  type        = number
-  description = "email server port"
-  default     = 80
-}
+# variable "email_port" {
+#   type        = number
+#   description = "email server port"
+#   default     = 80
+# }
 
-variable "email_department_email" {
-  type        = string
-  description = "Receipent email address of the CGN Onboarding Department"
-}
+# variable "email_department_email" {
+#   type        = string
+#   description = "Receipent email address of the CGN Onboarding Department"
+# }
 
 # API TOKEN
-variable "io_apim_resourcegroup" {
-  type    = string
-  default = null
-}
+# variable "io_apim_resourcegroup" {
+#   type    = string
+#   default = null
+# }
 
-variable "io_apim_v2_name" {
-  type    = string
-  default = null
-}
+# variable "io_apim_v2_name" {
+#   type    = string
+#   default = null
+# }
 
-variable "io_apim_v2_productid" {
-  type    = string
-  default = null
-}
+# variable "io_apim_v2_productid" {
+#   type    = string
+#   default = null
+# }
 
-variable "io_apim_subscription_id" {
-  type        = string
-  description = "IO apim subscription id. If null the current subscription will be used."
-  default     = null
-}
+# variable "io_apim_subscription_id" {
+#   type        = string
+#   description = "IO apim subscription id. If null the current subscription will be used."
+#   default     = null
+# }
 
 # Bucket vars
-variable "pe_min_csv_rows" {
-  type    = number
-  default = 10000
-}
+# variable "pe_min_csv_rows" {
+#   type    = number
+#   default = 10000
+# }
 
-# operator_search vars
+# # operator_search vars
 
-variable "eyca_export_enabled" {
-  type        = bool
-  description = "Is eyca export enabled? Default false"
-  default     = false
-}
+# variable "eyca_export_enabled" {
+#   type        = bool
+#   description = "Is eyca export enabled? Default false"
+#   default     = false
+# }
