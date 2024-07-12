@@ -129,7 +129,10 @@ locals {
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
   }
   portal_backend_1_app_settings_prod = {
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE        = true
+    EYCA_EXPORT_NOT_ALLOWED_DISCOUNT_MODES = "API"
+    SEND_DISCOUNTS_TO_EYCA_JOB_CRON        = "0 0 2 * * ? *"
+    APPINSIGHTS_INSTRUMENTATIONKEY         = "b343827f-2498-4801-96f3-ef1a54169b1a"
   }
 
   portal_backend_1_app_settings_staging = {
