@@ -131,11 +131,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
 
 resource "azurerm_public_ip" "apigateway_public_ip" {
   name                = format("%s-apigateway-pip", local.project)
+  ip_tags             = {}
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
-
+  zones               = [ "1", "2", "3" ]
   tags = var.tags
 }
 

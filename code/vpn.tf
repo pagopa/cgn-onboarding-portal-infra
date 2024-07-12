@@ -1,13 +1,13 @@
 ## VPN subnet
 module "vpn_snet" {
   count                                          = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.26.5" #"git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
   name                                           = "GatewaySubnet"
   address_prefixes                               = var.cidr_subnet_vpn
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = azurerm_virtual_network.vnet.name
   service_endpoints                              = []
-  enforce_private_link_endpoint_network_policies = true
+  # enforce_private_link_endpoint_network_policies = true
 }
 
 data "azuread_application" "vpn_app" {
@@ -17,7 +17,8 @@ data "azuread_application" "vpn_app" {
 
 module "vpn" {
   count  = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.0.7"
+  # "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.0.7"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v8.26.5"
 
   name                = format("%s-vpn", local.project)
   location            = azurerm_resource_group.rg_vnet.location
@@ -46,12 +47,12 @@ module "vpn" {
 ## DNS Forwarder
 module "dns_forwarder_snet" {
   count                                          = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.26.5" #"git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
   name                                           = format("%s-dns-forwarder-snet", local.project)
   address_prefixes                               = var.cidr_subnet_dns_forwarder
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  # enforce_private_link_endpoint_network_policies = true
 
   service_endpoints = [
     "Microsoft.Storage",
@@ -68,7 +69,7 @@ module "dns_forwarder_snet" {
 
 module "dns_forwarder" {
   count               = length(var.cidr_subnet_vpn) > 0 ? 1 : 0
-  source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.8"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder?ref=v8.26.5" # "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.8"
   name                = format("%s-dns-forwarder", local.project)
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name

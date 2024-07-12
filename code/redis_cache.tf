@@ -1,5 +1,6 @@
 module "redis_cache" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
+  # "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.26.5"
   name                  = format("%s-apim", local.project)
   resource_group_name   = azurerm_resource_group.rg_db.name
   location              = azurerm_resource_group.rg_db.location
@@ -8,6 +9,8 @@ module "redis_cache" {
   family                = var.redis_cache_family
   sku_name              = var.redis_cache_sku_name
   enable_authentication = true
+  zones                 = []
+  redis_version         = "6"
 
   private_endpoint = {
     enabled              = true

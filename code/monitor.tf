@@ -22,7 +22,6 @@ resource "azurerm_application_insights" "application_insights" {
   location            = azurerm_resource_group.monitor_rg.location
   resource_group_name = azurerm_resource_group.monitor_rg.name
   application_type    = "other"
-
   tags = var.tags
 }
 

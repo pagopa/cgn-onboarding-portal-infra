@@ -111,6 +111,19 @@ locals {
     # ATTRIBUTE AUTHORITY
     CGN_ATTRIBUTE_AUTHORITY_BASE_URL = format("https://%s/", module.ade_aa_mock[0].default_site_hostname)
 
+    # FROM AZURE
+    APPINSIGHTS_INSTRUMENTATIONKEY                     = "128e624d-140e-4daa-888c-382c6bfd7fc0"
+    APPINSIGHTS_PROFILERFEATURE_VERSION                = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION                = "1.0.0"
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT          = ""
+    ApplicationInsightsAgent_EXTENSION_VERSION         = "~3"
+    DiagnosticServices_EXTENSION_VERSION               = "~3"
+    InstrumentationEngine_EXTENSION_VERSION           = "disabled"
+    SnapshotDebugger_EXTENSION_VERSION                 = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions    = "disabled"
+    XDT_MicrosoftApplicationInsights_Mode              = "recommended"
+    XDT_MicrosoftApplicationInsights_PreemptSdk        = "disabled"
+
     # application insights
     APPLICATIONINSIGHTS_CONNECTION_STRING = format("InstrumentationKey=%s",
     azurerm_application_insights.application_insights.instrumentation_key)
@@ -122,6 +135,20 @@ locals {
   portal_backend_1_app_settings_staging = {
     # QUARTZ SCHEDULER
     SPRING_QUARTZ_AUTOSTARTUP = "false"
+  }
+
+  portal_backend_1_app_settings_removed = {
+    APPINSIGHTS_INSTRUMENTATIONKEY                     = null
+    APPINSIGHTS_PROFILERFEATURE_VERSION                = null
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION                = null
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT          = null
+    ApplicationInsightsAgent_EXTENSION_VERSION         = null
+    DiagnosticServices_EXTENSION_VERSION               = null
+    InstrumentationEngine_EXTENSION_VERSION           = null
+    SnapshotDebugger_EXTENSION_VERSION                 = null
+    XDT_MicrosoftApplicationInsights_BaseExtensions    = null
+    XDT_MicrosoftApplicationInsights_Mode              = null
+    XDT_MicrosoftApplicationInsights_PreemptSdk        = null
   }
 }
 
@@ -139,7 +166,7 @@ module "portal_backend_1" {
   app_settings = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_prod)
 
   slot_name         = "staging"
-  app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)
+  app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging, local.portal_backend_1_app_settings_removed)
 
   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
@@ -418,7 +445,8 @@ locals {
 }
 
 module "app_operator_search" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
+  # "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.26.5"
   name      = format("%s-op", local.project)
   subnet_id = module.subnet_function_operator_search.id
 
@@ -430,15 +458,24 @@ module "app_operator_search" {
     sku_tier                     = var.operator_search_sku_tier
     sku_size                     = var.operator_search_sku_size
     maximum_elastic_worker_count = 1
+    worker_count = 1
+    zone_balancing_enabled = true
   }
 
-  os_type                                  = "linux"
+  # os_type                                  = "linux"
   always_on                                = true
-  linux_fx_version                         = "NODE|18"
+  # linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   health_check_path                        = "api/v1/cgn/operator-search/info"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-
+  # storage_account_info = {
+  #   account_kind                      = "StorageV2"
+  #   account_tier                      = "Standard"
+  #   account_replication_type          = "LRS"
+  #   access_tier                       = "Hot"
+  #   advanced_threat_protection_enable = true
+  # }
   internal_storage = {
     enable                     = false,
     private_endpoint_subnet_id = null,
@@ -698,9 +735,9 @@ resource "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
-  proxy {
+  gateway {
     host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.secret_id
+    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id # secret_id
   }
 
   # developer_portal {
@@ -733,7 +770,8 @@ resource "azurerm_api_management_product" "cgn_onbording_portal" {
 # APIs
 
 module "apim_backend_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-backend-api", local.project)
   api_management_name = module.apim.name
@@ -754,7 +792,8 @@ module "apim_backend_api" {
 
 
 module "apim_backoffice_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-backoffice-api", local.project)
   api_management_name = module.apim.name
@@ -775,7 +814,8 @@ module "apim_backoffice_api" {
 }
 
 module "apim_public_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-public-api", local.project)
   api_management_name = module.apim.name
@@ -793,7 +833,8 @@ module "apim_public_api" {
 }
 
 module "apim_spid_login_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-spid-login-api", local.project)
   api_management_name = module.apim.name
@@ -823,7 +864,8 @@ resource "azurerm_api_management_api_operation_policy" "spid_acs" {
 
 module "apim_ade_aa_mock_api" {
   count  = var.enable_ade_aa_mock ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-ade-aa-mock-api", local.project)
   api_management_name = module.apim.name

@@ -119,11 +119,13 @@ resource "tls_self_signed_cert" "jwt_self" {
     "cert_signing",
     "key_encipherment"
   ]
-  key_algorithm         = "RSA"
+  # key_algorithm         = "RSA"
   private_key_pem       = tls_private_key.jwt.private_key_pem
   validity_period_hours = 8640
+
   subject {
     common_name = "apim"
+    street_address = []
   }
 }
 
@@ -151,7 +153,7 @@ resource "tls_self_signed_cert" "spid_self" {
     "any_extended"
   ]
   early_renewal_hours   = 24
-  key_algorithm         = "RSA"
+  # key_algorithm         = "RSA"
   private_key_pem       = tls_private_key.spid.private_key_pem
   validity_period_hours = 8760
   subject {

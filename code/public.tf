@@ -28,7 +28,8 @@ data "azurerm_key_vault_certificate" "app_gw_platform" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.2"
+  # "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.26.5"
 
   resource_group_name = azurerm_resource_group.rg_public.name
   location            = azurerm_resource_group.rg_public.location
@@ -103,6 +104,7 @@ module "app_gw" {
       listener              = "api"
       backend               = "apim"
       rewrite_rule_set_name = null
+      priority = 10
     }
   }
 

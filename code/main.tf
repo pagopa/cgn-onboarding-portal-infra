@@ -3,17 +3,17 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 2.87.0, < 3.0.0"
+      version = ">= 3.111.0" #">= 2.87.0, < 3.0.0"
     }
 
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 1.0"
+      version = ">= 2.53.1" #"~> 1.0"
     }
 
     pkcs12 = {
       source  = "chilicat/pkcs12"
-      version = "0.0.6"
+      version = ">= 0.2.5" #"0.0.7"
     }
   }
 

@@ -7,5 +7,5 @@ output "name" {
 }
 
 output "address_prefix" {
-  value = azurerm_subnet.subnet.address_prefix
+  value = azurerm_subnet.subnet.address_prefixes
 }

@@ -70,11 +70,7 @@ resource "azurerm_app_service" "app_service" {
   lifecycle {
     ignore_changes = [
       site_config.0.linux_fx_version, # deployments are made outside of Terraform
-      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],
-      app_settings["WEBSITE_HEALTHCHECK_MAXPINGFAILURES"],
-      tags["hidden-link: /app-insights-conn-string"],
-      tags["hidden-link: /app-insights-instrumentation-key"],
-      tags["hidden-link: /app-insights-resource-id"]
+      app_settings["DOCKER_CUSTOM_IMAGE_NAME"]
     ]
   }
 }
@@ -137,11 +133,7 @@ resource "azurerm_app_service_slot" "slot" {
   lifecycle {
     ignore_changes = [
       site_config.0.linux_fx_version, # deployments are made outside of Terraform
-      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],
-      app_settings["WEBSITE_HEALTHCHECK_MAXPINGFAILURES"],
-      tags["hidden-link: /app-insights-conn-string"],
-      tags["hidden-link: /app-insights-instrumentation-key"],
-      tags["hidden-link: /app-insights-resource-id"]
+      app_settings["DOCKER_CUSTOM_IMAGE_NAME"]
     ]
   }
 }

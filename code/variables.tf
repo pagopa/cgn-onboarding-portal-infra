@@ -292,7 +292,7 @@ variable "db_charset" {
 variable "db_collation" {
   type        = string
   description = "Specifies the Collation for the PostgreSQL Database."
-  default     = "Italian_Italy.1252"
+  default     = "it_IT.utf8" # "Italian_Italy.1252"
 }
 
 
