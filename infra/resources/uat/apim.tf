@@ -1,22 +1,24 @@
+#-------------------- C U S T O M D O M A I N -------------------------
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain_v2" {
   api_management_id = module.apim_v2.id
 
   gateway {
-    host_name    = trim(data.azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, ".")
+    host_name    = trim(data.azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
     key_vault_id = data.azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
   }
 }
 
 resource "azurerm_api_management_certificate" "jwt_certificate_v2" {
-  name                = "jwt-spid-crt"
+  name                = "jwt-spid-crt-v2"
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
-  data                = pkcs12_from_pem.jwt_pkcs12.result
+  data                = data.azurerm_key_vault_secret.jwt_pkcs12_pem #pkcs12_from_pem.jwt_pkcs12.result
 }
 
-# API Product
+#-------------------- A P I -------------------------
 
-resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # Nell'app service
+resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # In the app service
   product_id            = "cgn-onboarding-portal-api"
   resource_group_name   = data.azurerm_resource_group.rg_api.name
   api_management_name   = module.apim_v2.name
@@ -27,10 +29,8 @@ resource "azurerm_api_management_product" "cgn_onbording_portal_v2" { # Nell'app
   published             = true
 }
 
-# APIs
-
 module "apim_backend_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5" #"git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-backend-api", local.project)
   api_management_name = module.apim_v2.name
@@ -40,18 +40,18 @@ module "apim_backend_api_v2" {
   display_name = "BACKEND"
   path         = "api/v1"
   protocols    = ["http", "https"]
-  service_url  = format("https://%s", module.portal_backend_1_v2.default_site_hostname)
+  service_url  = format("https://%s", data.azurerm_linux_web_app.portal_backend_1_v2.default_hostname)
 
   content_value = file("../../../code/backend_api/swagger.json")
 
   xml_content = templatefile("../../../code/backend_api/policy.xml.tpl", {
-    hub_spid_login_url = format("https://%s", data.azurerm_app_service.spid_login.default_site_hostname)
+    hub_spid_login_url = format("https://%s", data.azurerm_linux_web_app.spid_login.default_hostname)
   })
 }
 
 
 module "apim_backoffice_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5" # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-backoffice-api", local.project)
   api_management_name = module.apim_v2.name
@@ -61,7 +61,7 @@ module "apim_backoffice_api_v2" {
   display_name = "BACKOFFICE"
   path         = "backoffice/v1"
   protocols    = ["http", "https"]
-  service_url  = format("https://%s", module.portal_backend_1_v2.default_site_hostname)
+  service_url  = format("https://%s", data.azurerm_linux_web_app.portal_backend_1_v2.default_hostname)
 
   content_value = file("../../../code/backoffice_api/swagger.json")
 
@@ -72,7 +72,7 @@ module "apim_backoffice_api_v2" {
 }
 
 module "apim_public_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5" # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-public-api", local.project)
   api_management_name = module.apim_v2.name
@@ -82,7 +82,7 @@ module "apim_public_api_v2" {
   display_name = "PUBLIC"
   path         = "public/v1"
   protocols    = ["http", "https"]
-  service_url  = format("https://%s", module.portal_backend_1_v2.default_site_hostname)
+  service_url  = format("https://%s", data.azurerm_linux_web_app.portal_backend_1_v2.default_hostname)
 
   content_value = file("../../../code/public_api/swagger.json")
 
@@ -90,7 +90,7 @@ module "apim_public_api_v2" {
 }
 
 module "apim_spid_login_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5" # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-spid-login-api", local.project)
   api_management_name = module.apim_v2.name
@@ -100,7 +100,7 @@ module "apim_spid_login_api_v2" {
   display_name = "SPID"
   path         = "spid/v1"
   protocols    = ["http", "https"]
-  service_url  = format("https://%s", data.azurerm_app_service.spid_login.default_site_hostname)
+  service_url  = format("https://%s", data.azurerm_linux_web_app.spid_login.default_hostname)
 
   content_value = file("../../../code/spidlogin_api/swagger.json")
 
@@ -120,7 +120,7 @@ resource "azurerm_api_management_api_operation_policy" "spid_acs_v2" {
 
 module "apim_ade_aa_mock_api_v2" {
   count  = var.enable_ade_aa_mock ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5" # "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.26.5"
 
   name                = format("%s-ade-aa-mock-api", local.project)
   api_management_name = module.apim_v2.name
@@ -130,7 +130,7 @@ module "apim_ade_aa_mock_api_v2" {
   display_name          = "ADEAA"
   path                  = "adeaa/v1"
   protocols             = ["http", "https"]
-  service_url           = format("https://%s", data.azurerm_app_service.ade_aa_mock[0].default_site_hostname)
+  service_url           = format("https://%s", data.azurerm_linux_web_app.ade_aa_mock[0].default_hostname)
   subscription_required = true
 
   product_ids = ["cgn-onboarding-portal-api"]
@@ -140,8 +140,7 @@ module "apim_ade_aa_mock_api_v2" {
   xml_content = file("../../../code/adeaa_api/policy.xml")
 }
 
-#---------------------------------------------
-# NETWORK
+#-------------------- N E T W O R K -------------------------
 
 # resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
 #   name                = "${local.apim_name}-v2"
@@ -204,8 +203,7 @@ module "apim_ade_aa_mock_api_v2" {
 #   }
 # }
 
-#---------------------------------------------
-# Security
+#-------------------- S E C U R I T Y -------------------------
 
 resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -219,7 +217,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
 }
 
 
-#---------------------------------------------
+#-------------------- A P I M -------------------------
 
 module "apim_v2" {
   source                    = "../../modules/apim" # "./modules/apim"
@@ -237,7 +235,7 @@ module "apim_v2" {
   tags = var.tags
 }
 
-resource "azurerm_network_security_group" "nsg_apim" {
+resource "azurerm_network_security_group" "nsg_apim_v2" {
   name                = format("%s-apim-v2-nsg", local.project)
   resource_group_name = format("%s-vnet-rg", local.project)
   location            = var.location
@@ -257,13 +255,12 @@ resource "azurerm_network_security_group" "nsg_apim" {
   tags = var.tags
 }
 
-resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
+resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
   subnet_id                 = data.azurerm_subnet.subnet_apim.id
-  network_security_group_id = azurerm_network_security_group.nsg_apim.id
+  network_security_group_id = azurerm_network_security_group.nsg_apim_v2.id
 }
 
-#---------------------------------------------
-# APP SERVICE
+#-------------------- A P P S E R V I C E -------------------------
 
 # module "portal_backend_1_v2" {
 #   source = "../../modules/app_service" # "./modules/app_service"
@@ -294,17 +291,17 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
 #   tags = var.tags
 # }
 
-# monitor file
+#-------------------- M O N I T O R I N G -------------------------
 resource "azurerm_monitor_metric_alert" "backend_5xx_v2" {
-  name                = format("%s-%s", module.portal_backend_1_v2.name, "5xx")
+  name                = format("%s-%s", format("%s-portal-backend1", local.project), "5xx") #format("%s-%s", module.portal_backend_1_v2.name, "5xx")
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  scopes              = [module.portal_backend_1_v2.id]
+  scopes              = [data.azurerm_linux_web_app.portal_backend_1_v2.id]
   severity            = 1
   frequency           = "PT1M"
   window_size         = "PT5M"
 
   action {
-    action_group_id = azurerm_monitor_action_group.p0action.id
+    action_group_id = data.azurerm_monitor_action_group.p0action.id
   }
 
   criteria {

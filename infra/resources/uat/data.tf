@@ -16,7 +16,7 @@ data "azurerm_resource_group" "rg_api" {
 }
 
 data "azurerm_resource_group" "rg_vnet" {
-  name = format("%s-search-rg", local.project)
+  name = format("%s-vnet-rg", local.project)
 }
 
 data "azurerm_resource_group" "monitor_rg" {
@@ -63,12 +63,12 @@ data "azurerm_container_group" "spid_testenv" {
 
 # App services
 
-data "azurerm_app_service" "spid_login" {
+data "azurerm_linux_web_app" "spid_login" {
   name                = format("%s-spid-login", local.project)
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
-data "azurerm_app_service" "ade_aa_mock" {
+data "azurerm_linux_web_app" "ade_aa_mock" {
   count  = var.enable_ade_aa_mock ? 1 : 0
   name                = format("%s-ade-aa-mock", local.project)
   resource_group_name = data.azurerm_resource_group.rg_api.name
@@ -95,9 +95,9 @@ data "azurerm_dns_cname_record" "frontend" {
   zone_name           = var.dns_zone_prefix != null ? data.azurerm_dns_zone.public[0].name : data.azurerm_dns_zone.public_uat[0].name
 }
 
-data "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
-  name                = "${local.apim_name}-v2"
-  zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
+data "azurerm_private_dns_a_record" "private_dns_a_record_api" {
+  name                = "${local.apim_name}"
+  zone_name           = data.azurerm_private_dns_zone.api_private_dns_zone.name
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
@@ -119,14 +119,28 @@ data "azurerm_dns_zone" "public_uat" {
 }
 
 # pkcs12
-data "pkcs12_from_pem" "jwt_pkcs12" {
-  password        = ""
-  cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
-  private_key_pem = tls_private_key.jwt.private_key_pem
+# data "pkcs12_from_pem" "jwt_pkcs12" {
+#   password        = ""
+#   cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
+#   private_key_pem = tls_private_key.jwt.private_key_pem
+# }
+data "azurerm_key_vault_secret" "jwt_pkcs12_pem" {
+  name         = "jwt-pkcs12-pem"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
-
 data "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
   name         = local.apim_cert_name_proxy_endpoint
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+# monitoring
+data "azurerm_monitor_action_group" "p0action" {
+  name                = "CriticalAlertsAction"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
+
+# Data service
+data "azurerm_linux_web_app" "portal_backend_1_v2" {
+  name                = format("%s-portal-backend1", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}

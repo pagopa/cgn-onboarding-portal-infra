@@ -8,10 +8,6 @@ resource "azurerm_api_management" "this" {
   notification_sender_email = var.notification_sender_email
   sku_name                  = var.sku_name
 
-  policy {
-    xml_content = var.xml_content
-  }
-
   identity {
     type = "SystemAssigned"
   }
@@ -22,4 +18,9 @@ resource "azurerm_api_management" "this" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_api_management_policy" "this" {
+  api_management_id = azurerm_api_management.this.id
+  xml_content       = var.xml_content
 }
