@@ -5,7 +5,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 2.87.0, < 3.0.0"
     }
-
+    
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 1.0"
@@ -13,7 +13,7 @@ terraform {
 
     pkcs12 = {
       source  = "chilicat/pkcs12"
-      version = "0.0.6"
+      version = "0.0.7"
     }
   }
 
