@@ -19,9 +19,9 @@ data "azurerm_resource_group" "rg_vnet" {
   name = format("%s-vnet-rg", local.project)
 }
 
-data "azurerm_resource_group" "monitor_rg" {
-  name     = format("%s-monitor-rg", local.project)
-}
+# data "azurerm_resource_group" "monitor_rg" {
+#   name     = format("%s-monitor-rg", local.project)
+# }
 
 data "azurerm_resource_group" "rg_spid_testenv" {
   name     = format("%s-spid-testenv-rg", local.project)
@@ -35,7 +35,7 @@ data "azurerm_resource_group" "rg_public" {
   name     = format("%s-public-rg", local.project)
 }
 
-# Subnet
+# Networking
 
 data "azurerm_subnet" "subnet_apim" {
   name                 = format("%s-apim-subnet", local.project)
@@ -43,48 +43,15 @@ data "azurerm_subnet" "subnet_apim" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
 
-data "azurerm_virtual_network" "vnet" {
-  name                = format("%s-vnet", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-}
-
-# Registry
-# data "azurerm_container_registry" "container_registry" {
-#   name                = join("", [replace(var.prefix, "-", ""), var.env_short, "arc"])
-#   resource_group_name = data.azurerm_resource_group.rg_api.name
-# }
-
-# For locals
-data "azurerm_container_group" "spid_testenv" {
-  count               = var.enable_spid_test ? 1 : 0
-  name                = format("%s-spid-testenv", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_spid_testenv.name
-}
-
-# App services
-
-data "azurerm_linux_web_app" "spid_login" {
-  name                = format("%s-spid-login", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
-
-data "azurerm_linux_web_app" "ade_aa_mock" {
-  count  = var.enable_ade_aa_mock ? 1 : 0
-  name                = format("%s-ade-aa-mock", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
-
-# Azure Subnets
 # data "azurerm_subnet" "subnet_api" {
 #   name                 = format("%s-api-subnet", local.project)
 #   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 #   virtual_network_name = data.azurerm_virtual_network.vnet.name
 # }
 
-# Key Vault
-data "azurerm_key_vault" "key_vault" {
-  name                       = format("%s-kv", local.project)
-  resource_group_name        = data.azurerm_resource_group.rg_sec.name
+data "azurerm_virtual_network" "vnet" {
+  name                = format("%s-vnet", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
 # DNS
@@ -118,29 +85,62 @@ data "azurerm_dns_zone" "public_uat" {
   resource_group_name = data.azurerm_resource_group.rg_public.name
 }
 
+# Registry
+# data "azurerm_container_registry" "container_registry" {
+#   name                = join("", [replace(var.prefix, "-", ""), var.env_short, "arc"])
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+# }
+
+# SPID
+data "azurerm_container_group" "spid_testenv" {
+  count               = var.enable_spid_test ? 1 : 0
+  name                = format("%s-spid-testenv", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_spid_testenv.name
+}
+
+# App services
+
+data "azurerm_linux_web_app" "spid_login" {
+  name                = format("%s-spid-login", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
+data "azurerm_linux_web_app" "ade_aa_mock" {
+  count  = var.enable_ade_aa_mock ? 1 : 0
+  name                = format("%s-ade-aa-mock", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
+data "azurerm_linux_web_app" "portal_backend_1" {
+  name                = format("%s-portal-backend1", local.project)
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
+# Security
+data "azurerm_key_vault" "key_vault" {
+  name                       = format("%s-kv", local.project)
+  resource_group_name        = data.azurerm_resource_group.rg_sec.name
+}
+
 # pkcs12
 # data "pkcs12_from_pem" "jwt_pkcs12" {
 #   password        = ""
 #   cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
 #   private_key_pem = tls_private_key.jwt.private_key_pem
 # }
+
 data "azurerm_key_vault_secret" "jwt_pkcs12_pem" {
   name         = "jwt-pkcs12-pem"
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
 data "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
   name         = local.apim_cert_name_proxy_endpoint
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 # monitoring
-data "azurerm_monitor_action_group" "p0action" {
-  name                = "CriticalAlertsAction"
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-}
-
-# Data service
-data "azurerm_linux_web_app" "portal_backend_1_v2" {
-  name                = format("%s-portal-backend1", local.project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
+# data "azurerm_monitor_action_group" "p0action" {
+#   name                = "CriticalAlertsAction"
+#   resource_group_name = data.azurerm_resource_group.monitor_rg.name
+# }
