@@ -140,9 +140,6 @@ module "apim_ade_aa_mock_api_v2" {
   xml_content = file("../../../code/adeaa_api/policy.xml")
 }
 
-#-------------------- N E T W O R K -------------------------
-
-
 #-------------------- S E C U R I T Y -------------------------
 
 resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
@@ -160,7 +157,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
 #-------------------- A P I M -------------------------
 
 module "apim_v2" {
-  source                    = "../../modules/apim" # "./modules/apim"
+  source                    = "../../modules/apim"
   subnet_id                 = data.azurerm_subnet.subnet_apim.id
   location                  = var.location
   resource_name             = "${local.apim_name}-v2"
@@ -199,36 +196,3 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
   subnet_id                 = data.azurerm_subnet.subnet_apim.id
   network_security_group_id = azurerm_network_security_group.nsg_apim_v2.id
 }
-
-#-------------------- A P P S E R V I C E -------------------------
-
-## Will be edited directly the original resource
-
-# module "portal_backend_1" {
-#   source = "../../modules/app_service" # "./modules/app_service"
-
-#   name                = format("%s-portal-backend1", local.project)
-#   plan_name           = format("%s-plan-portal-backend1", local.project)
-#   resource_group_name = data.azurerm_resource_group.rg_api.name
-
-#   sku = var.backend_sku
-
-#   health_check_path = "/actuator/health"
-
-#   app_settings = merge(local.portal_backend_1_app_settings_, local.portal_backend_1_app_settings_prod)
-
-#   slot_name         = "staging"
-#   app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging)
-
-#   linux_fx_version = format("DOCKER|%s/cgn-onboarding-portal-backend:%s",
-#   data.azurerm_container_registry.container_registry.login_server, "latest")
-#   always_on = "true"
-
-#   allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
-#   allowed_ips     = []
-
-#   subnet_name = data.azurerm_subnet.subnet_api.name
-#   subnet_id   = data.azurerm_subnet.subnet_api.id
-
-#   tags = var.tags
-# }
