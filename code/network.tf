@@ -265,5 +265,10 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_api" {
   zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = 10
-  records             = module.apim.*.private_ip_addresses[0]
+  records             = contains(["u"], var.env_short) ? data.azurerm_api_management.apim_v2.private_ip_addresses : module.apim.*.private_ip_addresses[0]
+}
+
+data "azurerm_api_management" "apim_v2" {
+  name = "${local.apim_name}-v2"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
 }
