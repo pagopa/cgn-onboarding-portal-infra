@@ -75,5 +75,7 @@
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_apim_v2_gateway_url"></a> [apim\_v2\_gateway\_url](#output\_apim\_v2\_gateway\_url) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
