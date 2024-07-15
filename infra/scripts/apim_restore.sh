@@ -44,4 +44,4 @@ az apim restore \
 --storage-account-name $STORAGE_ACCOUNT_NAME \
 --storage-account-container $STORAGE_ACCOUNT_CONTAINER \
 --storage-account-key $key \
---no-wait
+# --no-wait

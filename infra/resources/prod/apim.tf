@@ -157,10 +157,10 @@ resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
 #-------------------- A P I M -------------------------
 
 module "apim_v2" {
-  source                    = "../apim"
+  source                    = "../../modules/apim"
   subnet_id                 = data.azurerm_subnet.subnet_apim.id
   location                  = var.location
-  resource_name             = "${local.apim_name}${local.apim_suffix}"
+  resource_name             = "${local.apim_name}-v2"
   resource_group_name       = data.azurerm_resource_group.rg_api.name
   publisher_name            = var.apim_publisher_name
   publisher_email           = var.apim_publisher_email
