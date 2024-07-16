@@ -46,10 +46,10 @@ module "app_gw" {
   backends = {
     apim = {
       protocol                    = "Http"
-      host                        = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
+      host                        = local.apim_hostname
       port                        = 80
       ip_addresses                = null
-      fqdns                       = [trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")]
+      fqdns                       = [local.apim_hostname]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 8
