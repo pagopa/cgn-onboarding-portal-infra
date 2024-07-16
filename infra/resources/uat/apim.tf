@@ -10,6 +10,8 @@
 #   }
 # }
 
+#-------------------- J W T C E R T -------------------------
+
 resource "azurerm_api_management_certificate" "jwt_certificate_v2" {
   name                = "jwt-spid-crt"
   api_management_name = module.apim_v2.name

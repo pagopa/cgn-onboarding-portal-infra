@@ -1,13 +1,4 @@
-#-------------------- C U S T O M D O M A I N -------------------------
-
-resource "azurerm_api_management_custom_domain" "api_custom_domain_v2" {
-  api_management_id = module.apim_v2.id
-
-  gateway {
-    host_name    = trim(data.azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    key_vault_id = data.azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
-  }
-}
+#-------------------- J W T C E R T -------------------------
 
 resource "azurerm_api_management_certificate" "jwt_certificate_v2" {
   name                = "jwt-spid-crt"
