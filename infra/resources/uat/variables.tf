@@ -57,13 +57,6 @@ variable "external_domain" {
   default = null
 }
 
-# postgresql
-
-# variable "database_name" {
-#   type        = string
-#   description = "Name of the database."
-# }
-
 ## Spit test
 variable "enable_spid_test" {
   type        = bool
@@ -77,20 +70,6 @@ variable "enable_ade_aa_mock" {
   default = false
 }
 
-# BACKEND
-# variable "backend_sku" {
-#   type = object({
-#     tier     = string
-#     size     = string
-#     capacity = number
-#   })
-#   default = {
-#     tier     = "Standard"
-#     size     = "S1"
-#     capacity = 1
-#   }
-# }
-
 ## AD B2C
 variable "adb2c_openid_config_url" {
   type        = string
@@ -102,56 +81,19 @@ variable "adb2c_audience" {
   description = "recipients that the JWT is intended for"
 }
 
-## Email
-# variable "email_host" {
-#   type        = string
-#   description = "email server hostname"
-#   default     = "fast.smtpok.com"
-# }
+# Network
+variable "dns_config" {
+  type = object({
+    second_level         = string
+    external_third_level = string
+    internal_third_level = string
+    dns_default_ttl_sec  = number
+  })
 
-# variable "email_port" {
-#   type        = number
-#   description = "email server port"
-#   default     = 80
-# }
-
-# variable "email_department_email" {
-#   type        = string
-#   description = "Receipent email address of the CGN Onboarding Department"
-# }
-
-# API TOKEN
-# variable "io_apim_resourcegroup" {
-#   type    = string
-#   default = null
-# }
-
-# variable "io_apim_v2_name" {
-#   type    = string
-#   default = null
-# }
-
-# variable "io_apim_v2_productid" {
-#   type    = string
-#   default = null
-# }
-
-# variable "io_apim_subscription_id" {
-#   type        = string
-#   description = "IO apim subscription id. If null the current subscription will be used."
-#   default     = null
-# }
-
-# Bucket vars
-# variable "pe_min_csv_rows" {
-#   type    = number
-#   default = 10000
-# }
-
-# # operator_search vars
-
-# variable "eyca_export_enabled" {
-#   type        = bool
-#   description = "Is eyca export enabled? Default false"
-#   default     = false
-# }
+  default = {
+    second_level         = "pagopa.it"
+    external_third_level = "trial"
+    internal_third_level = "internal"
+    dns_default_ttl_sec  = 3600
+  }
+}

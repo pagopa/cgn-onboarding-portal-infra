@@ -2,13 +2,6 @@
 
 data "azurerm_client_config" "current" {}
 
-# API
-
-# data "azurerm_key_vault_secret" "backend_geolocation_token" {
-#   name         = "backend-GEOLOCATION-TOKEN"
-#   key_vault_id = data.azurerm_key_vault.key_vault.id
-# }
-
 # Resource Groups
 
 data "azurerm_resource_group" "rg_api" {
@@ -18,10 +11,6 @@ data "azurerm_resource_group" "rg_api" {
 data "azurerm_resource_group" "rg_vnet" {
   name = format("%s-vnet-rg", local.project)
 }
-
-# data "azurerm_resource_group" "monitor_rg" {
-#   name     = format("%s-monitor-rg", local.project)
-# }
 
 data "azurerm_resource_group" "rg_spid_testenv" {
   count = var.enable_spid_test ? 1 : 0
@@ -44,12 +33,6 @@ data "azurerm_subnet" "subnet_apim" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
 
-# data "azurerm_subnet" "subnet_api" {
-#   name                 = format("%s-api-subnet", local.project)
-#   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-#   virtual_network_name = data.azurerm_virtual_network.vnet.name
-# }
-
 data "azurerm_virtual_network" "vnet" {
   name                = format("%s-vnet", local.project)
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
@@ -61,12 +44,6 @@ data "azurerm_dns_cname_record" "frontend" {
   name                = "portal"
   resource_group_name = data.azurerm_resource_group.rg_public.name
   zone_name           = var.dns_zone_prefix != null ? data.azurerm_dns_zone.public[0].name : data.azurerm_dns_zone.public_uat[0].name
-}
-
-data "azurerm_private_dns_a_record" "private_dns_a_record_api" {
-  name                = local.apim_name
-  zone_name           = data.azurerm_private_dns_zone.api_private_dns_zone.name
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
 data "azurerm_private_dns_zone" "api_private_dns_zone" {
@@ -85,12 +62,6 @@ data "azurerm_dns_zone" "public_uat" {
   name                = join(".", [var.dns_zone_prefix_uat, var.external_domain])
   resource_group_name = data.azurerm_resource_group.rg_public.name
 }
-
-# Registry
-# data "azurerm_container_registry" "container_registry" {
-#   name                = join("", [replace(var.prefix, "-", ""), var.env_short, "arc"])
-#   resource_group_name = data.azurerm_resource_group.rg_api.name
-# }
 
 # SPID
 data "azurerm_container_group" "spid_testenv" {
@@ -123,25 +94,7 @@ data "azurerm_key_vault" "key_vault" {
   resource_group_name = data.azurerm_resource_group.rg_sec.name
 }
 
-# pkcs12
-# data "pkcs12_from_pem" "jwt_pkcs12" {
-#   password        = ""
-#   cert_pem        = tls_self_signed_cert.jwt_self.cert_pem
-#   private_key_pem = tls_private_key.jwt.private_key_pem
-# }
-
 data "azurerm_key_vault_secret" "jwt_pkcs12_pem" {
   name         = "jwt-pkcs12-pem"
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
-
-data "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
-  name         = local.apim_cert_name_proxy_endpoint
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-# monitoring
-# data "azurerm_monitor_action_group" "p0action" {
-#   name                = "CriticalAlertsAction"
-#   resource_group_name = data.azurerm_resource_group.monitor_rg.name
-# }
