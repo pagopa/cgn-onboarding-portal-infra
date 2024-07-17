@@ -80,3 +80,20 @@ variable "adb2c_audience" {
   type        = string
   description = "recipients that the JWT is intended for"
 }
+
+# Network
+variable "dns_config" {
+  type = object({
+    second_level         = string
+    external_third_level = string
+    internal_third_level = string
+    dns_default_ttl_sec  = number
+  })
+
+  default = {
+    second_level         = "pagopa.it"
+    external_third_level = "trial"
+    internal_third_level = "internal"
+    dns_default_ttl_sec  = 3600
+  }
+}

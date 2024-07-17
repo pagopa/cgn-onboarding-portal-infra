@@ -46,12 +46,6 @@ data "azurerm_dns_cname_record" "frontend" {
   zone_name           = var.dns_zone_prefix != null ? data.azurerm_dns_zone.public[0].name : data.azurerm_dns_zone.public_uat[0].name
 }
 
-data "azurerm_private_dns_a_record" "private_dns_a_record_api" {
-  name                = local.apim_name
-  zone_name           = data.azurerm_private_dns_zone.api_private_dns_zone.name
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-}
-
 data "azurerm_private_dns_zone" "api_private_dns_zone" {
   name                = "api.cgnonboardingportal.pagopa.it"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
@@ -102,10 +96,5 @@ data "azurerm_key_vault" "key_vault" {
 
 data "azurerm_key_vault_secret" "jwt_pkcs12_pem" {
   name         = "jwt-pkcs12-pem"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "apim_proxy_endpoint_cert" {
-  name         = local.apim_cert_name_proxy_endpoint
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }

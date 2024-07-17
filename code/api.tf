@@ -128,6 +128,11 @@ locals {
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
   }
+
+  portal_backend_1_app_settings_uat = {
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE        = true
+  }
+
   portal_backend_1_app_settings_prod = {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE        = true
     EYCA_EXPORT_NOT_ALLOWED_DISCOUNT_MODES = "API"
@@ -167,7 +172,7 @@ module "portal_backend_1" {
 
   health_check_path = "/actuator/health"
 
-  app_settings = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_prod)
+  app_settings = contains(["p"], var.env_short) ? merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_prod) : merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_uat)
 
   slot_name         = "staging"
   app_settings_slot = merge(local.portal_backend_1_app_settings, local.portal_backend_1_app_settings_staging, local.portal_backend_1_app_settings_removed)
