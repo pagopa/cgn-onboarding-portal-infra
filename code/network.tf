@@ -277,6 +277,7 @@ locals {
   # For UAT migration:
   # If is UAT replace private A record with custom domain built in
   # Then add "p" for PROD migration
+  # At the end delete the resource azurerm_private_dns_a_record.private_dns_a_record_api and make this configuration as default
   
   apim_v2_custom_domain = replace(data.azurerm_api_management.apim_v2.gateway_url, "https://", "")
   apim_hostname         = contains(["u"], var.env_short) ? local.apim_v2_custom_domain : trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
