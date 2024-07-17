@@ -23,6 +23,12 @@ resource "azurerm_application_insights" "application_insights" {
   resource_group_name = azurerm_resource_group.monitor_rg.name
   application_type    = "other"
 
+  lifecycle {
+    ignore_changes = [
+      workspace_id
+    ]
+  }
+
   tags = var.tags
 }
 
