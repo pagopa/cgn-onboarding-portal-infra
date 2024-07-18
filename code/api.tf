@@ -98,8 +98,8 @@ locals {
 
     # APIM API TOKEN
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
-    CGN_APIM_RESOURCE      = "${local.apim_name}-v2" # var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
-    CGN_APIM_PRODUCTID     = "cgn-onboarding-portal-api" # var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
+    CGN_APIM_RESOURCE      = contains(["u"], var.env_short) ? "${local.apim_name}-v2" : var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
+    CGN_APIM_PRODUCTID     = contains(["u"], var.env_short) ? "cgn-onboarding-portal-api" : var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
     AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
 
     # RECAPTCHA
@@ -130,7 +130,7 @@ locals {
   }
 
   portal_backend_1_app_settings_uat = {
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE        = true
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
   }
 
   portal_backend_1_app_settings_prod = {
