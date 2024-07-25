@@ -264,6 +264,6 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_api" {
   name                = local.apim_name
   zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
   resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = 300
+  ttl                 = 10
   records             = module.apim.*.private_ip_addresses[0]
 }
