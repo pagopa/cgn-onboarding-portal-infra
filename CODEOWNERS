@@ -1,3 +1,8 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
 * @pagopa/infrastructure-admins @AleDore
+* @pagopa/engineering-team-cloud-eng
+
+# engineering-team-cloud-eng
+/infra/ @pagopa/engineering-team-cloud-eng
+/.github/ @pagopa/engineering-team-cloud-eng

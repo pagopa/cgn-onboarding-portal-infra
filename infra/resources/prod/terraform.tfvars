@@ -14,6 +14,8 @@ enable_ade_aa_mock = true
 enable_custom_dns  = true
 enable_spid_test   = false
 
+subnet_cidr = ["10.0.10.0/24"]
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"

@@ -4,7 +4,7 @@ resource "azurerm_api_management_certificate" "jwt_certificate_v2" {
   name                = "jwt-spid-crt"
   api_management_name = module.apim_v2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
-  data                = data.azurerm_key_vault_secret.jwt_pkcs12_pem.value #pkcs12_from_pem.jwt_pkcs12.result
+  data                = data.azurerm_key_vault_secret.jwt_pkcs12_pem.value
 }
 
 #-------------------- A P I -------------------------
@@ -149,7 +149,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
 
 module "apim_v2" {
   source                    = "../../modules/apim"
-  subnet_id                 = data.azurerm_subnet.subnet_apim.id
+  subnet_id                 = azurerm_subnet.subnet_apim_v2.id
   location                  = var.location
   resource_name             = "${local.apim_name}-v2"
   resource_group_name       = data.azurerm_resource_group.rg_api.name
@@ -161,6 +161,17 @@ module "apim_v2" {
     origins = local.apim_origins
   })
   tags = var.tags
+}
+
+resource "azurerm_subnet" "subnet_apim_v2" {
+  name                 = format("%s-api-subnet-v2", local.project)
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  address_prefixes     = var.subnet_cidr
+
+  service_endpoints = ["Microsoft.Web"]
+
+  private_endpoint_network_policies = "Disabled"
 }
 
 resource "azurerm_network_security_group" "nsg_apim_v2" {
@@ -184,6 +195,6 @@ resource "azurerm_network_security_group" "nsg_apim_v2" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
-  subnet_id                 = data.azurerm_subnet.subnet_apim.id
+  subnet_id                 = azurerm_subnet.subnet_apim_v2.id
   network_security_group_id = azurerm_network_security_group.nsg_apim_v2.id
 }

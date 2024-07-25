@@ -97,3 +97,8 @@ variable "dns_config" {
     dns_default_ttl_sec  = 3600
   }
 }
+
+variable "subnet_cidr" {
+  type    = list(string)
+  default = []
+}
