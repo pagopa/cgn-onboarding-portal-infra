@@ -27,12 +27,6 @@ data "azurerm_resource_group" "rg_public" {
 
 # Networking
 
-data "azurerm_subnet" "subnet_apim" {
-  name                 = format("%s-apim-subnet", local.project)
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-}
-
 data "azurerm_virtual_network" "vnet" {
   name                = format("%s-vnet", local.project)
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
@@ -45,12 +39,6 @@ data "azurerm_dns_cname_record" "frontend" {
   resource_group_name = data.azurerm_resource_group.rg_public.name
   zone_name           = var.dns_zone_prefix != null ? data.azurerm_dns_zone.public[0].name : data.azurerm_dns_zone.public_uat[0].name
 }
-
-data "azurerm_private_dns_zone" "api_private_dns_zone" {
-  name                = "api.cgnonboardingportal.pagopa.it"
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-}
-
 data "azurerm_dns_zone" "public" {
   count               = (var.dns_zone_prefix == null || var.external_domain == null) ? 0 : 1
   name                = join(".", [var.dns_zone_prefix, var.external_domain])

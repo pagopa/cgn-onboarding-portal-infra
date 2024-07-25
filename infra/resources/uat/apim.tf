@@ -1,11 +1,20 @@
 #-------------------- C U S T O M D O M A I N -------------------------
 
-## Custom doman not necessary, use built-in
+# Custom doman not necessary, use built-in
+
+# resource "azurerm_private_dns_a_record" "private_dns_a_record_api_v2" {
+#   name                = module.apim_v2.name
+#   zone_name           = data.azurerm_private_dns_zone.api_private_dns_zone.name
+#   resource_group_name = data.azurerm_resource_group.rg_vnet.name
+#   ttl                 = 10
+#   records             = module.apim_v2.*.private_ip_addresses[0]
+# }
+
 # resource "azurerm_api_management_custom_domain" "api_custom_domain_v2" {
 #   api_management_id = module.apim_v2.id
 
 #   gateway {
-#     host_name    = trim(data.azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
+#     host_name    = trim(data.azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".") #trim(azurerm_private_dns_a_record.private_dns_a_record_api_v2.fqdn, ".")
 #     key_vault_id = data.azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
 #   }
 # }
@@ -161,7 +170,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy_v2" {
 
 module "apim_v2" {
   source                    = "../../modules/apim"
-  subnet_id                 = data.azurerm_subnet.subnet_apim.id
+  subnet_id                 = azurerm_subnet.subnet_apim_v2.id
   location                  = var.location
   resource_name             = "${local.apim_name}-v2"
   resource_group_name       = data.azurerm_resource_group.rg_api.name
@@ -173,6 +182,17 @@ module "apim_v2" {
     origins = local.apim_origins
   })
   tags = var.tags
+}
+
+resource "azurerm_subnet" "subnet_apim_v2" {
+  name                 = format("%s-api-subnet-v2", local.project)
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  address_prefixes     = var.subnet_cidr
+
+  service_endpoints = ["Microsoft.Web"]
+
+  private_endpoint_network_policies = "Disabled"
 }
 
 resource "azurerm_network_security_group" "nsg_apim_v2" {
@@ -196,6 +216,6 @@ resource "azurerm_network_security_group" "nsg_apim_v2" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "snet_nsg_v2" {
-  subnet_id                 = data.azurerm_subnet.subnet_apim.id
+  subnet_id                 = azurerm_subnet.subnet_apim_v2.id
   network_security_group_id = azurerm_network_security_group.nsg_apim_v2.id
 }
