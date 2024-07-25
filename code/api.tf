@@ -130,7 +130,7 @@ locals {
   }
 
   portal_backend_1_app_settings_uat = {
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE        = true
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
   }
 
   portal_backend_1_app_settings_prod = {
