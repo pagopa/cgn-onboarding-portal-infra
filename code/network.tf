@@ -273,6 +273,12 @@ data "azurerm_api_management" "apim_v2" {
   resource_group_name = azurerm_resource_group.rg_api.name
 }
 
+data "azurerm_subnet" "subnet_apim_v2" {
+  name                 = format("%s-api-subnet-v2", local.project)
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+}
+
 locals {
   # For UAT migration:
   # If is UAT replace private A record with custom domain built in
