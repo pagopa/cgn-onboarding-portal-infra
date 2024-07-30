@@ -98,8 +98,8 @@ locals {
 
     # APIM API TOKEN
     CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
-    CGN_APIM_RESOURCE      = var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
-    CGN_APIM_PRODUCTID     = var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
+    CGN_APIM_RESOURCE      = contains(["u"], var.env_short) ? "${local.apim_name}-v2" : var.io_apim_v2_name != null ? var.io_apim_v2_name : module.apim.name
+    CGN_APIM_PRODUCTID     = contains(["u"], var.env_short) ? data.azurerm_api_management_product.cgn_onbording_portal_v2.id : var.io_apim_v2_productid != null ? var.io_apim_v2_productid : azurerm_api_management_product.cgn_onbording_portal.id
     AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
 
     # RECAPTCHA
@@ -181,7 +181,7 @@ module "portal_backend_1" {
   azurerm_container_registry.container_registry.login_server, "latest")
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_subnets = contains(["u"], var.env_short) ? [data.azurerm_subnet.subnet_apim_v2.id] : [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_api.name
@@ -312,7 +312,7 @@ module "spid_login" {
 
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_subnets = contains(["u"], var.env_short) ? [data.azurerm_subnet.subnet_apim_v2.id] : [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_spid_login.name
@@ -391,7 +391,7 @@ module "ade_aa_mock" {
 
   always_on = "true"
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id, module.subnet_api.id]
+  allowed_subnets = contains(["u"], var.env_short) ? [data.azurerm_subnet.subnet_apim_v2.id, module.subnet_spid_login.id, module.subnet_api.id] : [azurerm_subnet.subnet_apim.id, module.subnet_spid_login.id, module.subnet_api.id]
   allowed_ips     = []
 
   subnet_name = module.subnet_ade_aa_mock[0].name
@@ -491,6 +491,7 @@ module "app_operator_search" {
   allowed_subnets = concat(
     [azurerm_subnet.subnet_apim.id, ],
     var.operator_search_external_allowed_subnets,
+    [contains(["u"], var.env_short) ? data.azurerm_subnet.subnet_apim_v2.id : ""]
   )
 
   tags = var.tags
@@ -877,4 +878,10 @@ module "apim_ade_aa_mock_api" {
   content_value = file("./adeaa_api/swagger.json")
 
   xml_content = file("./adeaa_api/policy.xml")
+}
+
+data "azurerm_api_management_product" "cgn_onbording_portal_v2" {
+  product_id            = "cgn-onboarding-portal-api"
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = "${local.apim_name}-v2"
 }
