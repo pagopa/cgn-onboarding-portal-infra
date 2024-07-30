@@ -736,7 +736,8 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
   proxy {
     host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
-    key_vault_id = azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
+    key_vault_id = contains(["p"], var.env_short) ? "https://cgnonboardingportal-p-kv.vault.azure.net/secrets/cgnonboardingportal-p-proxy-endpoint-cert/54bae8f95e9849489c2d5b358dd9b58a" : azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
+    #key_vault_id = contains(["p"], var.env_short) ? azurerm_key_vault_certificate.apim_proxy_endpoint_cert.secret_id : azurerm_key_vault_certificate.apim_proxy_endpoint_cert.versionless_secret_id
   }
 
   # developer_portal {
