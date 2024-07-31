@@ -46,10 +46,10 @@ module "app_gw" {
   backends = {
     apim = {
       protocol                    = "Http"
-      host                        = local.apim_hostname
+      host                        = local.apim_v2_custom_domain
       port                        = 80
       ip_addresses                = null
-      fqdns                       = [local.apim_hostname]
+      fqdns                       = [local.apim_v2_custom_domain]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 8
