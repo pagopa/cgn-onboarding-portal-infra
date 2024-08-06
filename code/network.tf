@@ -235,18 +235,7 @@ module "subnet_function_operator_search" {
   ]
 }
 
-# APIM subnet
-
-resource "azurerm_subnet" "subnet_apim" {
-  name                 = format("%s-apim-subnet", local.project)
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.cidr_subnet_apim
-
-  service_endpoints = ["Microsoft.Web"]
-
-  enforce_private_link_endpoint_network_policies = true
-}
+# APIM
 
 resource "azurerm_private_dns_zone" "api_private_dns_zone" {
   name                = var.apim_private_domain
@@ -258,14 +247,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "api_private_dns_zone_v
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.api_private_dns_zone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
-}
-
-resource "azurerm_private_dns_a_record" "private_dns_a_record_api" {
-  name                = local.apim_name
-  zone_name           = azurerm_private_dns_zone.api_private_dns_zone.name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = 10
-  records             = module.apim.*.private_ip_addresses[0]
 }
 
 data "azurerm_api_management" "apim_v2" {
