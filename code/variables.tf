@@ -501,6 +501,21 @@ variable "io_apim_v2_productid" {
   default = null
 }
 
+variable "io_apim_resourcegroup_itn" {
+  type    = string
+  default = null
+}
+
+variable "io_apim_itn_name" {
+  type    = string
+  default = null
+}
+
+variable "io_apim_itn_productid" {
+  type    = string
+  default = null
+}
+
 variable "io_apim_subscription_id" {
   type        = string
   description = "IO apim subscription id. If null the current subscription will be used."
