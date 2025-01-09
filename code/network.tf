@@ -263,3 +263,13 @@ data "azurerm_subnet" "subnet_apim_v2" {
 locals {
   apim_v2_custom_domain = replace(data.azurerm_api_management.apim_v2.gateway_url, "https://", "")
 }
+
+resource "azurerm_virtual_network_peering" "weu_itn" {
+  name                      = format("%s-to-%s", azurerm_virtual_network.vnet.name, data.azurerm_virtual_network.itn.name)
+  resource_group_name       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name      = azurerm_virtual_network.vnet.name
+  remote_virtual_network_id = data.azurerm_virtual_network.itn.id
+
+  allow_gateway_transit        = true
+  use_remote_gateways          = true
+}
