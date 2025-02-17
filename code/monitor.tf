@@ -13,6 +13,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   retention_in_days   = var.law_retention_in_days
   daily_quota_gb      = var.law_daily_quota_gb
 
+  lifecycle {
+    ignore_changes = [
+      sku
+    ]
+  }
+
   tags = var.tags
 }
 
