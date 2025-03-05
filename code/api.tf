@@ -97,9 +97,9 @@ locals {
     EYCA_EXPORT_PASSWORD = data.azurerm_key_vault_secret.eyca_export_password.value
 
     # APIM API TOKEN
-    CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name
-    CGN_APIM_RESOURCE      = var.io_apim_v2_name != null ? var.io_apim_v2_name : "${local.apim_name}-v2"
-    CGN_APIM_PRODUCTID     = var.io_apim_v2_productid != null ? var.io_apim_v2_productid : data.azurerm_api_management_product.cgn_onbording_portal_v2.id
+    CGN_APIM_RESOURCEGROUP = var.io_apim_resourcegroup_itn != null ? var.io_apim_resourcegroup_itn : (var.io_apim_resourcegroup != null ? var.io_apim_resourcegroup : azurerm_resource_group.rg_api.name)
+    CGN_APIM_RESOURCE      = var.io_apim_itn_name != null ? var.io_apim_itn_name : (var.io_apim_v2_name != null ? var.io_apim_v2_name : "${local.apim_name}-v2")
+    CGN_APIM_PRODUCTID     = var.io_apim_itn_productid != null ? var.io_apim_itn_productid : (var.io_apim_v2_productid != null ? var.io_apim_v2_productid : data.azurerm_api_management_product.cgn_onbording_portal_v2.id)
     AZURE_SUBSCRIPTION_ID  = var.io_apim_subscription_id != null ? var.io_apim_subscription_id : data.azurerm_subscription.current.subscription_id
 
     # RECAPTCHA
