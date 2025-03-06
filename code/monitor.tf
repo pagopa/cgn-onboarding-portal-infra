@@ -82,6 +82,7 @@ resource "azurerm_monitor_metric_alert" "postgresql_server" {
   scopes              = [azurerm_postgresql_server.postgresql_server.id]
   frequency           = each.value.frequency
   window_size         = each.value.window_size
+  description         = "PostgreSql Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/752189949/Postgre+-+Scale+upgrading+Tier"
 
   action {
     action_group_id = azurerm_monitor_action_group.p0action.id
@@ -124,6 +125,12 @@ resource "azurerm_monitor_action_group" "error_action_group" {
   email_receiver {
     name                    = "slack"
     email_address           = data.azurerm_key_vault_secret.alert_error_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  webhook_receiver {
+    name                    = "sendtoopsgenie"
+    service_uri             = data.azurerm_key_vault_secret.alert_error_notification_opsgenie.value
     use_common_alert_schema = true
   }
 
